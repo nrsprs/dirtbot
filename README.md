@@ -1,7 +1,10 @@
 # DirtBot
-RMET 565 Capstone Project
+### RMET 565 Capstone Project
 
-Seed plug tray dispensing robot. 
+#### Maintainer: [Nick Spears](nrs3088@rit.edu) 
+
+Seed plug tray creating robot. 
+
 
 ## Installation Instructions:
 
