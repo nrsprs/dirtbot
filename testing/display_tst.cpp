@@ -1,4 +1,6 @@
-// https://www.hackster.io/guptaaryan1010/easiest-way-to-connect-lcd-screen-to-arduino-mega-973682
+// Code: https://www.hackster.io/guptaaryan1010/easiest-way-to-connect-lcd-screen-to-arduino-mega-973682
+// Why we select cu port: https://stackoverflow.com/questions/8632586/whats-the-difference-between-dev-tty-and-dev-cu-on-macos
+// PIO build configs api: https://docs.platformio.org/en/latest/projectconf/build_configurations.html
 
 // For running a 16 pin analog LCD display on the R3 Mega
 #include <Arduino.h>
