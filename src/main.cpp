@@ -1,38 +1,27 @@
-// https://www.hackster.io/guptaaryan1010/easiest-way-to-connect-lcd-screen-to-arduino-mega-973682
-
-// For running a 16 pin analog LCD display on the R3 Mega
+#include <Stepper.h>
 #include <Arduino.h>
-#include <LiquidCrystal.h>
-// initialize the library by associating any needed LCD interface pin
-// with the arduino pin number it is connected to
-const int rs = A3, en = A5, d4 = A9, d5 = A10, d6 = A11, d7 = A12;
-LiquidCrystal lcd(rs, en, d4, d5, d6, d7);                              // throws err here:
 
+const int stepsPerRevolution = 200;  // change this to fit the number of steps per revolution
+// for your motor
+
+// initialize the stepper library on pins 8 through 11:
+Stepper myStepper(stepsPerRevolution, 8, 9, 10, 11);
 
 void setup() {
- pinMode(A14,OUTPUT);
- pinMode(A13,OUTPUT);
-  pinMode(A4,OUTPUT);
-  pinMode(A0,OUTPUT);
-  pinMode(A2,OUTPUT);
-  pinMode(A1,OUTPUT);
- digitalWrite(A14,LOW); 
- digitalWrite(A13,HIGH); 
-  digitalWrite(A4,LOW); 
-  digitalWrite(A0,LOW);
-  digitalWrite(A2,LOW);
-  digitalWrite(A1,HIGH);
- lcd.begin(16, 2);
-
- // Print a message to the LCD.
- lcd.print("Hello, World!");
+  // set the speed at 60 rpm:
+  myStepper.setSpeed(60);
+  // initialize the serial port:
+  Serial.begin(9600);
 }
 
-
 void loop() {
- // set the cursor to column 0, line 1
- // (note: line 1 is the second row, since counting begins with 0):
- lcd.setCursor(0, 1);
- // print the number of seconds since reset:
- lcd.print(millis() / 1000);
+  // step one revolution  in one direction:
+  Serial.println("clockwise");
+  myStepper.step(stepsPerRevolution);
+  delay(500);
+
+  // step one revolution in the other direction:
+  Serial.println("counterclockwise");
+  myStepper.step(-stepsPerRevolution);
+  delay(500);
 }
