@@ -1,3 +1,5 @@
+// https://www.makerguides.com/quadrature-rotary-encoder-with-arduino/
+
 #include <Arduino.h>
 
  // Rotary Encoder Inputs
