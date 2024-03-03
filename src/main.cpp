@@ -1,56 +1,56 @@
 /*
-   Uno sketch to drive a stepper motor using the AccelStepper library.
-   Runs stepper back and forth between limits. (Like Bounce demo program.)
-   Works with a ULN-2003 unipolar stepper driver, or a bipolar, constant voltage motor driver
-   such as the L298 or TB6612, or a step/direction constant current driver like the a4988.
+DirtBot main demo sequence
+
+Built for use on Arduino AVR Architecture using a MEGA 2560 board
+
+Developed for Professors Caldwell, Tawaf, and Zoyhofski
+Class of 2024, RMET
+Author: Nick Spears
 */
 
-// Include the AccelStepper Library
+
 #include <AccelStepper.h>
+#include <LiquidCrystal.h> 
+#include <Wire.h>
+#include <Stepper.h>
+#include <elapsedMillis.h>
+#include <EnableInterrupt.h>
+#include <QuadratureEncoder.h>
+#include <InputDebounce.h>
+#include <Dictionary.h>
 
-// Motor Connections (constant current, step/direction bipolar motor driver)
-const int dirPin = 8;
-const int stepPin = 9;
-int new_speed;
 
-// Creates an instance - Pick the version you want to use and un-comment it. That's the only required change.
-AccelStepper myStepper(AccelStepper::DRIVER, stepPin, dirPin);           // works for a4988 (Bipolar, constant current, step/direction driver)
-
-void setup()
+void setup()                     // init 
 {  
-   Serial.begin(115200);
-   myStepper.setMaxSpeed(100000);   // this limits the value of setSpeed(). Raise it if you like.
-   myStepper.setSpeed(90000);	   // runSpeed() will run the motor at this speed - set it to whatever you like.
-}
-
-void loop()
-{  
-    myStepper.runSpeed();   // This will run the motor forever.
+    Serial.begin(115200);
 }
 
 
-// void setup() {
-//   // set the maximum speed, acceleration factor,
-//   // and the target position
-//   Serial.begin(9600);
-//   myStepper.setMaxSpeed(200.0);
-//   myStepper.setAcceleration(50.0);
-//   myStepper.moveTo(2000);
-// }
+void loop()                     // main 
+{
+    // Initalize stepper motor objects
+    typedef struct {
+        int dirPin;
+        int stepPin;
+        } pinDictionary;
 
-// void loop() {
-//   // Change direction once the motor reaches target position
-//     if (myStepper.distanceToGo() == 0) { 
-//         myStepper.moveTo(0);
-//         myStepper.run();
-//         delay(1000);
-//         myStepper.moveTo(100);
-//         delay(1000);
-//         myStepper.run();
-//     }
+        pinDictionary PinDict[] = {
+        {8, 9},                  // Stepper 0 : X-Axis motor pins
+        {0, 0},                  // Stepper 1: Y-Axis motor pins
+        {0, 0},                  // Stepper 2: Reservoir metering motor pins
+        {0, 0}                   // Stepper 3: Auger motor pins
+        };
 
-// //   if (!myStepper.run()) {   // run() returns true as long as the final position has not been reached and speed is not 0.
-// //     Serial.print('Moving to...');
-// //     myStepper.moveTo(-myStepper.currentPosition());
-// //   }
-// }
+    AccelStepper stepper0(AccelStepper::DRIVER, PinDict[0].dirPin, PinDict[0].stepPin);             // Stepper0 object
+    AccelStepper stepper1(AccelStepper::DRIVER, PinDict[1].dirPin, PinDict[1].stepPin);             // Stepper1 object
+    AccelStepper stepper2(AccelStepper::DRIVER, PinDict[2].dirPin, PinDict[2].stepPin);             // Stepper2 object
+    AccelStepper stepper3(AccelStepper::DRIVER, PinDict[3].dirPin, PinDict[3].stepPin);             // Stepper3 object
+
+    // for a4988 (Bipolar, constant current, step/direction driver)
+    // Motor Connections (constant current, step/direction bipolar motor driver)
+    
+    int new_speed;
+    stepper0.setMaxSpeed(100000);   // this limits the value of setSpeed(). Raise it if you like.
+    stepper0.setSpeed(90000);	   // runSpeed() will run the motor at this speed - set it to whatever you like.
+    stepper0.runSpeed();   // This will run the motor forever.
+}
