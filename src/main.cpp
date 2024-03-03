@@ -26,9 +26,8 @@ void setup()                     // init
 }
 
 
-void loop()                     // main 
-{
-    // Initalize stepper motor objects
+AccelStepper initStepper(int indx){
+    // Motor Connections for constant current, step/direction bipolar motor driver
     typedef struct {
         int dirPin;
         int stepPin;
@@ -41,16 +40,23 @@ void loop()                     // main
         {0, 0}                   // Stepper 3: Auger motor pins
         };
 
-    AccelStepper stepper0(AccelStepper::DRIVER, PinDict[0].dirPin, PinDict[0].stepPin);             // Stepper0 object
-    AccelStepper stepper1(AccelStepper::DRIVER, PinDict[1].dirPin, PinDict[1].stepPin);             // Stepper1 object
-    AccelStepper stepper2(AccelStepper::DRIVER, PinDict[2].dirPin, PinDict[2].stepPin);             // Stepper2 object
-    AccelStepper stepper3(AccelStepper::DRIVER, PinDict[3].dirPin, PinDict[3].stepPin);             // Stepper3 object
-
+    AccelStepper stepper(AccelStepper::DRIVER, PinDict[indx].dirPin, PinDict[indx].stepPin);             
     // for a4988 (Bipolar, constant current, step/direction driver)
-    // Motor Connections (constant current, step/direction bipolar motor driver)
     
-    int new_speed;
+    return stepper;
+}
+
+void loop()                     // main 
+{
+    // Initalize stepper motor objects:
+    AccelStepper stepper0 = initStepper(0);                                                         // Stepper0 object (X-Axis motor)
+    AccelStepper stepper1 = initStepper(1);                                                         // Stepper1 object (Y-Axis motor)
+    AccelStepper stepper2 = initStepper(2);                                                         // Stepper2 object (Reservoir metering motor)
+    AccelStepper stepper3 = initStepper(3);                                                         // Stepper3 object (Auger motor)
+
     stepper0.setMaxSpeed(100000);   // this limits the value of setSpeed(). Raise it if you like.
     stepper0.setSpeed(90000);	   // runSpeed() will run the motor at this speed - set it to whatever you like.
     stepper0.runSpeed();   // This will run the motor forever.
+
+    return;
 }
