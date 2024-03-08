@@ -23,6 +23,7 @@ Author: Nick Spears
 void setup()                     // init 
 {  
     Serial.begin(115200);
+    Serial.println("Serial Begun.");
 }
 
 
@@ -34,12 +35,14 @@ AccelStepper initStepper(int indx){
         } pinDictionary;
 
         pinDictionary PinDict[] = {
-        {8, 9},                  // Stepper 0 : X-Axis motor pins
-        {0, 0},                  // Stepper 1: Y-Axis motor pins
-        {0, 0},                  // Stepper 2: Reservoir metering motor pins
-        {0, 0}                   // Stepper 3: Auger motor pins
+        {8, 9},                    // Stepper 0 : X-Axis motor pins
+        {23, 24},                  // Stepper 1: Y-Axis motor pins
+        {25, 26},                  // Stepper 2: Reservoir metering motor pins
+        {27, 28}                   // Stepper 3: Auger motor pins
         };
     AccelStepper stepper(AccelStepper::DRIVER, PinDict[indx].dirPin, PinDict[indx].stepPin);
+    Serial.println(String("Index: ") + String(indx));
+    Serial.println(String("DirPin: ")+String(PinDict[indx].dirPin)+String(" StepPin: ")+ String(PinDict[indx].stepPin));
     // for Bipolar, constant current, step/direction driver
     return stepper;
 }
@@ -52,17 +55,16 @@ void loop()                     // main
     AccelStepper stepper2 = initStepper(2);                                                         // Stepper2 (Reservoir metering motor)
     AccelStepper stepper3 = initStepper(3);                                                         // Stepper3 (Auger motor)
 
-    stepper0.setMaxSpeed(10000);                           // limits setSpeed(), measured in steps / second
-    stepper0.setSpeed(2000);	                            // runSpeed() will run the motor at this speed, measured in steps / second
-    stepper0.setAcceleration(1000);                         // motor acceleration in steps/s^2
-    stepper0.disableOutputs();                              // sets pins to LOW and prevents motors from drawing current 
-    stepper0.setCurrentPosition(0);                         // sets current position to 0 steps after switch trigger
-    delay(1);
-    stepper0.enableOutputs();                               // sets all pins 
-
+    int pos = 1600;
+    stepper0.setMaxSpeed(4000);
+    stepper0.setAcceleration(1000);
     while (1) {
-        stepper0.runSpeed();
-    } 
-
+        if (stepper0.distanceToGo() == 0) {
+            delay(500); // ms
+            pos = -pos;
+            stepper0.moveTo(pos);
+        }
+        bool isrunning = stepper0.run();
+    }
     exit (0);
 }
