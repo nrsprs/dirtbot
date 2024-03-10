@@ -22,23 +22,22 @@ Author: Nick Spears
 
 void setup()                     // init 
 {  
-    Serial.begin(115200);
+    Serial.begin(9600);
     Serial.println("Serial Begun.");
 
-    // Assign Pins: 
-    pinMode(1, INPUT);             // Encoder SW 1, testing
-    pinMode(2, INPUT);             // DT
-    pinMode(3, INPUT);             //CLK
-    pinMode(50, INPUT);             // LS1 (x-axis)
-    pinMode(51, INPUT);             // LS2 (y-axis)
+    // Assign Pin Modes: 
+    pinMode(5, INPUT);             // Encoder SW 1, testing
+    pinMode(6, INPUT);             // DT
+    pinMode(7, INPUT);             //CLK
+    pinMode(LED_BUILTIN, OUTPUT);  // Built-in LED
 }
 
 
 AccelStepper initStepper(int indx){
     // Motor Connections for constant current, step/direction bipolar motor driver
     typedef struct {
-        int stepPin;
-        int dirPin;
+        const int stepPin;
+        const int dirPin;
         } pinDictionary;
 
         pinDictionary PinDict[] = {
@@ -54,6 +53,60 @@ AccelStepper initStepper(int indx){
     return stepper;
 }
 
+
+/* ### debounce a digital input
+Takes a InputDebounce object and returns 1 or 0 depending on status. 
+Meant to be called multiple times.
+### Returns :: Bool
+*/
+int debounce(InputDebounce& switch_object) 
+{
+    // Reset vars for switches:
+    static unsigned int LS1_Count = 0;
+    static unsigned int LS1_OnTimeLast = 0;
+    static unsigned int LS2_Count = 0;
+    static unsigned int LS2_OnTimeLast = 0;
+    bool result = 0;
+
+    unsigned long now = millis();
+    unsigned int buttonTest_OnTime = switch_object.process(now);
+
+    // Handle input button
+    if(buttonTest_OnTime) {
+        // Save current on-time (button pressed) for release
+        LS1_OnTimeLast = buttonTest_OnTime;
+        // Check for state change
+        unsigned int count = switch_object.getStatePressedCount();
+        if(LS1_Count != count) {
+        LS1_Count = count;
+        // Handle pressed state
+        digitalWrite(LED_BUILTIN, HIGH);                 // Turn on built_in LED
+        result = 1;
+        Serial.print("HIGH");
+        }
+        else {
+        // Handle still pressed state
+        Serial.print("HIGH still pressed");
+        }
+        Serial.print(" (");
+        Serial.print(buttonTest_OnTime);
+        Serial.println("ms)");
+    }
+    else {
+        if(LS1_OnTimeLast) {
+        // Handle released state
+        digitalWrite(LED_BUILTIN, LOW);                 // Turn off built_in LED
+        result = 0;
+        Serial.print("LOW (last on-time: HIGH ");
+        Serial.print(LS1_OnTimeLast);
+        Serial.println("ms)");
+        LS1_OnTimeLast = 0;                             // Reset 
+        }
+    }
+    return result; 
+}
+
+
 void loop()                     // main 
 {
     // Initalize stepper motor objects:
@@ -62,11 +115,20 @@ void loop()                     // main
     AccelStepper stepper2 = initStepper(2);                                                         // Stepper2 (Reservoir metering motor)
     AccelStepper stepper3 = initStepper(3);                                                         // Stepper3 (Auger motor)
 
+    // Initalize limit switches:
+    #define BUTTON_DB_DELAY 100     // ms
+    static const int pinLS1 = 2;
+    static const int pinLS2 = 3; 
+    // Create input DB object:
+    static InputDebounce limitSwitch1;
+    static InputDebounce limitSwitch2;
+    // Setup debounced pull-down pin:
+    limitSwitch1.setup(pinLS1, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);
+    limitSwitch2.setup(pinLS2, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);
+    
     while(1) {
-        int buttonState = digitalRead(1);
-        if (buttonState == 1){ 
-            Serial.println(String("Pin 1: ") + String(buttonState));
-        }
+        debounce(limitSwitch1);
+        delay(1);
     }
 
     /* Working stepper code: will run to +1600 steps then to -1600 steps continually. */
