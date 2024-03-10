@@ -1,0 +1,1191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- saved from url=(0071)https://www.schmalzhaus.com/EasyDriver/Examples/EasyDriverExamples.html -->
+<html><link type="text/css" rel="stylesheet" id="dark-mode-custom-link"><link type="text/css" rel="stylesheet" id="dark-mode-general-link"><style lang="en" type="text/css" id="dark-mode-custom-style"></style><style lang="en" type="text/css" id="dark-mode-native-style"></style><style lang="en" type="text/css" id="dark-mode-native-sheet"></style><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    
+    <title>Easy Driver Examples</title>
+    <meta content="Brian Schmalz" name="author">
+    <meta content="Example code for Easy Driver - Arduino and chipKIT
+      code mostly" name="description">
+  <style id="odhmfmnoejhihkmfebnolljiibpnednn_cssInject_pre" style="display: none;">:-webkit-any(:-webkit-any([id*="captify-widget"i],[class*="captify-widget"i],[id*="captify_widget"i],[class*="captify_widget"i],[id*="mol-ads-cmp"i],[class*="mol-ads-cmp"i],[id*="mol_ads_cmp"i],[class*="mol_ads_cmp"i],[id*="qc-cmp-ui"i],[class*="qc-cmp-ui"i],[id*="qc_cmp_ui"i],[class*="qc_cmp_ui"i],[id*="qc-cmp-persistent"i],[class*="qc-cmp-persistent"i],[id*="qc_cmp_persistent"i],[class*="qc_cmp_persistent"i],[id*="cmpbox"i],[class*="cmpbox"i],[id*="site-message--first-pv-consent"i],[class*="site-message--first-pv-consent"i],[id*="site_message__first_pv_consent"i],[class*="site_message__first_pv_consent"i],[id*="cmp-container-id"i],[class*="cmp-container-id"i],[id*="cmp_container_id"i],[class*="cmp_container_id"i],[id*="bbccookies"i],[class*="bbccookies"i],[id*="msccBanner"i],[class*="msccBanner"i],[id*="privacy-content"i],[class*="privacy-content"i],[id*="privacy_content"i],[class*="privacy_content"i],[id*="privacy-prompt-wrapper"i],[class*="privacy-prompt-wrapper"i],[id*="privacy_prompt_wrapper"i],[class*="privacy_prompt_wrapper"i],[id*="data-tracking-opt-in"i],[class*="data-tracking-opt-in"i],[id*="data_tracking_opt_in"i],[class*="data_tracking_opt_in"i],[id*="ad-optly"i],[class*="ad-optly"i],[id*="ad_optly"i],[class*="ad_optly"i],[id*="cccwrpad"i],[class*="cccwrpad"i],[id*="signup_wall_wrapper"i],[class*="signup_wall_wrapper"i],[id*="signup-wall-wrapper"i],[class*="signup-wall-wrapper"i],[id*="eucookie"i],[class*="eucookie"i],[id*="eu-cookie"i],[class*="eu-cookie"i],[id*="eu_cookie"i],[class*="eu_cookie"i],[id*="eupopup"i],[class*="eupopup"i],[id*="nav__cookie"i],[class*="nav__cookie"i],[id*="nav--cookie"i],[class*="nav--cookie"i],[id*="cookie__h-subline"i],[class*="cookie__h-subline"i],[id*="cookie__h_subline"i],[class*="cookie__h_subline"i],[id*="cookie--h-subline"i],[class*="cookie--h-subline"i],[id*="cc-stop-overlay"i],[class*="cc-stop-overlay"i],[id*="cc_stop_overlay"i],[class*="cc_stop_overlay"i],[id*="ub-emb-"i],[class*="ub-emb-"i],[id*="ub_emb_"i],[class*="ub_emb_"i],[id*="tealium-cookies"i],[class*="tealium-cookies"i],[id*="tealium_cookies"i],[class*="tealium_cookies"i],[id*="tealiumgdpr"i],[class*="tealiumgdpr"i],[id*="fc-consent-root"i],[class*="fc-consent-root"i],[id*="fc_consent_root"i],[class*="fc_consent_root"i],[id*="cybotcookie"i],[class*="cybotcookie"i],[id*="cookieAcknowledgement"i],[class*="cookieAcknowledgement"i],[id*="cookie-disclaimer"i],[class*="cookie-disclaimer"i],[id*="cookie_disclaimer"i],[class*="cookie_disclaimer"i],[id*="gdpr-cookie"i],[class*="gdpr-cookie"i],[id*="gdpr_cookie"i],[class*="gdpr_cookie"i],[id*="gdprform"i],[class*="gdprform"i],[id*="gdpr-content"i],[class*="gdpr-content"i],[id*="gdpr_content"i],[class*="gdpr_content"i],[id*="gdprcontent"i],[class*="gdprcontent"i],[id*="truste_overlay"i],[class*="truste_overlay"i],[id*="truste-overlay"i],[class*="truste-overlay"i],[id*="truste_box"i],[class*="truste_box"i],[id*="truste-box"i],[class*="truste-box"i],[id*="lnk-c-modal"i],[class*="lnk-c-modal"i],[id*="lnk_c_modal"i],[class*="lnk_c_modal"i],[id*="notice--cookie"i],[class*="notice--cookie"i],[id*="notice__cookie"i],[class*="notice__cookie"i],[id*="noticecookiescontent"i],[class*="noticecookiescontent"i],[id*="ccgtm-wrapper"i],[class*="ccgtm-wrapper"i],[id*="ccgtm_wrapper"i],[class*="ccgtm_wrapper"i],[id*="onetrust-consent-sdk"i],[class*="onetrust-consent-sdk"i],[id*="onetrust_consent_sdk"i],[class*="onetrust_consent_sdk"i],[id*="cli-modal-backdrop"i],[class*="cli-modal-backdrop"i],[id*="cli_modal_backdrop"i],[class*="cli_modal_backdrop"i],[id*="cli-popupbar-overlay"i],[class*="cli-popupbar-overlay"i],[id*="cli_popupbar_overlay"i],[class*="cli_popupbar_overlay"i],[id*="cookie-law-info-bar"i],[class*="cookie-law-info-bar"i],[id*="cookie_law_info_bar"i],[class*="cookie_law_info_bar"i],[id*="cookie-consent-alert"i],[class*="cookie-consent-alert"i],[id*="cookie_consent_alert"i],[class*="cookie_consent_alert"i],[id*="sncmp-container"i],[class*="sncmp-container"i],[id*="sncmp_container"i],[class*="sncmp_container"i],[id*="c-cookieAccept"i],[class*="c-cookieAccept"i],[id*="c_cookieAccept"i],[class*="c_cookieAccept"i],[id*="gdprsticky"i],[class*="gdprsticky"i],[id*="guce-inline-consent"i],[class*="guce-inline-consent"i],[id*="guce_inline_consent"i],[class*="guce_inline_consent"i],[id*="modal--agreements--cookie"i],[class*="modal--agreements--cookie"i],[id*="modal__agreements__cookie"i],[class*="modal__agreements__cookie"i],[id*="cookie_notice"i],[class*="cookie_notice"i],[id*="cookie-notice"i],[class*="cookie-notice"i],[id*="cookieconsentmodal"i],[class*="cookieconsentmodal"i],[id*="yoyoCookie"i],[class*="yoyoCookie"i],[id*="footer_tc_privacy"i],[class*="footer_tc_privacy"i],[id*="footer-tc-privacy"i],[class*="footer-tc-privacy"i],[id*="gdpr-consen"i],[class*="gdpr-consen"i],[id*="gdpr_consen"i],[class*="gdpr_consen"i],[id*="gdpr-banner"i],[class*="gdpr-banner"i],[id*="gdpr_banner"i],[class*="gdpr_banner"i],[id*="cookie-bar"i],[class*="cookie-bar"i],[id*="cookie_bar"i],[class*="cookie_bar"i],[id*="cookie-notif"i],[class*="cookie-notif"i],[id*="cookie_notif"i],[class*="cookie_notif"i],[id*="js-cookies-eu"i],[class*="js-cookies-eu"i],[id*="js_cookies_eu"i],[class*="js_cookies_eu"i],[id*="cookie-container"i],[class*="cookie-container"i],[id*="cookie_container"i],[class*="cookie_container"i],[id*="app-gdpr"i],[class*="app-gdpr"i],[id*="app_gdpr"i],[class*="app_gdpr"i],.squarespace-banner.--is-cookie,ugc-cookie-banner,[data-qa*="cookie-message"i]):not(html):not(header):not(jsl):not(body):not(main):not(script):not(style):not(link):not(nav):not(article),div:-webkit-any([data-cookiebanner="banner"i],[aria-label*="cookieconsen"i],[data-testid*="cookie-policy"i],[data-tracking-opt-in-overlay],[id="modal-options--cookie"i],[class="modal-options--cookie"i],[id="modal_options__cookie"i],[class="modal_options__cookie"i],[id="cmp-content-wrapper"i],[class="cmp-content-wrapper"i],[id="cmp_content_wrapper"i],[class="cmp_content_wrapper"i],[id="consent-notification"i],[class="consent-notification"i],[id="consent_notification"i],[class="consent_notification"i],[id="butterBar--privacy"i],[class="butterBar--privacy"i],[id="butterBar__privacy"i],[class="butterBar__privacy"i],[id^="sp_message_container"i],[class^="sp_message_container"i],[id^="sp-message-container"i],[class^="sp-message-container"i],[id*="gdpr-cookieconsent"i],[class*="gdpr-cookieconsent"i],[id*="gdpr_cookieconsent"i],[class*="gdpr_cookieconsent"i],[id*="cookie-ui"i],[class*="cookie-ui"i],[id*="cookie_ui"i],[class*="cookie_ui"i],[id*="gdpr-notif"i],[class*="gdpr-notif"i],[id*="gdpr_notif"i],[class*="gdpr_notif"i],[id*="cookiesbanner"i],[class*="cookiesbanner"i],[id*="cookies-use"i],[class*="cookies-use"i],[id*="cookies_use"i],[class*="cookies_use"i],[id*="evidon-banner"i],[class*="evidon-banner"i],[id*="evidon_banner"i],[class*="evidon_banner"i],[id*="evidon-consent"i],[class*="evidon-consent"i],[id*="evidon_consent"i],[class*="evidon_consent"i],[id*="evidon-barrier"i],[class*="evidon-barrier"i],[id*="evidon_barrier"i],[class*="evidon_barrier"i],[id*="overlay-message--cookie"i],[class*="overlay-message--cookie"i],[id*="overlay_message__cookie"i],[class*="overlay_message__cookie"i],[id*="cookie-accept-modal"i],[class*="cookie-accept-modal"i],[id*="cookie_accept_modal"i],[class*="cookie_accept_modal"i],[id*="cc-cookie"i],[class*="cc-cookie"i],[id*="cc_cookie"i],[class*="cc_cookie"i],[id*="optanon-alert-box"i],[class*="optanon-alert-box"i],[id*="optanon_alert_box"i],[class*="optanon_alert_box"i],[id="cmpcontainer"i],[id="_evidon-message"i],[id="_evidon_message"i],[id="-evidon-message"i],[id="_evidon_banner"i],[id="-evidon-banner"i],[id="_evidon-accept-button"i],[id="_evidon_accept_button"i],[id="-evidon-accept-button"i],[id="_evidon-option-button"i],[id="_evidon_option_button"i],[id="-evidon-option-button"i],[id="iubenda-cs-banner"i],[id="iubenda_cs_banner"i],[id="privacy-consent"i],[id="privacy_consent"i],[id="cookie-o-matic-banner"i],[id="cookie_o_matic_banner"i],[id="debCNwrap"i],[id^="truste-consent"i],[id^="truste_consent"i],[id^="optanon-popup"i],[id^="optanon_popup"i],[id*="cookiepopup"i],[class*="cookiepopup"i],[id*="cookie-popup"i],[class*="cookie-popup"i],[id*="cookie_popup"i],[class*="cookie_popup"i],[id*="cookieflyout"i],[class*="cookieflyout"i],[id*="cookie-flyout"i],[class*="cookie-flyout"i],[id*="cookie_flyout"i],[class*="cookie_flyout"i],[id*="cookiechoice"i],[class*="cookiechoice"i],[id*="cookie-choice"i],[class*="cookie-choice"i],[id*="cookie_choice"i],[class*="cookie_choice"i],[id*="cookiebanner"i],[class*="cookiebanner"i],[id*="cookie-banner"i],[class*="cookie-banner"i],[id*="cookie_banner"i],[class*="cookie_banner"i],[id*="cookieannounce"i],[class*="cookieannounce"i],[id*="cookie-announce"i],[class*="cookie-announce"i],[id*="cookie_announce"i],[class*="cookie_announce"i],[id*="cookietopbar"i],[class*="cookietopbar"i],[id*="cookie-topbar"i],[class*="cookie-topbar"i],[id*="cookie_topbar"i],[class*="cookie_topbar"i],[id*="cookieoverlay"i],[class*="cookieoverlay"i],[id*="cookie-overlay"i],[class*="cookie-overlay"i],[id*="cookie_overlay"i],[class*="cookie_overlay"i],[id*="cookiedisclos"i],[class*="cookiedisclos"i],[id*="cookie-disclos"i],[class*="cookie-disclos"i],[id*="cookie_disclos"i],[class*="cookie_disclos"i],[id*="cookiecontainer"i],[class*="cookiecontainer"i],[id*="cookie-container"i],[class*="cookie-container"i],[id*="cookie_container"i],[class*="cookie_container"i],[id*="cookiewarning"i],[class*="cookiewarning"i],[id*="cookie-warning"i],[class*="cookie-warning"i],[id*="cookie_warning"i],[class*="cookie_warning"i],[id*="cookiecompliance"i],[class*="cookiecompliance"i],[id*="cookie-compliance"i],[class*="cookie-compliance"i],[id*="cookie_compliance"i],[class*="cookie_compliance"i],[id*="cookiemessag"i],[class*="cookiemessag"i],[id*="cookie-messag"i],[class*="cookie-messag"i],[id*="cookie_messag"i],[class*="cookie_messag"i],[id*="cookiealert"i],[class*="cookiealert"i],[id*="cookie-alert"i],[class*="cookie-alert"i],[id*="cookie_alert"i],[class*="cookie_alert"i],[id*="cookiedialog"i],[class*="cookiedialog"i],[id*="cookie-dialog"i],[class*="cookie-dialog"i],[id*="cookie_dialog"i],[class*="cookie_dialog"i],[id*="cookieprompt"i],[class*="cookieprompt"i],[id*="cookie-prompt"i],[class*="cookie-prompt"i],[id*="cookie_prompt"i],[class*="cookie_prompt"i],[id*="cookielink"i],[class*="cookielink"i],[id*="cookie-link"i],[class*="cookie-link"i],[id*="cookie_link"i],[class*="cookie_link"i],[id*="cookiegdpr"i],[class*="cookiegdpr"i],[id*="cookie-gdpr"i],[class*="cookie-gdpr"i],[id*="cookie_gdpr"i],[class*="cookie_gdpr"i],[id*="cookiepolicy"i],[class*="cookiepolicy"i],[id*="cookie-policy"i],[class*="cookie-policy"i],[id*="cookie_policy"i],[class*="cookie_policy"i])):not(.has-cookie-banner):not(.entry-content):not(.nav):not(.ion-page):not(.privacy-toggle-container):not(.headerUniversalHeader):not(.vjs-):not(.mod-navigation),.ion-page .consent-banner,[id="cookie-container"i][data-cookie-toggle-id]{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;width:0!important;pointer-events:none!important;}</style></head>
+  <body>
+    <div style="text-align: center;">
+      <h2><a href="http://www.schmalzhaus.com/"><big><big><span style="font-weight: bold;"><img alt="SchmalzHaus logo" src="./Easy Driver Examples_files/SchmalzHaus Logo Small.png" style="border: 0px solid; border: 0px solid; width:
+                  143px; height: 59px;" align="left"></span></big></big></a><big><big><span style="font-weight: bold;">Easy Driver Examples</span></big></big></h2>
+      <h1><big><big><span style="font-weight: bold;"></span></big></big></h1>
+      <big><big><span style="font-weight: bold;">Sample code and
+            projects to get your stepper running!</span></big></big><big><big><span style="font-weight: bold;"><small><small></small></small><br>
+          </span></big></big></div>
+    <h1><span style="font-weight: bold;">Description:</span> </h1>
+    <a href="http://www.taomc.com/"></a>Lots of folks buy <a href="https://www.schmalzhaus.com/EasyDriver/index.html">EasyDrivers</a> or <a href="https://www.schmalzhaus.com/BigEasyDriver/index.html">BigEasyDrivers </a>and then
+    get them to work just fine in their project. But some don't, and so
+    I thought it would be a good idea to write down some simple
+    instructions for getting your Easy Driver working as quickly and
+    easily as possible.<br>
+    <br>
+    All of these examples are going to be done with my Easy Driver and
+    Big Easy Driver stepper motor driver boards driving several
+    different random stepper motors I have lying around the lab. I will
+    be generating the step and direction pulses with an <a href="http://arduino.cc/">Arduino UNO</a> and a <a href="http://digilentinc.com/Products/Catalog.cfm?NavPath=2,892&amp;Cat=18">chipKIT
+
+
+
+
+
+
+
+
+
+
+
+
+
+      UNO32</a>, although all of these examples should work with any
+    Arduino or Arduino clone or Arduino compatible (like all chipKIT
+    boards).<br>
+    <br>
+    And don't forget to read Dan Thompson's excellent <a href="http://danthompsonsblog.blogspot.com/2010/05/easydriver-42-tutorial.html">Easy
+
+
+
+
+
+
+
+
+
+
+
+
+
+      Driver tutorial blog post</a> if you want to read more up on this
+    stuff. Some great questions answered in the comments on that blog
+    post.<br>
+    <br>
+    Note1: All examples will work equally well with Easy Drivers or Big
+    Easy Drivers.<br>
+    Note2: All examples will work on Arduino as well as chipKIT boards
+    (and some will run much better on chipKIT because of the PIC32
+    speed)<br>
+    Note3: All examples show a barrel jack for power input - you need to
+    supply power to the EasyDrivers somehow, but it doesn't need to be a
+    barrel jack. You should have a power supply that can output some
+    voltage between 5V and 30V, at 1 Amp or more.<br>
+    <h1>Example 1: Basic Arduino setup<br>
+    </h1>
+    This is the most basic example you can have with an Arduino, an Easy
+    Driver, and a stepper motor. Connect the motor's four wires to the
+    Easy Driver (note the proper coil connections), connect a power
+    supply of 12V is to the Power In pins, and connect the Arduino's
+    GND, pin 8 and pin 9 to the Easy Driver.<br>
+    <br>
+    <div style="text-align: center;"><img style=" width: 595px; height:
+        669px;" alt="Example 1" src="./Easy Driver Examples_files/Example1_bb.png"><br>
+    </div>
+    <br>
+    Then load this sketch and run it on your Arduino or chipKIT:<br>
+    <br>
+    <tt>void setup()
+      {&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+    </tt><tt><br>
+    </tt><tt>&nbsp; pinMode(8, OUTPUT);</tt><tt><br>
+    </tt><tt>&nbsp; pinMode(9, OUTPUT);</tt><tt><br>
+    </tt><tt>&nbsp; digitalWrite(8, LOW);</tt><tt><br>
+    </tt><tt>&nbsp; digitalWrite(9, LOW);</tt><tt><br>
+    </tt><tt>}</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>void loop() {</tt><tt><br>
+    </tt><tt>&nbsp; digitalWrite(9, HIGH);</tt><tt><br>
+    </tt><tt>&nbsp;
+      delay(1);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </tt><tt><br>
+    </tt><tt>&nbsp; digitalWrite(9, LOW); </tt><tt><br>
+    </tt><tt>&nbsp;
+      delay(1);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </tt><tt><br>
+    </tt><tt>}</tt><br>
+    <br>
+    It doesn't get much simpler than that. What is the code doing? It
+    sets up pin 8 and 9 as outputs. It sets them both low to begin with.
+    Then in the main loop, it simply toggles pin 9 high and low, waiting
+    1ms between toggles. We use pin 9 as the STEP control and pin 8 as
+    the DIRECTION control to the Easy Driver.<br>
+    <br>
+    Since we are not pulling either MS1 or MS2 low on the Easy Driver
+    low, the Easy Driver will default to 1/8th microstep mode. That
+    means that each time the "digitalWrite(9, HIGH);" call is executed,
+    the stepper motor will move 1/8th of a full step. So if your motor
+    is 1.8 degrees per step, there will be 200 full steps per
+    revolution, or 1600 microsteps per revolution. <br>
+    <br>
+    So how fast is this code going to run the stepper? Well, with the
+    STEP signal 1ms high and 1ms low, each complete pulse will take 2ms
+    of time. Since there are 1000ms in 1 second, then 1000/2 = 500
+    microsteps/second.<br>
+    <br>
+    What if we wanted the motor to go slower? We change the delay();
+    lines to have longer delays. If you use delay(10); for both, the
+    you'll move at 50 microsteps/second.<br>
+    <br>
+    What if you wanted the motor to go faster? We can't really delay for
+    less than 1 ms, can we? Yes, of course we can! We can change the
+    delay() calls to delayMicroseconds(100); calls and then each delay
+    would be 100 microseconds (or us), so the motor would be driven at
+    5000 microsteps/second.<br>
+    <br>
+    Now, one thing you should play with is the current adjustment pot on
+    your Easy Driver. You need a tiny little screw driver to turn it,
+    and be sure not to force it too far one way or the other (they're
+    delicate). Also, some Easy Drivers were built with pots that have no
+    physical stops on them, so they spin around and around. As you run
+    the above code, slowly turn the pot one way or the other. Depending
+    upon the type of motor you have (and its coil resistance) you may
+    hear/feel no difference as you spin the pot, or you may notice quite
+    a big difference. <br>
+    <br>
+    <h1>Example 1.5: Moving when a button is pressed</h1>
+    This example is almost exactly the same as Example 1, but we've
+    added a button. When the sketch is running, it waits for a button
+    press (a LOW on Arduino pin 3) and then it starts to rotate the
+    stepper motor for 3200 steps. It is written in such a way as to be
+    'non-blocking', which means you can easily add other things into the
+    loop() function without having to stop those things in order to run
+    the stepper motor. (Much like the way AccelStepper does it below.)
+    We added a push button switch between Pin 3 and ground, and then
+    used a 3.3K pull up resistor on pin 3 to 3.3V.<br>
+    <br>
+    <div align="center"><img alt="Example 1.5 setup" src="./Easy Driver Examples_files/Example1_5_bb.png" width="600" height="734"><br>
+    </div>
+    <tt>#define DISTANCE 3200</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>int StepCounter = 0;</tt><tt><br>
+    </tt><tt>int Stepping = false;</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>void setup()
+      {&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+    </tt><tt><br>
+    </tt><tt>&nbsp; pinMode(8, OUTPUT);&nbsp;&nbsp;&nbsp;&nbsp; </tt><tt><br>
+    </tt><tt>&nbsp; pinMode(9, OUTPUT);</tt><tt><br>
+    </tt><tt>&nbsp; digitalWrite(8, LOW);</tt><tt><br>
+    </tt><tt>&nbsp; digitalWrite(9, LOW);</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>&nbsp; pinMode(3,INPUT);</tt><tt><br>
+    </tt><tt>}</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>void loop() {</tt><tt><br>
+    </tt><tt>&nbsp; if (digitalRead(3) == LOW &amp;&amp; Stepping ==
+      false)</tt><tt><br>
+    </tt><tt>&nbsp; {</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; Stepping = true;</tt><tt><br>
+    </tt><tt>&nbsp; }</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>&nbsp; if (Stepping == true)</tt><tt><br>
+    </tt><tt>&nbsp; {</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; digitalWrite(9, HIGH);</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp;
+      delay(1);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; digitalWrite(9, LOW); </tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; delay(1);</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; StepCounter = StepCounter + 1;</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; if (StepCounter == DISTANCE)</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; {</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StepCounter = 0;</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Stepping = false;</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; }</tt><tt><br>
+    </tt><tt>&nbsp; }</tt><tt><br>
+    </tt><tt>}</tt><br>
+    <br>
+    <h1>Example 1.6 : Using two buttons to move forward and reverse <br>
+    </h1>
+    This example is almost exactly like 1.5, except that we've added a
+    second button on Arduino Pin 2, again with a pull up resistor to
+    3.3V. When you press one button, the motor will move 3200 steps in
+    one direction, and when you press the other button, it will move
+    3200 steps in the other direction.<br>
+    <br>
+    <div align="center"><img alt="Example 1.6 setup" src="./Easy Driver Examples_files/Example1_6_bb.png" width="600" height="734"><br>
+    </div>
+    <br>
+    <code>#define DISTANCE 3200</code><tt><br>
+    </tt><code><br>
+    </code><code>int StepCounter = 0;</code><tt><br>
+    </tt><code>int Stepping = false;</code><tt><br>
+    </tt><code><br>
+    </code><code>void setup() {</code><tt><br>
+    </tt><code>&nbsp; pinMode(8, OUTPUT);</code><tt><br>
+    </tt><code>&nbsp; pinMode(9, OUTPUT);</code><tt><br>
+    </tt><code>&nbsp; digitalWrite(8, LOW);</code><tt><br>
+    </tt><code>&nbsp; digitalWrite(9, LOW);</code><tt><br>
+    </tt><code><br>
+    </code><code>&nbsp; pinMode(2, INPUT);</code><tt><br>
+    </tt><code>&nbsp; pinMode(3, INPUT);</code><tt><br>
+    </tt><code>}</code><tt><br>
+    </tt><code><br>
+    </code><code>void loop() {</code><tt><br>
+    </tt><code>&nbsp; if (digitalRead(3) == LOW &amp;&amp; Stepping ==
+      false)</code><tt><br>
+    </tt><code>&nbsp; {</code><tt><br>
+    </tt><code>&nbsp;&nbsp;&nbsp; digitalWrite(8, LOW);</code><tt><br>
+    </tt><code>&nbsp;&nbsp;&nbsp; Stepping = true;</code><tt><br>
+    </tt><code>&nbsp; }</code><tt><br>
+    </tt><code>&nbsp; if (digitalRead(2) == LOW &amp;&amp; Stepping ==
+      false)</code><tt><br>
+    </tt><code>&nbsp; {</code><tt><br>
+    </tt><code>&nbsp;&nbsp;&nbsp; digitalWrite(8, HIGH);</code><tt><br>
+    </tt><code>&nbsp;&nbsp;&nbsp; Stepping = true;</code><tt><br>
+    </tt><code>&nbsp; }</code><tt><br>
+    </tt><code><br>
+    </code><code>&nbsp; if (Stepping == true)</code><tt><br>
+    </tt><code>&nbsp; {</code><tt><br>
+    </tt><code>&nbsp;&nbsp;&nbsp; digitalWrite(9, HIGH);</code><tt><br>
+    </tt><code>&nbsp;&nbsp;&nbsp; delay(1);</code><tt><br>
+    </tt><code>&nbsp;&nbsp;&nbsp; digitalWrite(9, LOW);</code><tt><br>
+    </tt><code>&nbsp;&nbsp;&nbsp; delay(1);</code><tt><br>
+    </tt><code><br>
+    </code><code>&nbsp;&nbsp;&nbsp; StepCounter = StepCounter + 1;</code><tt><br>
+    </tt><code><br>
+    </code><code>&nbsp;&nbsp;&nbsp; if (StepCounter == DISTANCE)</code><tt><br>
+    </tt><code>&nbsp;&nbsp;&nbsp; {</code><tt><br>
+    </tt><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StepCounter = 0;</code><tt><br>
+    </tt><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Stepping = false;</code><tt><br>
+    </tt><code>&nbsp;&nbsp;&nbsp; }</code><tt><br>
+    </tt><code>&nbsp; }</code><tt><br>
+    </tt><code>}</code> <code></code>
+    <h1>Example 1.7: Moving when a switch is pressed at a very specific
+      speed</h1>
+    <p>This example is exactly like 1.5 in setup, but allows you to
+      specify the exact RPM of the motor. It will spin the motor at that
+      speed as long as the button is held down.<br>
+    </p>
+    <tt>/* This example assumes a step/direction driver with Step on pin
+      9, Direction on pin 8</tt><tt><br>
+    </tt><tt>&nbsp;* And an input switch on pin 3. The switch is a
+      switch to ground, with pin 3 pulled</tt><tt><br>
+    </tt><tt>&nbsp;* high with a pullup resistor. When the switch is
+      turned on (closed, i.e. goes low)</tt><tt><br>
+    </tt><tt>&nbsp;* the the sepper motor steps at the rate specified
+      (104 RPM in this code, with</tt><tt><br>
+    </tt><tt>&nbsp;* 1/8th microstepping of a 200 steps/rev motor)</tt><tt><br>
+    </tt><tt>&nbsp;*/</tt><tt><br>
+    </tt><tt>&nbsp;</tt><tt><br>
+    </tt><tt>#define
+      RPMS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+      104.0</tt><tt><br>
+    </tt><tt>#define
+      STEP_PIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+      9</tt><tt><br>
+    </tt><tt>#define
+      DIRECTION_PIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+      8</tt><tt><br>
+    </tt><tt>#define
+      GO_PIN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+      3</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>#define
+      STEPS_PER_REV&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 200</tt><tt><br>
+    </tt><tt>#define MICROSTEPS_PER_STEP&nbsp;&nbsp;&nbsp;&nbsp; 8</tt><tt><br>
+    </tt><tt>#define MICROSECONDS_PER_MICROSTEP&nbsp;&nbsp;
+      (1000000/(STEPS_PER_REV * MICROSTEPS_PER_STEP)/(RPMS / 60))</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>uint32_t LastStepTime = 0;</tt><tt><br>
+    </tt><tt>uint32_t CurrentTime = 0;</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>void setup()
+      {&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+    </tt><tt><br>
+    </tt><tt>&nbsp; pinMode(STEP_PIN, OUTPUT);&nbsp;&nbsp;&nbsp;&nbsp; </tt><tt><br>
+    </tt><tt>&nbsp; pinMode(DIRECTION_PIN, OUTPUT);</tt><tt><br>
+    </tt><tt>&nbsp; digitalWrite(STEP_PIN, LOW);</tt><tt><br>
+    </tt><tt>&nbsp; digitalWrite(DIRECTION_PIN, LOW);</tt><tt><br>
+    </tt><tt>&nbsp; pinMode(GO_PIN,INPUT);</tt><tt><br>
+    </tt><tt>}</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>void loop() {</tt><tt><br>
+    </tt><tt>&nbsp; if (digitalRead(GO_PIN) == LOW)</tt><tt><br>
+    </tt><tt>&nbsp; {</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; CurrentTime = micros();</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; if ((CurrentTime - LastStepTime) &gt;
+      MICROSECONDS_PER_MICROSTEP)</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; {</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LastStepTime = CurrentTime;</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; digitalWrite(STEP_PIN,
+      HIGH);</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      delayMicroseconds((MICROSECONDS_PER_MICROSTEP * 0.9)/2);</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; digitalWrite(STEP_PIN, LOW);
+    </tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      delayMicroseconds((MICROSECONDS_PER_MICROSTEP * 0.9)/2);</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; }</tt><tt><br>
+    </tt><tt>&nbsp; }</tt><tt><br>
+    </tt><tt>}</tt>
+    
+    <h1>Example 1.8: Fine speed control of two motors with a joystick<br>
+    </h1>
+    This example was written by R. A. Stephenson and he kindly allowed us to 
+    use it. He has a two axis joystick on two analog inputs, and two EasyDrivers
+    controlling two stepper motors. The analog inputs are sampled, and a non-blocking
+    recorded time method is used to determine when the step pulses should happen.
+    His code is nicely commented and shows that useful, real life projects can
+    be made without complicated libraries, but instead just by keeping careful
+    track of time. If you'd like to reach out to him with any questions, his
+    email address is theropod@yahoo.com
+    <br>
+    <br>
+
+    <pre>/*
+
+Written by R. A. Stephenson for prototype Pan/Tilt Alt/Az small telescope or
+binocular set pointer application.
+
+Significant advice, and editorial guidance, supplied by Brian Schmalz
+(designer of the Easy Driver® bipolar stepper motor driver board).
+
+Test equipment:
+Arduino® Nano, 2 - Easy Driver® bipolar stepper motor driver boards,
+analog 2 axis joystick and salvage bipolar stepper motors,
+which are both 1.8 degree per full step, being driven at 1/8 microstepping (Easy Driver default),
+which equates to 200 full steps multiplied by 8 = 1600 pulses for one complete revolution of the motor
+left right gearing provided by windshield wiper worm and wheel gears (ratio TBD)
+up and down gearing provided by paper shredder square cut reduction set (ratio TBD)
+project origin; July, 2018, this edit, Version 5.1, began Jan. 2019
+
+last modified: Jan. 23, 2019
+
+
+*/
+//define Arduino pin assignments
+//
+#define step_pinx 2 // Arduino Digital output pin #2 is step signal pin for X axis L/R
+#define dir_pinx 3 // Arduino Digital output pin #3 is direction control pin for X axis L/R
+#define x_pin A0 // Arduino analog input from joystick for X axis L/R
+#define y_pin A1 // Arduino analog input from joystick for Y axis U/D
+#define step_piny 5 // Arduino Digital output pin #5 is step speed select signal pin for Y axis U/D
+#define dir_piny 4 // Arduino Digital output pin #4 is direction control pin for Y axis U/D
+//
+//declare global variable
+//
+int xaxisState = LOW; //state of x axis stepper pulse set to ON
+int yaxisState = LOW; //state of y axis stepper pulse set to ON
+//
+int XStepDelay;
+int YStepDelay;
+//
+//
+const long xhigh = 180; //interval to pulse X axis at slowest speed, change to fit application
+const long xlow = 1; //interval to pulse X axis at highest speed, change to fit application
+//
+const long yhigh = 180; //interval to pulse Y axis at slowest speed, change to fit application
+const long ylow = 2; //interval to pulse Y axis at highest speed, change to fit application
+//
+//
+unsigned long previousMillisX = 0; //
+unsigned long previousMillisY = 0; //
+//
+//
+//
+void setup() {
+  //
+  delay(1000); //1 second delay to allow easy drivers to power up
+  //
+  pinMode(dir_pinx, OUTPUT);
+  pinMode(step_pinx, OUTPUT);
+  pinMode(dir_piny, OUTPUT);
+  pinMode(step_piny, OUTPUT);
+  digitalWrite(step_pinx, xaxisState) ; //used in state machine switching for the stepper logic final drive (on or off setting)
+  digitalWrite(step_piny, yaxisState) ; //used in state machine switching for the stepper logic final drive (on or off setting)
+  //
+}
+//
+void loop() {
+  //
+  unsigned long currentMillisX = millis(); //
+  unsigned long currentMillisY = millis(); //
+  //
+  //
+  int xValue = analogRead(A0); // x axis variable for joystick inputs controlling r/l PIN DEPENDENT!
+  int yValue = analogRead(A1); // y axis variable for joystick inputs controlling u/d PIN DEPENDENT!
+  //
+  //
+  if (xValue &gt; 520) {
+    //if joystick moved RIGHT out of "null zone" to limit jitter
+    digitalWrite(dir_pinx, HIGH); // motor direction signal sent to Easy Driver X axis DIR pin (ON)
+    XStepDelay = map(xValue, 520, 1023, xhigh, xlow);
+  }
+  else if (xValue &lt; 480) {
+    //if joystick moved LEFT out of null zone to limit jitter
+    digitalWrite(dir_pinx, LOW); // motor direction signal sent to Easy Driver X axis DIR pin (OFF)
+    XStepDelay = map(xValue, 0, 480, xlow, xhigh);
+  }
+  else if (yValue &gt; 520) {
+    // if joystick moved DOWN out of null zone to limit jitter
+    digitalWrite(dir_piny, HIGH); //motor direction signal to Y axis Easy Driver DIR pin (ON)
+    YStepDelay = map(yValue, 530, 1023, yhigh, ylow); //
+  }
+  else if (yValue &lt; 480) {
+    //if joystick moved UP out of null zone to limit jitter
+    digitalWrite(dir_piny, LOW); //motor direction signal to Y axis Easy Driver DIR pin (OFF)
+    YStepDelay = map(yValue, 0, 480, ylow, yhigh); //
+  } else {
+    digitalWrite(dir_piny, LOW); //motor direction signal to Y axis Easy Driver DIR pin (OFF)
+    digitalWrite(dir_pinx, LOW); // motor direction signal sent to Easy Driver X axis DIR pin (OFF)
+    // Setting LOW saves a bit of power
+    //could include signal to set Easy Driver(s) in "sleep" mode for geared drivetrains
+  }
+  //_____________
+  // If X axis (L/R) (Azimuth) motor needs to take a step, give it a step for the correct length of time,
+  //when that time has expired end the pulse signal
+  if ((xValue &gt;= 520 || xValue &lt;= 480) &amp;&amp; ((unsigned long)(currentMillisX - previousMillisX) &gt;= XStepDelay)) {
+    //if the joystick X axis values goes outside the null zone calculate
+    //how long it's been against those joystick values and control step pulse length
+    xaxisState = !xaxisState; // logic switch between states of step pulse pin on/off
+    digitalWrite (step_pinx, xaxisState); //control signal for step pin
+    //if the motor pulse is off, turn it on, and if the pulse is on, turn it off
+    previousMillisX = currentMillisX; //save the last x channel/axis pulse time on or off
+  }
+  else if (xValue &lt;= 520 || xValue &gt;= 480){ //if the joystick input isn't out of the null zone
+    digitalWrite(step_pinx, LOW); //turn off the step pulse
+  }
+  //________________
+  // If Y axis (U/D) (Altitude) motor needs to take a step, give it a step over the correct length of time,
+  //after that time has expired end the pulse signal
+  if ((yValue &gt;= 520 || yValue &lt;= 480) &amp;&amp; ((unsigned long)(currentMillisY - previousMillisY) &gt;= YStepDelay)){
+    //if the joystick Y axis values goes outside the null zone calculate
+    //how long it's been against those joystick values and control step pulse length
+    yaxisState = !yaxisState; // logic switch between states of step pulse pin on/off
+    digitalWrite (step_piny, yaxisState); //control signal for step pin
+    //if the motor pulse is off, turn it on, and if the pulse is on, turn it off
+    previousMillisY = currentMillisY; //save the last y channel/axis pulse time
+  }
+  else if (yValue &lt;= 520 || yValue &gt;= 480){ //if the joystick input isn't out of the null zone
+    digitalWrite(step_piny, LOW); //turn off the step pulse
+    //
+    //restart loop
+  }
+}
+</pre>
+    <h1>Example 2: Moving back and forth<br>
+    </h1>
+    If we take Example 1, and simply change the sketch a little bit, we
+    can move a certain number of steps forward or backward. Like so:<br>
+    <br>
+    <br>
+    <tt>int Distance = 0;&nbsp; // Record the number of steps we've
+      taken</tt><tt><br>
+    </tt><tt> </tt><tt><br>
+    </tt><tt>void setup()
+      {&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+    </tt><tt><br>
+    </tt><tt> &nbsp; pinMode(8, OUTPUT);&nbsp;&nbsp;&nbsp;&nbsp; </tt><tt><br>
+    </tt><tt> &nbsp; pinMode(9, OUTPUT);</tt><tt><br>
+    </tt><tt> &nbsp; digitalWrite(8, LOW);</tt><tt><br>
+    </tt><tt> &nbsp; digitalWrite(9, LOW);</tt><tt><br>
+    </tt><tt> }</tt><tt><br>
+    </tt><tt> </tt><tt><br>
+    </tt><tt>void loop() {</tt><tt><br>
+    </tt><tt> &nbsp; digitalWrite(9, HIGH);</tt><tt><br>
+    </tt><tt> &nbsp;
+      delayMicroseconds(100);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+    </tt><tt><br>
+    </tt><tt> &nbsp; digitalWrite(9, LOW); </tt><tt><br>
+    </tt><tt> &nbsp; delayMicroseconds(100);</tt><tt><br>
+    </tt><tt> &nbsp; Distance = Distance + 1;&nbsp;&nbsp; // record this
+      step</tt><tt><br>
+    </tt><tt> &nbsp; </tt><tt><br>
+    </tt><tt> &nbsp; // Check to see if we are at the end of our move</tt><tt><br>
+    </tt><tt> &nbsp; if (Distance == 3600)</tt><tt><br>
+    </tt><tt> &nbsp; {</tt><tt><br>
+    </tt><tt> &nbsp;&nbsp;&nbsp; // We are! Reverse direction (invert
+      DIR signal)</tt><tt><br>
+    </tt><tt> &nbsp;&nbsp;&nbsp; if (digitalRead(8) == LOW)</tt><tt><br>
+    </tt><tt> &nbsp;&nbsp;&nbsp; {</tt><tt><br>
+    </tt><tt> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; digitalWrite(8, HIGH);</tt><tt><br>
+    </tt><tt> &nbsp;&nbsp;&nbsp; }</tt><tt><br>
+    </tt><tt> &nbsp;&nbsp;&nbsp; else</tt><tt><br>
+    </tt><tt> &nbsp;&nbsp;&nbsp; {</tt><tt><br>
+    </tt><tt> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; digitalWrite(8, LOW);</tt><tt><br>
+    </tt><tt> &nbsp;&nbsp;&nbsp; }</tt><tt><br>
+    </tt><tt> &nbsp;&nbsp;&nbsp; // Reset our distance back to zero
+      since we're</tt><tt><br>
+    </tt><tt> &nbsp;&nbsp;&nbsp; // starting a new move</tt><tt><br>
+    </tt><tt> &nbsp;&nbsp;&nbsp; Distance = 0;</tt><tt><br>
+    </tt><tt> &nbsp;&nbsp;&nbsp; // Now pause for half a second</tt><tt><br>
+    </tt><tt> &nbsp;&nbsp;&nbsp; delay(500);</tt><tt><br>
+    </tt><tt> &nbsp; }</tt><tt><br>
+    </tt><tt> }</tt><br>
+    <br>
+    Now using this sketch, we move for 3600 steps in one direction,
+    pause for a bit, and move 3600 steps in the other direction. I'm
+    sure you can figure out how to make many different lengths of moves
+    now. And you can change the delay between steps for each move to
+    occur at separate speeds.<br>
+    <br>
+    Note that, just like example 1, each 'step' from the code's
+    perspective is 1/8th of the motor's full step, because we are
+    assuming the use of the EasyDriver in 1/8th microstep mode. If you
+    use the Big Easy Driver, it's default is 1/16 microstep, so adjust
+    your expectations for motor motion accordingly.<br>
+    <br>
+    <h1>Example 3: Using a pre-built library - AccelStepper</h1>
+    One thing the above examples can't do well is handle multiple
+    steppers from the same Arduino or chipKIT. Also, acceleration and
+    deceleration are difficult as well. Other people have run into this
+    problem, and so now we have libraries that we can download and
+    install into the Arduino IDE or MPIDE to fix these problems.<br>
+    <br>
+    Download the zip file for the AccelStepper library from <a href="http://www.open.com.au/mikem/arduino/AccelStepper/">this
+      page</a>. Unzip the downloaded file, and place the AccelStepper in
+    to the libraries folder in your Arduino install directory. Note that
+    for MPIDE (chipKIT) users, you need to copy the AccelStepper folder
+    into both the libraries folder at the top level as well as
+    \hardware\pic32\libraries so that both the AVR and PIC32 sides can
+    use it.<br>
+    <br>
+    Using the same hardware from Example 1, restart the IDE, and enter
+    the following sketch:<br>
+    <br>
+    <tt>#include &lt;AccelStepper.h&gt;</tt><tt><br>
+    </tt><tt> </tt><tt><br>
+    </tt><tt>// Define a stepper and the pins it will use</tt><tt><br>
+    </tt><tt> AccelStepper stepper(AccelStepper::DRIVER, 9, 8);</tt><tt><br>
+    </tt><tt> </tt><tt><br>
+    </tt><tt>int pos = 3600;</tt><tt><br>
+    </tt><tt> </tt><tt><br>
+    </tt><tt>void setup()</tt><tt><br>
+    </tt><tt> {&nbsp; </tt><tt><br>
+    </tt><tt> &nbsp; stepper.setMaxSpeed(3000);</tt><tt><br>
+    </tt><tt> &nbsp; stepper.setAcceleration(1000);</tt><tt><br>
+    </tt><tt> }</tt><tt><br>
+    </tt><tt> </tt><tt><br>
+    </tt><tt>void loop()</tt><tt><br>
+    </tt><tt> {</tt><tt><br>
+    </tt><tt> &nbsp; if (stepper.distanceToGo() == 0)</tt><tt><br>
+    </tt><tt> &nbsp; {</tt><tt><br>
+    </tt><tt> &nbsp;&nbsp;&nbsp; delay(500);</tt><tt><br>
+    </tt><tt> &nbsp;&nbsp;&nbsp; pos = -pos;</tt><tt><br>
+    </tt><tt> &nbsp;&nbsp;&nbsp; stepper.moveTo(pos);\</tt><tt><br>
+    </tt><tt>&nbsp; }</tt><tt><br>
+    </tt><tt>&nbsp; stepper.run();</tt><tt><br>
+    </tt><tt> }<br>
+      <br>
+    </tt> This code does basically the same thing as Example 2, but
+    using acceleration/deceleration via the AccelStepper library, and
+    running for twice as many steps. (Thanks Mr. Duffy for pointing out
+    this important fact!) The reason it runs twice as many steps is
+    because we do "pos = -pos" to keep things short and simple. This
+    means that it will run from 0 to 3600, then from 3600 to -3600
+    (which is 7200 steps).<br>
+    <br>
+    <h1>Example 4: Running multiple stepper motors</h1>
+    One of the great things about the AccelStepper library is that you
+    can run as many stepper motors as you want, at the same time, just
+    by making more AccelStepper objects. Now, if you try to run them too
+    fast, the steps won't be smooth, so you have to be careful not to
+    load down the Arduino too much. The chipKIT does not have this
+    problem because it is so much faster than the Arduino.<br>
+    <br>
+    In this diagram, we now have two Easy Drivers and two stepper
+    motors. We just need 2 more pins from the Arduino to add this second
+    motor.<br>
+    <br>
+    <div style="text-align: center;"><img style=" width: 611px; height:
+        704px;" alt="Easmple 4 diagram" src="./Easy Driver Examples_files/Example4_bb.png"><br>
+      <div style="text-align: left;">The code for this example is shown
+        below:<br>
+      </div>
+      <div style="text-align: left;"> <br>
+        <tt>#include &lt;AccelStepper.h&gt;</tt><tt><br>
+        </tt><tt> </tt><tt><br>
+        </tt><tt>// Define two steppers and the pins they will use</tt><tt><br>
+        </tt><tt> AccelStepper stepper1(AccelStepper::DRIVER, 9, 8);</tt><tt><br>
+        </tt><tt> AccelStepper stepper2(AccelStepper::DRIVER, 7, 6);</tt><tt><br>
+        </tt><tt> </tt><tt><br>
+        </tt><tt>int pos1 = 3600;</tt><tt><br>
+        </tt><tt> int pos2 = 5678;</tt><tt><br>
+        </tt><tt> </tt><tt><br>
+        </tt><tt>void setup()</tt><tt><br>
+        </tt><tt> {&nbsp; </tt><tt><br>
+        </tt><tt> &nbsp; stepper1.setMaxSpeed(3000);</tt><tt><br>
+        </tt><tt> &nbsp; stepper1.setAcceleration(1000);</tt><tt><br>
+        </tt><tt> &nbsp; stepper2.setMaxSpeed(2000);</tt><tt><br>
+        </tt><tt> &nbsp; stepper2.setAcceleration(800);</tt><tt><br>
+        </tt><tt> }</tt><tt><br>
+        </tt><tt> </tt><tt><br>
+        </tt><tt>void loop()</tt><tt><br>
+        </tt><tt> {</tt><tt><br>
+        </tt><tt> &nbsp; if (stepper1.distanceToGo() == 0)</tt><tt><br>
+        </tt><tt> &nbsp; {</tt><tt><br>
+        </tt><tt> &nbsp;&nbsp;&nbsp;&nbsp; pos1 = -pos1; </tt><tt><br>
+        </tt><tt>&nbsp;&nbsp;&nbsp; stepper1.moveTo(pos1);</tt><tt><br>
+        </tt><tt> &nbsp; }</tt><tt><br>
+        </tt><tt> &nbsp; if (stepper2.distanceToGo() == 0)</tt><tt><br>
+        </tt><tt> &nbsp; {</tt><tt><br>
+        </tt><tt> &nbsp;&nbsp;&nbsp; pos2 = -pos2;</tt><tt><br>
+        </tt><tt> &nbsp;&nbsp;&nbsp; stepper2.moveTo(pos2);</tt><tt><br>
+        </tt><tt> &nbsp; }</tt><tt><br>
+        </tt><tt> &nbsp; stepper1.run();</tt><tt><br>
+        </tt><tt> &nbsp; stepper2.run();</tt><tt><br>
+        </tt><tt> }</tt><br>
+      </div>
+      <br>
+    </div>
+    If you run this code, you may find that the acceleration and
+    deceleration are not quite as smooth as with a single motor (on an
+    Arduino - again, this problem doesn't occur on chipKIT) - that is
+    because our two maximum speeds (3000 and 1000) are pretty high for
+    the ability of the processor to handle them. One solution is to make
+    your max speeds lower, then switch from 1/8th microstepping to 1/4,
+    half, or full step mode. If done right, you'll see the same shaft
+    rotation speeds, but with less CPU load (because you aren't
+    generating as many steps per second.)<br>
+    <br>
+    You can see that for this example, I just copied and pasted the code
+    from Example 3 and made two positions and two steppers. This example
+    code is very simple and not all that useful, but you can study the
+    existing examples from the AccelStepper library, and read the help
+    pages on the different functions, and get good ideas about what else
+    you can do with your stepper control.<br>
+    <h1>Example 5: Changing motor speed<br>
+    </h1>
+    Sometimes you need to have real time control of the speed of the
+    stepper motor. Say, for example, you're making a mount for your
+    telescope. You get a really nice geared stepper motor, you get a Big
+    Easy Driver with 16x microstepping, and you connect them all up. But
+    how do you control the speed of the stepper so that it matches the
+    speed of the stars across the sky?<br>
+    <br>
+    One easy way is to use a potentiometer, which produces an analog
+    voltage output that you can control. The sketch code can read this
+    analog value using the analogRead() command. Then we can use that
+    value to change how fast we move the motor.<br>
+    <br>
+    Here's a simple example of this concept. We've added a pot and three
+    push buttons to our single stepper motor circuit. Pushing switch S1
+    will cause the motor to turn in one direction, S3 will cause it to
+    turn in the other direction, and S2 will stop the motor. You can
+    then use the pot to adjust the exact speed of the motor while
+    stepping. You may want to adjust the MAX_SPEED and MIN_SPEED values
+    in the code for you application - depending on your particular
+    setup, you may want the pot's speed range to be different from what
+    we've written here.<br>
+    <br>
+    Just to show how similar these circuits look, we've also included a
+    version of the diagram with a chipKIT Uno32 board. (Any Arduino or
+    chipKIT board will work for any of these examples, of course. The
+    Uno and Uno32 are just easy to diagram.)<br>
+    <br>
+    <br>
+    <div style="text-align: center;">
+      <div align="center"><img style=" width: 611px; height: 704px;" alt="Example 5 diagram" src="./Easy Driver Examples_files/ExamplePotMotion_bb.png" width="1782" height="2208"><br>
+        <img alt="Example 5 diagram" src="./Easy Driver Examples_files/ExamplePotMotionUno32_bb.png" width="800" height="991"><br>
+      </div>
+      <div style="text-align: left;">The code for this example is shown
+        below:<br>
+      </div>
+      <div style="text-align: left;"><code>// Example5 code for Brian
+          Schmalz's Easy Driver Example page</code><code><br>
+        </code><code>//
+          http://www.schmalzhaus.com/EasyDriver/EasyDriverExamples.html</code><code><br>
+        </code><code><br>
+        </code><code>#include &lt;AccelStepper.h&gt;</code><code><br>
+        </code><code><br>
+        </code><code>// Define the stepper and the pins it will use</code><code><br>
+        </code><code>AccelStepper stepper1(AccelStepper::DRIVER, 9, 8);</code><code><br>
+        </code><code><br>
+        </code><code>// Define our three input button pins</code><code><br>
+        </code><code>#define&nbsp; LEFT_PIN&nbsp; 4</code><code><br>
+        </code><code>#define&nbsp; STOP_PIN&nbsp; 3</code><code><br>
+        </code><code>#define&nbsp; RIGHT_PIN 2</code><code><br>
+        </code><code><br>
+        </code><code>// Define our analog pot input pin</code><code><br>
+        </code><code>#define&nbsp; SPEED_PIN 0</code><code><br>
+        </code><code><br>
+        </code><code>// Define our maximum and minimum speed in steps
+          per second (scale pot to these)</code><code><br>
+        </code><code>#define&nbsp; MAX_SPEED 500</code><code><br>
+        </code><code>#define&nbsp; MIN_SPEED 0.1</code><code><br>
+        </code><code><br>
+        </code><code>void setup() {</code><code><br>
+        </code><code>&nbsp; // The only AccelStepper value we have to
+          set here is the max speeed, which is higher than we'll ever go
+        </code><code><br>
+        </code><code>&nbsp; stepper1.setMaxSpeed(10000.0);</code><code><br>
+        </code><code>&nbsp; </code><code><br>
+        </code><code>&nbsp; // Set up the three button inputs, with
+          pullups</code><code><br>
+        </code><code>&nbsp; pinMode(LEFT_PIN, INPUT_PULLUP);</code><code><br>
+        </code><code>&nbsp; pinMode(STOP_PIN, INPUT_PULLUP);</code><code><br>
+        </code><code>&nbsp; pinMode(RIGHT_PIN, INPUT_PULLUP);</code><code><br>
+        </code><code>}</code><code><br>
+        </code><code><br>
+        </code><code>void loop() {</code><code><br>
+        </code><code>&nbsp; static float current_speed =
+          0.0;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Holds
+          current motor speed in steps/second</code><code><br>
+        </code><code>&nbsp; static int analog_read_counter =
+          1000;&nbsp;&nbsp;&nbsp; // Counts down to 0 to fire analog
+          read</code><code><br>
+        </code><code>&nbsp; static char sign =
+          0;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+          // Holds -1, 1 or 0 to turn the motor on/off and control
+          direction</code><code><br>
+        </code><code>&nbsp; static int analog_value =
+          0;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+
+
+          // Holds raw analog value.</code><code><br>
+        </code><code>&nbsp; </code><code><br>
+        </code><code>&nbsp; // If a switch is pushed down (low), set the
+          sign value appropriately</code><code><br>
+        </code><code>&nbsp; if (digitalRead(LEFT_PIN) == 0) {</code><code><br>
+        </code><code>&nbsp;&nbsp;&nbsp; sign = 1;</code><code><br>
+        </code><code>&nbsp; }</code><code><br>
+        </code><code>&nbsp; else if (digitalRead(RIGHT_PIN) == 0)
+          {&nbsp;&nbsp; &nbsp;</code><code><br>
+        </code><code>&nbsp;&nbsp;&nbsp; sign = -1;</code><code><br>
+        </code><code>&nbsp; }</code><code><br>
+        </code><code>&nbsp; else if (digitalRead(STOP_PIN) == 0) {</code><code><br>
+        </code><code>&nbsp;&nbsp;&nbsp; sign = 0;</code><code><br>
+        </code><code>&nbsp; }</code><code><br>
+        </code><code><br>
+        </code><code>&nbsp; // We only want to read the pot every so
+          often (because it takes a long time we don't</code><code><br>
+        </code><code>&nbsp; // want to do it every time through the main
+          loop). &nbsp;</code><code><br>
+        </code><code>&nbsp; if (analog_read_counter &gt; 0) {</code><code><br>
+        </code><code>&nbsp;&nbsp;&nbsp; analog_read_counter--;</code><code><br>
+        </code><code>&nbsp; }</code><code><br>
+        </code><code>&nbsp; else {</code><code><br>
+        </code><code>&nbsp;&nbsp;&nbsp; analog_read_counter = 3000;</code><code><br>
+        </code><code>&nbsp;&nbsp;&nbsp; // Now read the pot (from 0 to
+          1023)</code><code><br>
+        </code><code>&nbsp;&nbsp;&nbsp; analog_value =
+          analogRead(SPEED_PIN);</code><code><br>
+        </code><code>&nbsp;&nbsp;&nbsp; // Give the stepper a chance to
+          step if it needs to</code><code><br>
+        </code><code>&nbsp;&nbsp;&nbsp; stepper1.runSpeed();</code><code><br>
+        </code><code>&nbsp;&nbsp;&nbsp; //&nbsp; And scale the pot's
+          value from min to max speeds</code><code><br>
+        </code><code>&nbsp;&nbsp;&nbsp; current_speed = sign *
+          (((analog_value/1023.0) * (MAX_SPEED - MIN_SPEED)) +
+          MIN_SPEED);</code><code><br>
+        </code><code>&nbsp;&nbsp;&nbsp; // Update the stepper to run at
+          this new speed</code><code><br>
+        </code><code>&nbsp;&nbsp;&nbsp;
+          stepper1.setSpeed(current_speed);</code><code><br>
+        </code><code>&nbsp; }</code><code><br>
+        </code><code><br>
+        </code><code>&nbsp; // This will run the stepper at a constant
+          speed</code><code><br>
+        </code><code>&nbsp; stepper1.runSpeed();</code><code><br>
+        </code><code>}</code></div>
+      <tt> </tt><br>
+    </div>
+    Some explanation on this example code: Because reading the analog
+    value takes a (relatively) long period of time, and during that time
+    we can't be updating the stepper motor's position (that only happens
+    in the runSpeed() call) we only grab a new analog value every 3000
+    times through the main loop. We do this by using a counter called
+    analog_read_counter, and decrementing it each time through the loop
+    until it gets to zero. Then we reload it with 3000, and perform the
+    analog conversion. <br>
+    <br>
+    We've also inserted a runSpeed() call between the analog conversion
+    and the math necessary to scale the result to MAX_SPEED and
+    MIN_SPEED. This is because that math also takes a (relatively) long
+    time, and so we want to give the stepper a chance to step (if it
+    needs to) in between these to time intensive operations.<br>
+    <br>
+    You can adjust the values of MIN_SPEED and MAX_SPEED to make the
+    range of speeds whatever you want. Note that there are only 1024
+    possible values that the analogRead() call can return, and so there
+    are only that many discrete speeds the motor can take on.<br>
+    <br>
+    For this example (because we wanted it to be just a fixed speed) we
+    did not use the normal AccelStepper run() call, but rather the
+    runSpeed() call.<br>
+    <br>
+    <h1>Example 6: Changing motor speed - <br>
+    </h1>
+    <h2>With an Adafruit Motor Shield (v1)<br>
+    </h2>
+    This example does exactly the same thing as Example 5, but instead
+    of using an Easy Driver or Big Easy Driver it uses an Adafruit Motor
+    Shield. This first sketch is for the v1.2 shield, and the next
+    sketch (see below) is for the v2 shield.<br>
+    <br>
+    Also note that because the v1 AFMotorShield uses up almost all of
+    the digital I/O pins, we had to move the three buttons over to the
+    analog inputs. This is fine because you can always use analog input
+    pins as digital inputs as well. We are also not using any
+    microstepping in this example, so our motor has 200 steps/rev.<br>
+    <br>
+    And of course, Fritzing doesn't have the Adafruit Motor Shield, so I
+    can't easily create a drawing for you. But it's very simple - the
+    stepper motor goes into the M1 and M2 terminals on the Motor Shield,
+    you put your motor power into the M+ and GND terminals on the motor
+    shield, take the three switch wires and connect them to A5, A4 and
+    A3, the center tap of the pot goes to A0, and then just tie the
+    other side of all of the switches to GND and the top and bottom of
+    the pot to +5 and GND, and you're all set. I tested this code with
+    an Arduino Uno. (I tried with an UNO32 but I couldn't get the analog
+    inputs to use built-in pullups because I don't think the UNO32 can
+    do that.)<br>
+    <br>
+    <tt>// Example6 code for Brian Schmalz's Easy Driver Example page</tt><tt><br>
+    </tt><tt>//
+      http://www.schmalzhaus.com/EasyDriver/EasyDriverExamples.html</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>#include &lt;AccelStepper.h&gt;</tt><tt><br>
+    </tt><tt>#include &lt;AFMotor.h&gt;</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>// Define the stepper and the pins it will use</tt><tt><br>
+    </tt><tt>AF_Stepper motor1(200, 1);</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>// you can change these to DOUBLE or INTERLEAVE or
+      MICROSTEP!</tt><tt><br>
+    </tt><tt>void forwardstep() {&nbsp; </tt><tt><br>
+    </tt><tt>&nbsp; motor1.onestep(FORWARD, SINGLE);</tt><tt><br>
+    </tt><tt>}</tt><tt><br>
+    </tt><tt>void backwardstep() {&nbsp; </tt><tt><br>
+    </tt><tt>&nbsp; motor1.onestep(BACKWARD, SINGLE);</tt><tt><br>
+    </tt><tt>}</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>AccelStepper stepper1(forwardstep, backwardstep); // use
+      functions to step</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>// Define our three input button pins</tt><tt><br>
+    </tt><tt>#define&nbsp; LEFT_PIN&nbsp; A5</tt><tt><br>
+    </tt><tt>#define&nbsp; STOP_PIN&nbsp; A4</tt><tt><br>
+    </tt><tt>#define&nbsp; RIGHT_PIN A3</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>// Define our analog pot input pin</tt><tt><br>
+    </tt><tt>#define&nbsp; SPEED_PIN A0</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>// Define our maximum and minimum speed in steps per second
+      (scale pot to these)</tt><tt><br>
+    </tt><tt>#define&nbsp; MAX_SPEED 500</tt><tt><br>
+    </tt><tt>#define&nbsp; MIN_SPEED 0.1</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>void setup() {</tt><tt><br>
+    </tt><tt>&nbsp; // The only AccelStepper value we have to set here
+      is the max speeed, which is higher than we'll ever go </tt><tt><br>
+    </tt><tt>&nbsp; stepper1.setMaxSpeed(500.0);</tt><tt><br>
+    </tt><tt>&nbsp; </tt><tt><br>
+    </tt><tt>&nbsp; // Set up the three button inputs, with pullups</tt><tt><br>
+    </tt><tt>&nbsp; pinMode(LEFT_PIN, INPUT_PULLUP);</tt><tt><br>
+    </tt><tt>&nbsp; pinMode(STOP_PIN, INPUT_PULLUP);</tt><tt><br>
+    </tt><tt>&nbsp; pinMode(RIGHT_PIN, INPUT_PULLUP);</tt><tt><br>
+    </tt><tt>}</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>void loop() {</tt><tt><br>
+    </tt><tt>&nbsp; static float current_speed =
+      0.0;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Holds
+      current motor speed in steps/second</tt><tt><br>
+    </tt><tt>&nbsp; static int analog_read_counter =
+      1000;&nbsp;&nbsp;&nbsp; // Counts down to 0 to fire analog read</tt><tt><br>
+    </tt><tt>&nbsp; static char sign =
+      0;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+      // Holds -1, 1 or 0 to turn the motor on/off and control direction</tt><tt><br>
+    </tt><tt>&nbsp; static int analog_value =
+      0;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+
+      // Holds raw analog value.</tt><tt><br>
+    </tt><tt>&nbsp; </tt><tt><br>
+    </tt><tt>&nbsp; // If a switch is pushed down (low), set the sign
+      value appropriately</tt><tt><br>
+    </tt><tt>&nbsp; if (digitalRead(LEFT_PIN) == 0) {</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; sign = 1;</tt><tt><br>
+    </tt><tt>&nbsp; }</tt><tt><br>
+    </tt><tt>&nbsp; if (digitalRead(RIGHT_PIN) == 0) {&nbsp;&nbsp;&nbsp;
+    </tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; sign = -1;</tt><tt><br>
+    </tt><tt>&nbsp; }</tt><tt><br>
+    </tt><tt>&nbsp; if (digitalRead(STOP_PIN) == 0) {</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; sign = 0;</tt><tt><br>
+    </tt><tt>&nbsp; }</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>&nbsp; // We only want to read the pot every so often
+      (because it takes a long time we don't</tt><tt><br>
+    </tt><tt>&nbsp; // want to do it every time through the main
+      loop).&nbsp; </tt><tt><br>
+    </tt><tt>&nbsp; if (analog_read_counter &gt; 0) {</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; analog_read_counter--;</tt><tt><br>
+    </tt><tt>&nbsp; }</tt><tt><br>
+    </tt><tt>&nbsp; else {</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; analog_read_counter = 3000;</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; // Now read the pot (from 0 to 1023)</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; analog_value = analogRead(SPEED_PIN);</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; // Give the stepper a chance to step if
+      it needs to</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; stepper1.runSpeed();</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; //&nbsp; And scale the pot's value from
+      min to max speeds</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; current_speed = sign *
+      ((analog_value/1023.0) * (MAX_SPEED - MIN_SPEED)) + MIN_SPEED;</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; // Update the stepper to run at this new
+      speed</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; stepper1.setSpeed(current_speed);</tt><tt><br>
+    </tt><tt>&nbsp; }</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>&nbsp; // This will run the stepper at a constant speed</tt><tt><br>
+    </tt><tt>&nbsp; stepper1.runSpeed();</tt><tt><br>
+    </tt><tt>}</tt><br>
+    <br>
+    <h2>And with an Adafruit Motor Shield V2</h2>
+    <p>Note that the Left, Stop and Right inputs are now back on digital
+      pins 2, 3 and 4 for the V2 shield, as it doesn't need them and so
+      we can use them again.<br>
+    </p>
+    /<code>/ Example6 code for Brian Schmalz's Easy Driver Example page</code><code><br>
+    </code><code>//
+      http://www.schmalzhaus.com/EasyDriver/EasyDriverExamples.html</code><code><br>
+    </code><code><br>
+    </code><code>#include &lt;AccelStepper.h&gt;</code><code><br>
+    </code><code>#include &lt;Wire.h&gt;</code><code><br>
+    </code><code>#include &lt;Adafruit_MotorShield.h&gt;</code><code><br>
+    </code><code><br>
+    </code><code>// Define the stepper and the pins it will use</code><code><br>
+    </code><code>Adafruit_MotorShield AFMS = Adafruit_MotorShield();</code><code><br>
+    </code><code>Adafruit_StepperMotor *motor1 = AFMS.getStepper(200,
+      1);</code><code><br>
+    </code><code><br>
+    </code><code><br>
+    </code><code>// you can change these to DOUBLE or INTERLEAVE or
+      MICROSTEP!</code><code><br>
+    </code><code>void forwardstep() {&nbsp; </code><code><br>
+    </code><code>&nbsp; motor1-&gt;onestep(FORWARD, SINGLE);</code><code><br>
+    </code><code>}</code><code><br>
+    </code><code>void backwardstep() {&nbsp; </code><code><br>
+    </code><code>&nbsp; motor1-&gt;onestep(BACKWARD, SINGLE);</code><code><br>
+    </code><code>}</code><code><br>
+    </code><code><br>
+    </code><code>AccelStepper stepper1(forwardstep, backwardstep); //
+      use functions to step</code><code><br>
+    </code><code><br>
+    </code><code>// Define our three input button pins</code><code><br>
+    </code><code>#define&nbsp; LEFT_PIN&nbsp; 2</code><code><br>
+    </code><code>#define&nbsp; STOP_PIN&nbsp; 3</code><code><br>
+    </code><code>#define&nbsp; RIGHT_PIN 4</code><code><br>
+    </code><code><br>
+    </code><code>// Define our analog pot input pin</code><code><br>
+    </code><code>#define&nbsp; SPEED_PIN A0</code><code><br>
+    </code><code><br>
+    </code><code>// Define our maximum and minimum speed in steps per
+      second (scale pot to these)</code><code><br>
+    </code><code>#define&nbsp; MAX_SPEED 500</code><code><br>
+    </code><code>#define&nbsp; MIN_SPEED 0.1</code><code><br>
+    </code><code><br>
+    </code><code>void setup() {</code><code><br>
+    </code><code>&nbsp; AFMS.begin();</code><code><br>
+    </code><code>&nbsp; </code><code><br>
+    </code><code>&nbsp; // The only AccelStepper value we have to set
+      here is the max speed, which is higher than we'll ever go </code><code><br>
+    </code><code>&nbsp; stepper1.setMaxSpeed(500.0);</code><code><br>
+    </code><code>&nbsp; </code><code><br>
+    </code><code>&nbsp; // Set up the three button inputs, with pullups</code><code><br>
+    </code><code>&nbsp; pinMode(LEFT_PIN, INPUT_PULLUP);</code><code><br>
+    </code><code>&nbsp; pinMode(STOP_PIN, INPUT_PULLUP);</code><code><br>
+    </code><code>&nbsp; pinMode(RIGHT_PIN, INPUT_PULLUP);</code><code><br>
+    </code><code>}</code><code><br>
+    </code><code><br>
+    </code><code>void loop() {</code><code><br>
+    </code><code>&nbsp; static float current_speed =
+      0.0;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Holds
+      current motor speed in steps/second</code><code><br>
+    </code><code>&nbsp; static int analog_read_counter =
+      1000;&nbsp;&nbsp;&nbsp; // Counts down to 0 to fire analog read</code><code><br>
+    </code><code>&nbsp; static char sign =
+      0;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+      // Holds -1, 1 or 0 to turn the motor on/off and control direction</code><code><br>
+    </code><code>&nbsp; static int analog_value =
+      0;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+
+      // Holds raw analog value.</code><code><br>
+    </code><code>&nbsp; </code><code><br>
+    </code><code>&nbsp; // If a switch is pushed down (low), set the
+      sign value appropriately</code><code><br>
+    </code><code>&nbsp; if (digitalRead(LEFT_PIN) == 0) {</code><code><br>
+    </code><code>&nbsp;&nbsp;&nbsp; sign = 1;</code><code><br>
+    </code><code>&nbsp; }</code><code><br>
+    </code><code>&nbsp; if (digitalRead(RIGHT_PIN) == 0)
+      {&nbsp;&nbsp;&nbsp; </code><code><br>
+    </code><code>&nbsp;&nbsp;&nbsp; sign = -1;</code><code><br>
+    </code><code>&nbsp; }</code><code><br>
+    </code><code>&nbsp; if (digitalRead(STOP_PIN) == 0) {</code><code><br>
+    </code><code>&nbsp;&nbsp;&nbsp; sign = 0;</code><code><br>
+    </code><code>&nbsp; }</code><code><br>
+    </code><code><br>
+    </code><code>&nbsp; // We only want to read the pot every so often
+      (because it takes a long time we don't</code><code><br>
+    </code><code>&nbsp; // want to do it every time through the main
+      loop).&nbsp; </code><code><br>
+    </code><code>&nbsp; if (analog_read_counter &gt; 0) {</code><code><br>
+    </code><code>&nbsp;&nbsp;&nbsp; analog_read_counter--;</code><code><br>
+    </code><code>&nbsp; }</code><code><br>
+    </code><code>&nbsp; else {</code><code><br>
+    </code><code>&nbsp;&nbsp;&nbsp; analog_read_counter = 3000;</code><code><br>
+    </code><code>&nbsp;&nbsp;&nbsp; // Now read the pot (from 0 to 1023)</code><code><br>
+    </code><code>&nbsp;&nbsp;&nbsp; analog_value =
+      analogRead(SPEED_PIN);</code><code><br>
+    </code><code>&nbsp;&nbsp;&nbsp; // Give the stepper a chance to step
+      if it needs to</code><code><br>
+    </code><code>&nbsp;&nbsp;&nbsp; stepper1.runSpeed();</code><code><br>
+    </code><code>&nbsp;&nbsp;&nbsp; //&nbsp; And scale the pot's value
+      from min to max speeds</code><code><br>
+    </code><code>&nbsp;&nbsp;&nbsp; current_speed = sign *
+      ((analog_value/1023.0) * (MAX_SPEED - MIN_SPEED)) + MIN_SPEED;</code><code><br>
+    </code><code>&nbsp;&nbsp;&nbsp; // Update the stepper to run at this
+      new speed</code><code><br>
+    </code><code>&nbsp;&nbsp;&nbsp; stepper1.setSpeed(current_speed);</code><code><br>
+    </code><code>&nbsp; }</code><code><br>
+    </code><code><br>
+    </code><code>&nbsp; // This will run the stepper at a constant speed</code><code><br>
+    </code><code>&nbsp; stepper1.runSpeed();</code><code><br>
+    </code><code>}</code><br>
+    <br>
+    <h1>Example 7: Serial command input</h1>
+    <br>
+    Using the exact same hardware setup as Example 1, this sketch
+    illustrates how to use simple one letter commands from the serial
+    port to control the direction and speed of the stepper motor.<br>
+    <br>
+    <tt>// Example7 for Brian Schmalz's Easy Driver Example page</tt><tt><br>
+    </tt><tt>//
+      http://www.schmalzhaus.com/EasyDriver/EasyDriverExamples.html</tt><tt><br>
+    </tt><tt>// We control the direction and speed of a stepper using
+      the</tt><tt><br>
+    </tt><tt>// arduino serial port. Note that (if using the Serial
+      Monitor)</tt><tt><br>
+    </tt><tt>// you will need to press Enter after each command.</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>#include &lt;AccelStepper.h&gt;</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>AccelStepper stepper(AccelStepper::DRIVER, 9, 8);</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>int spd = 1000;&nbsp;&nbsp;&nbsp; // The current speed in
+      steps/second</tt><tt><br>
+    </tt><tt>int sign = 1;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Either 1, 0
+      or -1</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>void setup()</tt><tt><br>
+    </tt><tt>{&nbsp; </tt><tt><br>
+    </tt><tt>&nbsp; Serial.begin(9600);</tt><tt><br>
+    </tt><tt>&nbsp; stepper.setMaxSpeed(1000);</tt><tt><br>
+    </tt><tt>&nbsp; stepper.setSpeed(1000);&nbsp;&nbsp;&nbsp; </tt><tt><br>
+    </tt><tt>}</tt><tt><br>
+    </tt><tt><br>
+    </tt><tt>void loop()</tt><tt><br>
+    </tt><tt>{&nbsp; </tt><tt><br>
+    </tt><tt>&nbsp; char c;</tt><tt><br>
+    </tt><tt>&nbsp; if(Serial.available()) {</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; c = Serial.read();</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; if (c == 'f') {&nbsp; // forward</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sign = 1;</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; }</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; if (c == 'r') {&nbsp; // reverse</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sign = -1;</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; }</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; if (c == 's') {&nbsp; // stop</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sign = 0;</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; }</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; if (c == '1') {&nbsp; // super slow</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; spd = 10;</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; }</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; if (c == '2') {&nbsp; // medium </tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; spd = 100;</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; }</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; if (c == '3') {&nbsp; // fast</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; spd = 1000;</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; }</tt><tt><br>
+    </tt><tt>&nbsp;&nbsp;&nbsp; stepper.setSpeed(sign * spd);</tt><tt><br>
+    </tt><tt>&nbsp; }</tt><tt><br>
+    </tt><tt>&nbsp; stepper.runSpeed();</tt><tt><br>
+    </tt><tt>}</tt>
+    <pre>    </pre>
+    <h1>Using stepper motors with RC servo inputs</h1>
+    <p><a href="http://www.schmalzhaus.com/chipKIT/RCServoToStepper.html">This
+        page</a> describes a one channel system (running on a chipKIT
+      Fubarino Mini, with a Big Easy Driver) that reads RC servo channel
+      information from a receiver and spins a stepper motor accordingly.<br>
+    </p>
+    <p><a href="http://chipkit.net/wiki/index.php?title=Driving_Steppers_from_RC_Reciever">This
+        pag</a>e describes a two channel version. <br>
+    </p>
+    <h1>References:</h1>
+    <h2>Easy Driver Pinout:</h2>
+    <br>
+    <br>
+    <div style="text-align: center;"><span style="font-weight: bold;"></span><img style=" width: 668px; height: 400px;" alt="EasyDriver V4.4 pin
+        descriptions" title="EasyDriver V4.4 pin descriptions" src="./Easy Driver Examples_files/EasyDriver_V44_Description.png"><br>
+    </div>
+    <div style="text-align: center;"><br>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div style="text-align: center;">Questions? E-mail me at <img style=" width: 177px; height: 22px;" alt="e-mail" src="./Easy Driver Examples_files/schmalzhaus_email.png" align="top"><br>
+    </div>
+    <div style="text-align: center;"><a rel="license" href="http://creativecommons.org/licenses/by/3.0/us/"><img alt="Creative Commons License" style="border-width: 0pt;" src="./Easy Driver Examples_files/88x31.png"></a><br>
+      <span xmlns:dc="http://purl.org/dc/elements/1.1/" property="dc:title">EasyDriver</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://www.schmalzhaus.com/EasyDriver" property="cc:attributionName" rel="cc:attributionURL">Brian
+        Schmalz</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/us/">Creative
+        Commons Attribution 3.0 United States License</a>.<br>
+      Based on a work at <a xmlns:dc="http://purl.org/dc/elements/1.1/" href="http://www.schmalzhaus.com/EasyDriver" rel="dc:source">www.schmalzhaus.com/EasyDriver</a>.<br>
+      Permissions beyond the scope of this license may be available at <a xmlns:cc="http://creativecommons.org/ns#" href="http://www.schmalzhaus.com/EasyDriver" rel="cc:morePermissions">www.schmalzhaus.com/EasyDriver</a>.<br>
+    </div>
+    <br>
+    <br>
+    <script async="" src="./Easy Driver Examples_files/analytics.js"></script><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-11764490-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  
+
+</body></html>

@@ -24,14 +24,21 @@ void setup()                     // init
 {  
     Serial.begin(115200);
     Serial.println("Serial Begun.");
+
+    // Assign Pins: 
+    pinMode(1, INPUT);             // Encoder SW 1, testing
+    pinMode(2, INPUT);             // DT
+    pinMode(3, INPUT);             //CLK
+    pinMode(50, INPUT);             // LS1 (x-axis)
+    pinMode(51, INPUT);             // LS2 (y-axis)
 }
 
 
 AccelStepper initStepper(int indx){
     // Motor Connections for constant current, step/direction bipolar motor driver
     typedef struct {
-        int dirPin;
         int stepPin;
+        int dirPin;
         } pinDictionary;
 
         pinDictionary PinDict[] = {
@@ -40,7 +47,7 @@ AccelStepper initStepper(int indx){
         {25, 26},                  // Stepper 2: Reservoir metering motor pins
         {27, 28}                   // Stepper 3: Auger motor pins
         };
-    AccelStepper stepper(AccelStepper::DRIVER, PinDict[indx].dirPin, PinDict[indx].stepPin);
+    AccelStepper stepper(AccelStepper::DRIVER, PinDict[indx].stepPin, PinDict[indx].dirPin);
     Serial.println(String("Index: ") + String(indx));
     Serial.println(String("DirPin: ")+String(PinDict[indx].dirPin)+String(" StepPin: ")+ String(PinDict[indx].stepPin));
     // for Bipolar, constant current, step/direction driver
@@ -55,16 +62,25 @@ void loop()                     // main
     AccelStepper stepper2 = initStepper(2);                                                         // Stepper2 (Reservoir metering motor)
     AccelStepper stepper3 = initStepper(3);                                                         // Stepper3 (Auger motor)
 
-    int pos = 1600;
-    stepper0.setMaxSpeed(4000);
-    stepper0.setAcceleration(1000);
-    while (1) {
-        if (stepper0.distanceToGo() == 0) {
-            delay(500); // ms
-            pos = -pos;
-            stepper0.moveTo(pos);
+    while(1) {
+        int buttonState = digitalRead(1);
+        if (buttonState == 1){ 
+            Serial.println(String("Pin 1: ") + String(buttonState));
         }
-        bool isrunning = stepper0.run();
     }
+
+    /* Working stepper code: will run to +1600 steps then to -1600 steps continually. */
+    // Run stepper +/- 1600
+    // int pos = 1600;
+    // stepper0.setMaxSpeed(4000);
+    // stepper0.setAcceleration(1000);
+    // while (1) {
+    //     if (stepper0.distanceToGo() == 0) {
+    //         delay(500); // ms
+    //         pos = -pos;
+    //         stepper0.moveTo(pos);
+    //     }
+    //     bool isrunning = stepper0.run();
+    // }
     exit (0);
 }

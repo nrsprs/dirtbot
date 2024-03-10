@@ -1,0 +1,4 @@
+1. Figure out how to calculate angular position from linear position.
+2. Create wrapper to send a stepper axis to linear position given args, perform feedback.
+3. Get debounce on digial inputs working. 
+4. Implement motor interrupt using LS / PB inputs.
