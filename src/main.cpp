@@ -56,10 +56,10 @@ AccelStepper initStepper(int indx){
 
 /* ### debounce a digital input
 Takes a InputDebounce object and returns 1 or 0 depending on status. 
-Meant to be called multiple times.
+Meant to be called multiple times, saves on interrupt pins. 
 ### Returns :: Bool
 */
-int debounce(InputDebounce& switch_object) 
+bool debounce(InputDebounce& switch_object) 
 {
     // Reset vars for switches:
     static unsigned int LS1_Count = 0;
@@ -126,23 +126,21 @@ void loop()                     // main
     limitSwitch1.setup(pinLS1, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);
     limitSwitch2.setup(pinLS2, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);
     
-    while(1) {
-        debounce(limitSwitch1);
-        delay(1);
-    }
 
     /* Working stepper code: will run to +1600 steps then to -1600 steps continually. */
     // Run stepper +/- 1600
-    // int pos = 1600;
-    // stepper0.setMaxSpeed(4000);
-    // stepper0.setAcceleration(1000);
-    // while (1) {
-    //     if (stepper0.distanceToGo() == 0) {
-    //         delay(500); // ms
-    //         pos = -pos;
-    //         stepper0.moveTo(pos);
-    //     }
-    //     bool isrunning = stepper0.run();
-    // }
+    int pos = 1600;
+    stepper0.setMaxSpeed(4000);
+    stepper0.setAcceleration(1000);
+    while (1) {
+        if (stepper0.distanceToGo() == 0) {
+            delay(500); // ms
+            pos = -pos;
+            stepper0.moveTo(pos);
+        }
+        bool isrunning = stepper0.run();
+        bool ls1Status = debounce(limitSwitch1);
+        Serial.println("Limit Switch 1 Status" + String(ls1Status));
+    }
     exit (0);
 }
