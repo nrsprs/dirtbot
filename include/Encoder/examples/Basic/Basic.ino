@@ -3,14 +3,14 @@
  *
  * This example code is in the public domain.
  */
-#include <Arduino.h>
+
 #include <Encoder.h>
 
 // Change these two numbers to the pins connected to your encoder.
 //   Best Performance: both pins have interrupt capability
 //   Good Performance: only the first pin has interrupt capability
 //   Low Performance:  neither pin has interrupt capability
-Encoder myEnc(2, 3);
+Encoder myEnc(5, 6);
 //   avoid using pins with LEDs attached
 
 void setup() {

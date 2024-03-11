@@ -1,67 +1,63 @@
-// https://www.makerguides.com/quadrature-rotary-encoder-with-arduino/
+/*https://lastminuteengineers.com/rotary-encoder-arduino-tutorial/ */
 
 #include <Arduino.h>
 
- // Rotary Encoder Inputs
- #define inputCLK 4
- #define inputDT 5
- 
- // LED Outputs
- #define ledCW 8
- #define ledCCW 9
- 
- int counter = 0;
- int currentStateCLK;
- int previousStateCLK;
- 
- String encdir ="";
- 
- void setup() {
-   // Set encoder pins as inputs  
-   pinMode (inputCLK,INPUT);
-   pinMode (inputDT,INPUT);
-   
-   // Set LED pins as outputs
-   pinMode (ledCW,OUTPUT);
-   pinMode (ledCCW,OUTPUT);
-   
-   // Setup Serial Monitor
-   Serial.begin (9600);
-   
-   // Read the initial state of inputCLK
-   // Assign to previousStateCLK variable
-   previousStateCLK = digitalRead(inputCLK);
- 
- }
- 
- void loop() {
-  // Read the current state of inputCLK
-   currentStateCLK = digitalRead(inputCLK);
-   
-   // If the previous and the current state of the inputCLK are different then a pulse has occurred
-   if (currentStateCLK != previousStateCLK){
-       
-     // If the inputDT state is different than the inputCLK state then
-     // the encoder is rotating counterclockwise
-     if (digitalRead(inputDT) != currentStateCLK) {
-       counter--;
-       encdir ="CCW";
-       digitalWrite(ledCW, LOW);
-       digitalWrite(ledCCW, HIGH);
-       
-     } else {
-       // Encoder is rotating clockwise
-       counter++;
-       encdir ="CW";
-       digitalWrite(ledCW, HIGH);
-       digitalWrite(ledCCW, LOW);
-       
-     }
-     Serial.print("Direction: ");
-     Serial.print(encdir);
-     Serial.print(" -- Value: ");
-     Serial.println(counter);
-   }
-   // Update previousStateCLK with the current state
-   previousStateCLK = currentStateCLK;
- }
+// Rotary Encoder Inputs
+#define CLK 2
+#define DT 3
+
+int counter = 0;
+int currentStateCLK;
+int lastStateCLK;
+String currentDir ="";
+
+void setup() {
+
+	// Set encoder pins as inputs
+	pinMode(CLK,INPUT);
+	pinMode(DT,INPUT);
+
+	// Setup Serial Monitor
+	Serial.begin(9600);
+
+	// Read the initial state of CLK
+	lastStateCLK = digitalRead(CLK);
+	
+	// Call updateEncoder() when any high/low changed seen
+	// on interrupt 0 (pin 2), or interrupt 1 (pin 3)
+	attachInterrupt(0, updateEncoder, CHANGE);
+	attachInterrupt(1, updateEncoder, CHANGE);
+}
+
+void loop() {
+    //Do some useful stuff here
+}
+
+void updateEncoder(){
+	// Read the current state of CLK
+	currentStateCLK = digitalRead(CLK);
+
+	// If last and current state of CLK are different, then pulse occurred
+	// React to only 1 state change to avoid double count
+	if (currentStateCLK != lastStateCLK  && currentStateCLK == 1){
+
+		// If the DT state is different than the CLK state then
+		// the encoder is rotating CCW so decrement
+		if (digitalRead(DT) != currentStateCLK) {
+			counter --;
+			currentDir ="CCW";
+		} else {
+			// Encoder is rotating CW so increment
+			counter ++;
+			currentDir ="CW";
+		}
+
+		Serial.print("Direction: ");
+		Serial.print(currentDir);
+		Serial.print(" | Counter: ");
+		Serial.println(counter);
+	}
+
+	// Remember last CLK state
+	lastStateCLK = currentStateCLK;
+}

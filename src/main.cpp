@@ -15,7 +15,7 @@ Author: Nick Spears
 #include <Stepper.h>
 #include <elapsedMillis.h>
 #include <EnableInterrupt.h>
-#include <QuadratureEncoder.h>
+#include <Encoder.h>
 #include <InputDebounce.h>
 #include <Dictionary.h>
 
@@ -26,10 +26,7 @@ void setup()                     // init
     Serial.println("Serial Begun.");
 
     // Assign Pin Modes: 
-    pinMode(5, INPUT);             // Encoder SW 1, testing
-    pinMode(6, INPUT);             // DT
-    pinMode(7, INPUT);             //CLK
-    pinMode(LED_BUILTIN, OUTPUT);  // Built-in LED
+    pinMode(LED_BUILTIN, OUTPUT);       // Built-in LED
 }
 
 
@@ -41,7 +38,7 @@ AccelStepper initStepper(int indx){
         } pinDictionary;
 
         pinDictionary PinDict[] = {
-        {8, 9},                    // Stepper 0 : X-Axis motor pins
+        {21, 22},                    // Stepper 0 : X-Axis motor pins
         {23, 24},                  // Stepper 1: Y-Axis motor pins
         {25, 26},                  // Stepper 2: Reservoir metering motor pins
         {27, 28}                   // Stepper 3: Auger motor pins
@@ -117,14 +114,12 @@ void loop()                     // main
 
     // Initalize limit switches:
     #define BUTTON_DB_DELAY 100     // ms
-    static const int pinLS1 = 2;
-    static const int pinLS2 = 3; 
     // Create input DB object:
     static InputDebounce limitSwitch1;
     static InputDebounce limitSwitch2;
     // Setup debounced pull-down pin:
-    limitSwitch1.setup(pinLS1, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);
-    limitSwitch2.setup(pinLS2, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);
+    limitSwitch1.setup(12, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);          // Pin 12
+    limitSwitch2.setup(13, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);          // Pin 13
     
 
     /* Working stepper code: will run to +1600 steps then to -1600 steps continually. */
