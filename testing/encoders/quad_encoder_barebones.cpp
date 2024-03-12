@@ -11,6 +11,8 @@ int currentStateCLK;
 int lastStateCLK;
 String currentDir ="";
 
+void updateEncoder();
+
 void setup() {
 
 	// Set encoder pins as inputs

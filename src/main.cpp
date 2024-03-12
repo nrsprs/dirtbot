@@ -19,29 +19,27 @@ Author: Nick Spears
 #include <Dictionary.h>
 
 
-Encoder encX(10, 11);           // Pins 10 & 11 are for X-Axis encoder (intr 4 & 5)
-Encoder encY(12, 13);           // Pins 12 & 13 are for Y-Axis encoder (intr 6 & 7)
-Encoder enc3(18, 19);           // Pins 18 & 19 are for the hopper encoder (intr 3 & 2)
-Encoder enc4(20, 21);           // Pins 20 & 21 are for the auger encoder (intr 1 & 0)
-
-int encXPosOld = -999, encYPosOld = -999, enc3PosOld = -999, enc4PosOld = -999;              // Have to make this global & dynamic, unfortunately..
-volatile bool encXReq, encYReq, enc3Req, enc4Req; 
-
-
-void interpretEncoder();
-
-
 void setup()                     // init 
 {  
     // Begin serial:
     Serial.begin(9600);
     Serial.println("Serial Begun.");
 
-    // Attach interrupt pins for encoder:
-    attachInterrupt(4, interpretEncoder, CHANGE);
-
     // Assign Pin Modes: 
     pinMode(LED_BUILTIN, OUTPUT);       // Built-in LED
+    // Establish LCD:
+    pinMode(A14,OUTPUT);
+    pinMode(A13,OUTPUT);
+    pinMode(A4,OUTPUT);
+    pinMode(A0,OUTPUT);
+    pinMode(A2,OUTPUT);
+    pinMode(A1,OUTPUT);
+    digitalWrite(A14,LOW); 
+    digitalWrite(A13,HIGH); 
+    digitalWrite(A4,LOW); 
+    digitalWrite(A0,LOW);
+    digitalWrite(A2,LOW);
+    digitalWrite(A1,HIGH);
 }
 
 
@@ -116,44 +114,13 @@ bool debounce(InputDebounce& switch_object) {
 }
 
 
-void interpretEncoder() {
-    if (encXReq == true) {                  // Read for X-Axis Encoder:
-        long newPositionX = encX.read();
-        if (newPositionX != encXPosOld) {
-            encXPosOld = newPositionX;
-            Serial.println(encXPosOld);
-        }
-    } 
-    if (encYReq == true) {                  // Read for Y-Axis Encoder:
-        long newPositionY = encY.read();
-        if (newPositionY != encYPosOld) {
-            encYPosOld = newPositionY;
-            Serial.println(encYPosOld);
-        }
-    }
-    if (enc3Req == true) {                  // Read for Encoder 3:
-        long newPosition3 = enc3.read();
-        if (newPosition3 != enc3PosOld) {
-            enc3PosOld = newPosition3;
-            Serial.println(enc3PosOld);
-        }
-    }
-    if (enc4Req == true) {                  // Read Encoder 4:
-        long newPosition4 = enc4.read();
-        if (newPosition4 != enc4PosOld) {
-            enc4PosOld = newPosition4;
-            Serial.println(enc4PosOld);
-        }
-    }
-}
-
-
 void loop() {                     // main 
     // Initalize stepper motor objects:
     AccelStepper stepper0 = initStepper(0);                                                         // Stepper0 (X-Axis motor)
     AccelStepper stepper1 = initStepper(1);                                                         // Stepper1 (Y-Axis motor)
     AccelStepper stepper2 = initStepper(2);                                                         // Stepper2 (Reservoir metering motor)
     AccelStepper stepper3 = initStepper(3);                                                         // Stepper3 (Auger motor)
+
 
     // Initalize limit switches:
     #define BUTTON_DB_DELAY 100     // ms
@@ -163,15 +130,36 @@ void loop() {                     // main
     // Setup debounced pull-down pin:
     limitSwitch1.setup(4, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);          // Pin 4
     limitSwitch2.setup(5, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);          // Pin 5
+
+
+    // Initalize encoder objects:
+    Encoder encX(20, 21);           // Pins 20 & 21 are for X-Axis encoder (intr 1 & 0)
+    Encoder encY(18, 19);           // Pins 18 & 19 are for Y-Axis encoder (intr 2 & 3)
+    Encoder enc3(2, 3);             // Pins 2 & 3 are for the hopper encoder (intr 4 & 5)
+    // Encoder enc4(??, ??);        // Pins ?? & ?? are for the auger encoder (intr ?? & ??)
+    volatile long encXPosOld = -99, encYPosOld = -99, enc3PosOld = -99, enc4PosOld = -99;
     
-    encXReq = true;     // Call X-Axis Encoder:
+
+    // Initalize LCD:
+    const int rs = A3, en = A5, d4 = A9, d5 = A10, d6 = A11, d7 = A12;
+    LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+    lcd.begin(16, 2);
+    lcd.print("DIRTBOT STARTED");
+    
+
+    // Demoing Encoders:
     while (true) {
-        // block main loop
+        volatile long newPos3 = enc3.read();
+        if (newPos3 != enc3PosOld) {
+            enc3PosOld = newPos3;
+            lcd.setCursor(0, 1);
+            lcd.println(String(enc3PosOld) + " STEPS          ");
+        }
     }
 
     /* Working stepper code: will run to +1600 steps then to -1600 steps continually. */
     // Run stepper +/- 1600
-    int pos = 1600;
+    volatile int pos = 1600;
     stepper0.setMaxSpeed(4000);
     stepper0.setAcceleration(1000);
     while (true) {
@@ -180,8 +168,8 @@ void loop() {                     // main
             pos = -pos;
             stepper0.moveTo(pos);
         }
-        bool isrunning = stepper0.run();
-        bool ls1Status = debounce(limitSwitch1);
+        volatile bool isrunning = stepper0.run();
+        volatile bool ls1Status = debounce(limitSwitch1);
         Serial.println("Limit Switch 1 Status" + String(ls1Status));
     }
     exit (0);
