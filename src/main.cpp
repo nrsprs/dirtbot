@@ -114,6 +114,16 @@ bool debounce(InputDebounce& switch_object) {
 }
 
 
+long encoderSteps(Encoder& encoder, long prevPos) {
+    // Returns encoder steps given previous steps. 
+    volatile long newPos = encoder.read();
+    if (newPos != prevPos) {
+        prevPos = newPos;
+    }
+    return newPos;
+}
+
+
 void loop() {                     // main 
     // Initalize stepper motor objects:
     AccelStepper stepper0 = initStepper(0);                                                         // Stepper0 (X-Axis motor)
@@ -133,28 +143,26 @@ void loop() {                     // main
 
 
     // Initalize encoder objects:
-    Encoder encX(20, 21);           // Pins 20 & 21 are for X-Axis encoder (intr 1 & 0)
-    Encoder encY(18, 19);           // Pins 18 & 19 are for Y-Axis encoder (intr 2 & 3)
-    Encoder enc3(2, 3);             // Pins 2 & 3 are for the hopper encoder (intr 4 & 5)
-    // Encoder enc4(??, ??);        // Pins ?? & ?? are for the auger encoder (intr ?? & ??)
-    volatile long encXPosOld = -99, encYPosOld = -99, enc3PosOld = -99, enc4PosOld = -99;
+    static Encoder encX(20, 21);           // Pins 20 & 21 are for X-Axis encoder (intr 1 & 0)
+    static Encoder encY(18, 19);           // Pins 18 & 19 are for Y-Axis encoder (intr 2 & 3)
+    static Encoder enc3(2, 3);             // Pins 2 & 3 are for the hopper encoder (intr 4 & 5)
+    // static Encoder enc4(??, ??);        // Pins ?? & ?? are for the auger encoder (intr ?? & ??)
+    long encXPos = -99, encYPos = -99, enc3Pos = -99, enc4Pos = -99;
     
 
     // Initalize LCD:
     const int rs = A3, en = A5, d4 = A9, d5 = A10, d6 = A11, d7 = A12;
     LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
     lcd.begin(16, 2);
-    lcd.print("DIRTBOT STARTED");
+    lcd.print("DIRTBOT  STARTED");
     
 
     // Demoing Encoders:
     while (true) {
-        volatile long newPos3 = enc3.read();
-        if (newPos3 != enc3PosOld) {
-            enc3PosOld = newPos3;
-            lcd.setCursor(0, 1);
-            lcd.println(String(enc3PosOld) + " STEPS          ");
-        }
+        enc3Pos = encoderSteps(enc3, enc3Pos);
+        lcd.setCursor(0, 1);
+        lcd.println(String(enc3Pos) + " STEPS          ");
+
     }
 
     /* Working stepper code: will run to +1600 steps then to -1600 steps continually. */
