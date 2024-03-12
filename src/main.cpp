@@ -53,10 +53,10 @@ AccelStepper initStepper(int indx) {
         } pinDictionary;
 
         pinDictionary PinDict[] = {
-        {21, 22},                    // Stepper 0 : X-Axis motor pins
-        {23, 24},                  // Stepper 1: Y-Axis motor pins
-        {25, 26},                  // Stepper 2: Reservoir metering motor pins
-        {27, 28}                   // Stepper 3: Auger motor pins
+        {22, 23},                    // Stepper 0 : X-Axis motor pins
+        {24, 25},                  // Stepper 1: Y-Axis motor pins
+        {26, 27},                  // Stepper 2: Reservoir metering motor pins
+        {28, 29}                   // Stepper 3: Auger motor pins
         };
     AccelStepper stepper(AccelStepper::DRIVER, PinDict[indx].stepPin, PinDict[indx].dirPin);
     Serial.println(String("Index: ") + String(indx));
@@ -117,28 +117,28 @@ bool debounce(InputDebounce& switch_object) {
 
 
 void interpretEncoder() {
-    if (encXReq == true) {      // Read for X-Axis Encoder:
+    if (encXReq == true) {                  // Read for X-Axis Encoder:
         long newPositionX = encX.read();
         if (newPositionX != encXPosOld) {
             encXPosOld = newPositionX;
             Serial.println(encXPosOld);
         }
     } 
-    if (encYReq == true) {
+    if (encYReq == true) {                  // Read for Y-Axis Encoder:
         long newPositionY = encY.read();
         if (newPositionY != encYPosOld) {
             encYPosOld = newPositionY;
             Serial.println(encYPosOld);
         }
     }
-    if (enc3Req == true) {
+    if (enc3Req == true) {                  // Read for Encoder 3:
         long newPosition3 = enc3.read();
         if (newPosition3 != enc3PosOld) {
             enc3PosOld = newPosition3;
             Serial.println(enc3PosOld);
         }
     }
-    if (enc4Req == true) {
+    if (enc4Req == true) {                  // Read Encoder 4:
         long newPosition4 = enc4.read();
         if (newPosition4 != enc4PosOld) {
             enc4PosOld = newPosition4;
@@ -161,9 +161,13 @@ void loop() {                     // main
     static InputDebounce limitSwitch1;
     static InputDebounce limitSwitch2;
     // Setup debounced pull-down pin:
-    limitSwitch1.setup(12, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);          // Pin 12
-    limitSwitch2.setup(13, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);          // Pin 13
+    limitSwitch1.setup(4, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);          // Pin 4
+    limitSwitch2.setup(5, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);          // Pin 5
     
+    encXReq = true;     // Call X-Axis Encoder:
+    while (true) {
+        // block main loop
+    }
 
     /* Working stepper code: will run to +1600 steps then to -1600 steps continually. */
     // Run stepper +/- 1600
