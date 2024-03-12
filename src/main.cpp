@@ -14,23 +14,38 @@ Author: Nick Spears
 #include <Wire.h>
 #include <Stepper.h>
 #include <elapsedMillis.h>
-#include <EnableInterrupt.h>
 #include <Encoder.h>
 #include <InputDebounce.h>
 #include <Dictionary.h>
 
 
+Encoder encX(10, 11);           // Pins 10 & 11 are for X-Axis encoder (intr 4 & 5)
+Encoder encY(12, 13);           // Pins 12 & 13 are for Y-Axis encoder (intr 6 & 7)
+Encoder enc3(18, 19);           // Pins 18 & 19 are for the hopper encoder (intr 3 & 2)
+Encoder enc4(20, 21);           // Pins 20 & 21 are for the auger encoder (intr 1 & 0)
+
+int encXPosOld = -999, encYPosOld = -999, enc3PosOld = -999, enc4PosOld = -999;              // Have to make this global & dynamic, unfortunately..
+volatile bool encXReq, encYReq, enc3Req, enc4Req; 
+
+
+void interpretEncoder();
+
+
 void setup()                     // init 
 {  
+    // Begin serial:
     Serial.begin(9600);
     Serial.println("Serial Begun.");
+
+    // Attach interrupt pins for encoder:
+    attachInterrupt(4, interpretEncoder, CHANGE);
 
     // Assign Pin Modes: 
     pinMode(LED_BUILTIN, OUTPUT);       // Built-in LED
 }
 
 
-AccelStepper initStepper(int indx){
+AccelStepper initStepper(int indx) {
     // Motor Connections for constant current, step/direction bipolar motor driver
     typedef struct {
         const int stepPin;
@@ -56,13 +71,10 @@ Takes a InputDebounce object and returns 1 or 0 depending on status.
 Meant to be called multiple times, saves on interrupt pins. 
 ### Returns :: Bool
 */
-bool debounce(InputDebounce& switch_object) 
-{
+bool debounce(InputDebounce& switch_object) {
     // Reset vars for switches:
     static unsigned int LS1_Count = 0;
     static unsigned int LS1_OnTimeLast = 0;
-    static unsigned int LS2_Count = 0;
-    static unsigned int LS2_OnTimeLast = 0;
     bool result = 0;
 
     unsigned long now = millis();
@@ -104,8 +116,39 @@ bool debounce(InputDebounce& switch_object)
 }
 
 
-void loop()                     // main 
-{
+void interpretEncoder() {
+    if (encXReq == true) {      // Read for X-Axis Encoder:
+        long newPositionX = encX.read();
+        if (newPositionX != encXPosOld) {
+            encXPosOld = newPositionX;
+            Serial.println(encXPosOld);
+        }
+    } 
+    if (encYReq == true) {
+        long newPositionY = encY.read();
+        if (newPositionY != encYPosOld) {
+            encYPosOld = newPositionY;
+            Serial.println(encYPosOld);
+        }
+    }
+    if (enc3Req == true) {
+        long newPosition3 = enc3.read();
+        if (newPosition3 != enc3PosOld) {
+            enc3PosOld = newPosition3;
+            Serial.println(enc3PosOld);
+        }
+    }
+    if (enc4Req == true) {
+        long newPosition4 = enc4.read();
+        if (newPosition4 != enc4PosOld) {
+            enc4PosOld = newPosition4;
+            Serial.println(enc4PosOld);
+        }
+    }
+}
+
+
+void loop() {                     // main 
     // Initalize stepper motor objects:
     AccelStepper stepper0 = initStepper(0);                                                         // Stepper0 (X-Axis motor)
     AccelStepper stepper1 = initStepper(1);                                                         // Stepper1 (Y-Axis motor)
@@ -127,7 +170,7 @@ void loop()                     // main
     int pos = 1600;
     stepper0.setMaxSpeed(4000);
     stepper0.setAcceleration(1000);
-    while (1) {
+    while (true) {
         if (stepper0.distanceToGo() == 0) {
             delay(500); // ms
             pos = -pos;
