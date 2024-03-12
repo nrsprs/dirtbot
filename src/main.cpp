@@ -114,8 +114,13 @@ bool debounce(InputDebounce& switch_object) {
 }
 
 
+/* Calculates whether encoder has stepped. 
+Encoder position calculation is 4x PPR, so a 20 PPR encoder will have 80 steps.
+
+Params :: encoder object, previous encoder position
+
+Returns :: updated encoder step position*/
 long encoderSteps(Encoder& encoder, long prevPos) {
-    // Returns encoder steps given previous steps. 
     volatile long newPos = encoder.read();
     if (newPos != prevPos) {
         prevPos = newPos;
@@ -158,27 +163,36 @@ void loop() {                     // main
     
 
     // Demoing Encoders:
-    while (true) {
-        enc3Pos = encoderSteps(enc3, enc3Pos);
-        lcd.setCursor(0, 1);
-        lcd.println(String(enc3Pos) + " STEPS          ");
-
-    }
+    // while (true) {
+    //     enc3Pos = encoderSteps(enc3, enc3Pos);
+    //     lcd.setCursor(0, 1);
+    //     lcd.println(String(enc3Pos) + " STEPS ");
+    // }
 
     /* Working stepper code: will run to +1600 steps then to -1600 steps continually. */
     // Run stepper +/- 1600
     volatile int pos = 1600;
     stepper0.setMaxSpeed(4000);
     stepper0.setAcceleration(1000);
+
     while (true) {
+        // Get encoder status:
+        enc3Pos = encoderSteps(enc3, enc3Pos);
+        lcd.setCursor(0, 1);
+        lcd.println(String(enc3Pos) + " STP ");
+        lcd.noCursor();
+
+        // Check stepper distance:
         if (stepper0.distanceToGo() == 0) {
             delay(500); // ms
             pos = -pos;
             stepper0.moveTo(pos);
         }
+
         volatile bool isrunning = stepper0.run();
         volatile bool ls1Status = debounce(limitSwitch1);
         Serial.println("Limit Switch 1 Status" + String(ls1Status));
+        lcd.print(" LS: " + String(ls1Status));
     }
     exit (0);
 }
