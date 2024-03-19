@@ -129,6 +129,63 @@ long encoderSteps(Encoder& encoder, long prevPos) {
 }
 
 
+/*
+Closed loop single axis control scheme: 
+
+init ::
+create objects for steppers, limit switches and encoders
+
+call axis, set home:
+double homeXAxis(stepperX, encX, LSX) {
+    determine direction stepper needs to rotate to get close to home (pos/neg; cc/ccw)
+    set stepper to half speed 
+    drive stepper towards LS
+    check encoder position
+    check LS
+    if LS is triggered:
+        stop stepper
+        reset encoder position to 0
+        roll off in ~+80 steps opposite direction for double-tap
+        roll back ~-80 steps, slowly
+        if LS is triggered:
+            stop stepper
+            reset encoder position to 0
+            roll off by ~+40 steps to release LS
+    return encPosition (0)
+}
+
+call axis, move to position:
+bool moveXAxis(stepperX, encX, LSX, position) {
+    ## Angular to linear: https://pressbooks.bccampus.ca/humanbiomechanics/chapter/6-1-rotation-angle-and-angular-velocity-2/
+    ## wtf is a microstep: https://www.linearmotiontips.com/microstepping-basics/#:~:text=Microstepping%20control%20divides%20each%20full,or%2051%2C200%20microsteps%20per%20revolution.
+
+    # linear distance = radius * angle(rads)
+    
+    wheel radius = 13.97    # mm 
+    driver pulse per rev = 400 
+    1 rev = 2 pi # rads
+    
+    ## what angle do I need to spin to? 
+    angle_rads = position (->mm) / 13.97 mm
+    # Convert from rads to revolutions:
+    angle_revs = angle_rads / 2*pi
+    distance_in_pulses = angle_revs * 400 # ppr
+    
+    # Calculate encoder pulse position:
+    
+
+    while encoder position has not reached goal ()
+    ## Move motor n pulses:
+
+    ## Check encoder position after every pulse moved, make sure encoder position is <= the
+
+
+} 
+
+
+*/
+
+
 void loop() {                     // main 
     // Initalize stepper motor objects:
     AccelStepper stepper0 = initStepper(0);                                                         // Stepper0 (X-Axis motor)
