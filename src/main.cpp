@@ -224,7 +224,6 @@ bool moveXAxis(stepperX, encX, LSX, position) {
     distance_in_pulses = angle_revs * 400 # ppr
     
     # Calculate encoder pulse position:
-    
 
     while encoder position has not reached goal ()
     ## Move motor n pulses:
@@ -323,7 +322,7 @@ void runHopper(AccelStepper& stepper, Encoder& encoder) {
 
 
 /*
-Run the hopper once to the number of revolutions needed to dispense the whole volume of soil. 
+Run the auger once to half the number of revolutions needed to dispense the whole volume of soil. 
 #### Params :: AccelStepper stepper, Encoder encoder
 
 #### Returns :: None
@@ -357,7 +356,7 @@ void loop() {                     // main
     // Initalize stepper motor objects:
     AccelStepper stepper0 = initStepper(0);                                                         // Stepper0 (X-Axis motor)
     AccelStepper stepper1 = initStepper(1);                                                         // Stepper1 (Y-Axis motor)
-    AccelStepper stepper2 = initStepper(2);                                                         // Stepper2 (Reservoir metering motor)
+    AccelStepper stepper2 = initStepper(2);                                                         // Stepper2 (Hopper motor)
     AccelStepper stepper3 = initStepper(3);                                                         // Stepper3 (Auger motor)
 
 
@@ -375,8 +374,8 @@ void loop() {                     // main
     static Encoder encX(20, 21);           // Pins 20 & 21 are for X-Axis encoder (intr 1 & 0)
     static Encoder encY(18, 19);           // Pins 18 & 19 are for Y-Axis encoder (intr 2 & 3)
     static Encoder enc3(2, 3);             // Pins 2 & 3 are for the hopper encoder (intr 4 & 5)
-    // static Encoder enc4(??, ??);        // Pins ?? & ?? are for the auger encoder (intr ?? & ??)
-    volatile long encXPos = -99, encYPos = -99, enc3Pos = -99, enc4Pos = -99;
+    static Encoder enc4(6, 7);             // Pins 6 & 7 are for the auger encoder (no intr)
+    // volatile long encXPos = -99, encYPos = -99, enc3Pos = -99, enc4Pos = -99;
     
 
     // Initalize LCD:
@@ -393,32 +392,50 @@ void loop() {                     // main
     //     lcd.println(String(enc3Pos) + " STEPS ");
     // }
 
-    /* Working stepper code: will run to +1600 steps then to -1600 steps continually. */
-    // Run stepper +/- 1600
-    volatile int pos = 1600;
-    stepper0.setMaxSpeed(4000);
-    stepper0.setAcceleration(1000);
 
-    homeAxis(stepper0, encX, limitSwitch1, 1);      // Testing home on X-axis, move CW to get to home.
+    /* Working stepper code: will run to +1600 steps then to -1600 steps continually.
+    Run stepper +/- 1600 */
+    // volatile int pos = 1600;
+    // stepper0.setMaxSpeed(4000);
+    // stepper0.setAcceleration(1000);
 
-    while (true) {
-        // Get encoder status:
-        enc3Pos = encoderSteps(enc3, enc3Pos);
-        lcd.setCursor(0, 1);
-        lcd.println(String(enc3Pos) + " STP ");
-        lcd.noCursor();
+    // while (true) {
+    //     // Get encoder status:
+    //     enc3Pos = encoderSteps(enc3, enc3Pos);
+    //     lcd.setCursor(0, 1);
+    //     lcd.println(String(enc3Pos) + " STP ");
+    //     lcd.noCursor();
 
-        // Check stepper distance:
-        if (stepper0.distanceToGo() == 0) {
-            delay(500); // ms
-            pos = -pos;
-            stepper0.moveTo(pos);
-        }
+    //     // Check stepper distance:
+    //     if (stepper0.distanceToGo() == 0) {
+    //         delay(500); // ms
+    //         pos = -pos;
+    //         stepper0.moveTo(pos);
+    //     }
 
-        volatile bool isrunning = stepper0.run();
-        volatile bool ls1Status = debounce(limitSwitch1);
-        Serial.println("Limit Switch 1 Status" + String(ls1Status));
-        lcd.print(" LS: " + String(ls1Status));
-    }
+    //     volatile bool isrunning = stepper0.run();
+    //     volatile bool ls1Status = debounce(limitSwitch1);
+    //     Serial.println("Limit Switch 1 Status" + String(ls1Status));
+    //     lcd.print(" LS: " + String(ls1Status));
+    // }
+
+    long home_pos_stepper = 1.2;
+    long home_pos_enc = 0.5;
+    // Control Loop Demo:
+    lcd.setCursor(0,0);
+    lcd.println("HOMING X-AXIS...");
+    //          |0123456789ABCDEF|
+
+    static_cast<int>(home_pos_stepper);
+    static_cast<int>(home_pos_enc);
+    lcd.setCursor(0,1);
+    lcd.println("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc) + "      ");
+
+    // Call homeAxis:
+    home_pos_stepper, home_pos_enc = homeAxis(stepper0, encX, limitSwitch1, 1);      // Testing home on X-axis, move CW to get to home.
+    static_cast<int>(home_pos_stepper);
+    static_cast<int>(home_pos_enc);
+    lcd.println("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc) + "      ");
+
     exit (0);
 }
