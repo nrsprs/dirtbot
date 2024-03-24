@@ -64,7 +64,7 @@ AccelStepper initStepper(int indx) {
 }
 
 
-/* ### debounce a digital input
+/* ### Debounce A Digital Input
 Takes a InputDebounce object and returns 1 or 0 depending on status. 
 Meant to be called multiple times, saves on interrupt pins. 
 ### Returns :: Bool
@@ -128,6 +128,14 @@ long encoderSteps(Encoder& encoder, long prevPos) {
     return newPos;
 }
 
+/*
+Motor Direction Map: 
+auger: CW 
+hopper: CCW
+x-axis: CW to home
+y-axis: CCW to home
+*/
+
 
 /*
 Closed loop single axis control scheme: 
@@ -151,9 +159,47 @@ double homeXAxis(stepperX, encX, LSX) {
             stop stepper
             reset encoder position to 0
             roll off by ~+40 steps to release LS
-    return encPosition (0)
+    return stepper currentPosition, encoderPos
+} */
+long homeAxis(AccelStepper& stepper, Encoder& encoder, InputDebounce& switchObj, int rotDir) {
+    // Determine rotation direction for home | CW is pos, CCW is neg
+    const float homeVel = 100.0;                                                    // TESTING: update speed
+    volatile long encoderPos = 0;
+    stepper.setAcceleration(homeVel*rotDir/2);
+    stepper.setMaxSpeed(homeVel*rotDir*1.2);
+    stepper.setSpeed(homeVel*rotDir);
+    
+    // Move in direction of home:
+    while (debounce(switchObj) != 1) {           // Testing:: check if switch is active high or low in circuit, result bit still is 1..
+        stepper.runSpeed();
+        encoderPos = encoderSteps(encoder, encoderPos);
+    }
+
+    // Switch has been hit, reset positions:
+    encoderPos = 0;
+    stepper.setCurrentPosition(0);
+    // Move off by 80 steps, return and wait for switch to be hit:
+    stepper.moveTo(-80*rotDir);
+    delay(200);
+    stepper.setSpeed(homeVel*rotDir/3);
+    if ((stepper.distanceToGo() != 0) && (debounce(switchObj) != 1)) {stepper.run();}
+    // Send back to home:
+    stepper.moveTo(100*rotDir);
+    delay(200);
+    if ((stepper.distanceToGo() != 0) && (debounce(switchObj) != 1)) {stepper.run();}
+    // Has hit home again, move off 60 steps and return encoder position:
+    stepper.moveTo(60*rotDir);
+    encoderPos = 0;
+    if (stepper.distanceToGo() != 0) {
+        stepper.run();
+        encoderPos = encoderSteps(encoder, encoderPos);
+    }    
+    
+    return stepper.currentPosition(), encoderPos;
 }
 
+
+/*
 call axis, move to position:
 bool moveXAxis(stepperX, encX, LSX, position) {
     ## Angular to linear: https://pressbooks.bccampus.ca/humanbiomechanics/chapter/6-1-rotation-angle-and-angular-velocity-2/
@@ -178,12 +224,7 @@ bool moveXAxis(stepperX, encX, LSX, position) {
     ## Move motor n pulses:
 
     ## Check encoder position after every pulse moved, make sure encoder position is <= the
-
-
-} 
-
-
-*/
+} */
 
 
 void loop() {                     // main 
@@ -209,7 +250,7 @@ void loop() {                     // main
     static Encoder encY(18, 19);           // Pins 18 & 19 are for Y-Axis encoder (intr 2 & 3)
     static Encoder enc3(2, 3);             // Pins 2 & 3 are for the hopper encoder (intr 4 & 5)
     // static Encoder enc4(??, ??);        // Pins ?? & ?? are for the auger encoder (intr ?? & ??)
-    long encXPos = -99, encYPos = -99, enc3Pos = -99, enc4Pos = -99;
+    volatile long encXPos = -99, encYPos = -99, enc3Pos = -99, enc4Pos = -99;
     
 
     // Initalize LCD:
@@ -231,6 +272,8 @@ void loop() {                     // main
     volatile int pos = 1600;
     stepper0.setMaxSpeed(4000);
     stepper0.setAcceleration(1000);
+
+    homeAxis(stepper0, encX, limitSwitch1, 1);      // Testing home on X-axis, move CW to get to home.
 
     while (true) {
         // Get encoder status:
