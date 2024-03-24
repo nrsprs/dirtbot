@@ -58,7 +58,7 @@ AccelStepper initStepper(int indx) {
         };
     AccelStepper stepper(AccelStepper::DRIVER, PinDict[indx].stepPin, PinDict[indx].dirPin);
     Serial.println(String("Index: ") + String(indx));
-    Serial.println(String("DirPin: ")+String(PinDict[indx].dirPin)+String(" StepPin: ")+ String(PinDict[indx].stepPin));
+    Serial.println(String("DirPin: ") + String(PinDict[indx].dirPin) + String(" StepPin: ") + String(PinDict[indx].stepPin));
     // for Bipolar, constant current, step/direction driver
     return stepper;
 }
@@ -79,35 +79,35 @@ bool debounce(InputDebounce& switch_object) {
     unsigned int buttonTest_OnTime = switch_object.process(now);
 
     // Handle input button
-    if(buttonTest_OnTime) {
+    if (buttonTest_OnTime) {
         // Save current on-time (button pressed) for release
         LS1_OnTimeLast = buttonTest_OnTime;
         // Check for state change
         unsigned int count = switch_object.getStatePressedCount();
-        if(LS1_Count != count) {
-        LS1_Count = count;
-        // Handle pressed state
-        digitalWrite(LED_BUILTIN, HIGH);                 // Turn on built_in LED
-        result = 1;
-        Serial.print("HIGH");
+        if (LS1_Count != count) {
+            LS1_Count = count;
+            // Handle pressed state
+            digitalWrite(LED_BUILTIN, HIGH);                 // Turn on built_in LED
+            result = 1;
+            Serial.print("HIGH");
         }
         else {
-        // Handle still pressed state
-        Serial.print("HIGH still pressed");
+            // Handle still pressed state
+            Serial.print("HIGH still pressed");
         }
         Serial.print(" (");
         Serial.print(buttonTest_OnTime);
         Serial.println("ms)");
     }
     else {
-        if(LS1_OnTimeLast) {
-        // Handle released state
-        digitalWrite(LED_BUILTIN, LOW);                 // Turn off built_in LED
-        result = 0;
-        Serial.print("LOW (last on-time: HIGH ");
-        Serial.print(LS1_OnTimeLast);
-        Serial.println("ms)");
-        LS1_OnTimeLast = 0;                             // Reset 
+        if (LS1_OnTimeLast) {
+            // Handle released state
+            digitalWrite(LED_BUILTIN, LOW);                 // Turn off built_in LED
+            result = 0;
+            Serial.print("LOW (last on-time: HIGH ");
+            Serial.print(LS1_OnTimeLast);
+            Serial.println("ms)");
+            LS1_OnTimeLast = 0;                             // Reset 
         }
     }
     return result; 
@@ -127,6 +127,12 @@ long encoderSteps(Encoder& encoder, long prevPos) {
     }
     return newPos;
 }
+
+
+// Roundup double d
+double round(double d)
+{return floor(d + 0.5);}
+
 
 /*
 Motor Direction Map: 
@@ -194,13 +200,13 @@ long homeAxis(AccelStepper& stepper, Encoder& encoder, InputDebounce& switchObj,
         stepper.run();
         encoderPos = encoderSteps(encoder, encoderPos);
     }    
-    
+
     return stepper.currentPosition(), encoderPos;
 }
 
 
 /*
-call axis, move to position:
+call axis, move a distance, direction and size should be calculated before calling:
 bool moveXAxis(stepperX, encX, LSX, position) {
     ## Angular to linear: https://pressbooks.bccampus.ca/humanbiomechanics/chapter/6-1-rotation-angle-and-angular-velocity-2/
     ## wtf is a microstep: https://www.linearmotiontips.com/microstepping-basics/#:~:text=Microstepping%20control%20divides%20each%20full,or%2051%2C200%20microsteps%20per%20revolution.
@@ -225,6 +231,64 @@ bool moveXAxis(stepperX, encX, LSX, position) {
 
     ## Check encoder position after every pulse moved, make sure encoder position is <= the
 } */
+float moveAxis(AccelStepper& stepper, Encoder& encoder, InputDebounce& switchObj, double linearDist) {
+    // Convert linear distance to rotations:
+    const float wheel_radius = 13.97;    // mm
+    const int driver_ppr = 400;           // set on stepper controller
+    const float rev_rads = 6.283185307179586476925286766559;
+    volatile long encoderPos = 0;
+    int rotDir = 0;
+    const int encoder_ppr = 20*4;           // 20 ppr encoder, res of 4/ppr using encoder.h
+    float result = 0;
+
+    // Calculate angle needed to be reached: 
+    float angle_rads = linearDist/wheel_radius;
+    //Convert from rads to revs:
+    float angle_revs = angle_rads/rev_rads;
+    // Calculate pulse distance:
+    float distance_pulses = angle_revs * driver_ppr;
+    // Calculate encoder pulse position required: 
+    long finalEncPos = int(round(angle_revs)) * encoder_ppr;
+
+    if (linearDist <= 0) {          // Positive distance corresponds to CW direction
+        rotDir = -1;}           // Set CCW
+    else {rotDir = 1;}          // Set CW
+
+    // Set and call stepper:
+    const float vel = 500.0;
+    stepper.setAcceleration(vel*rotDir/2);
+    stepper.setMaxSpeed(vel*1.2); 
+    stepper.setSpeed(vel);
+    stepper.move(distance_pulses);
+
+    Serial.println("Moving axis to: " + String(distance_pulses));
+
+    // Move to angular position:
+    while ((result == 0) && (debounce(switchObj) != 1) ) {
+        // Check encoder pos: 
+        if (rotDir == 1) {       // Check if axis should be moving positively:
+            if ((stepper.distanceToGo() > 0) && (encoderPos < finalEncPos)) {
+                stepper.run();
+                encoderPos = encoderSteps(encoder, encoderPos);
+            }
+        }
+        if (rotDir == -1) {     // Check if the axis should be moving negatively:
+            if ((stepper.distanceToGo() < 0) && (encoderPos > finalEncPos)) {
+                stepper.run();
+                encoderPos = encoderSteps(encoder, encoderPos);
+            }
+        }
+    }
+    // Moved to position, calculate error:
+    int err_ppr = finalEncPos - encoderPos;
+    float err_revs = err_ppr / encoder_ppr;
+    float err_rads = err_revs * rev_rads; 
+    result = err_rads * wheel_radius;
+    String result_txt = String(result);
+    Serial.println("Error in mm: " + result_txt);
+
+    return result;
+}
 
 
 void loop() {                     // main 
