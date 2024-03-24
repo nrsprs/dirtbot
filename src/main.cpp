@@ -299,16 +299,47 @@ Run the hopper once to the number of revolutions needed to dispense the whole vo
 */
 void runHopper(AccelStepper& stepper, Encoder& encoder) {
     const int encoder_ppr = 20*4;           // 20 ppr encoder, res of 4/ppr using encoder.h
-    const int driver_ppr = 400;           // set on stepper controller
-    const int num_revs = 1;
+    const int driver_ppr = 400;             // set on stepper controller
+    const int num_revs = 1/5;
     int steps = driver_ppr * num_revs;
     long finalEncPos = encoder_ppr * num_revs;
     long encPos = 0;
     
     // Call stepper and set params:
     const float vel = 500.0;
-    stepper.setAcceleration(-vel/2);            // Hopper runs CCW
+    stepper.setAcceleration(-vel/2);        // Hopper runs CCW
     stepper.setMaxSpeed(-vel*1.2); 
+    stepper.setSpeed(vel);
+    stepper.setCurrentPosition(0);
+    stepper.moveTo(steps);
+
+    Serial.println("Moving hopper by: " + String(steps) + " steps.");
+
+    while ((stepper.distanceToGo() != 0) && (encPos < finalEncPos)) {
+        stepper.run();
+        encPos = encoderSteps(encoder, encPos);
+    }
+}
+
+
+/*
+Run the hopper once to the number of revolutions needed to dispense the whole volume of soil. 
+#### Params :: AccelStepper stepper, Encoder encoder
+
+#### Returns :: None
+*/
+void runAuger(AccelStepper& stepper, Encoder& encoder) {
+    const int encoder_ppr = 20*4;           // 20 ppr encoder, res of 4/ppr using encoder.h
+    const int driver_ppr = 400;             // set on stepper controller
+    const int num_revs = 1;                                                                 //## Testing:: need to validate this nunmber.                       
+    int steps = driver_ppr * num_revs;
+    long finalEncPos = encoder_ppr * num_revs;
+    long encPos = 0;
+    
+    // Call stepper and set params:
+    const float vel = 500.0;
+    stepper.setAcceleration(vel/2);        // Auger runs CW
+    stepper.setMaxSpeed(vel*1.2); 
     stepper.setSpeed(vel);
     stepper.setCurrentPosition(0);
     stepper.moveTo(steps);
