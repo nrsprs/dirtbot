@@ -18,6 +18,8 @@ Author: Nick Spears
 #include <InputDebounce.h>
 #include <Dictionary.h>
 
+#define elif else if
+
 
 void setup()                     // init 
 {  
@@ -40,6 +42,10 @@ void setup()                     // init
     digitalWrite(A0,LOW);
     digitalWrite(A2,LOW);
     digitalWrite(A1,HIGH);
+    // Micro Blower:
+    pinMode(30, OUTPUT);
+    pinMode(31, OUTPUT);
+
 }
 
 
@@ -348,6 +354,31 @@ void runAuger(AccelStepper& stepper, Encoder& encoder) {
     while ((stepper.distanceToGo() != 0) && (encPos < finalEncPos)) {
         stepper.run();
         encPos = encoderSteps(encoder, encPos);
+    }
+}
+
+
+/*
+## microBlower
+Sets the digtial output pins of the microblower. 
+#### Params:
+pwr :: ublower power, 0 for off, 1 for on 
+dir :: ublower direction, 0 for in, 1 for out
+#### Return: None
+*/
+void microBlower(bool pwr, bool dir) {
+    const int pwr = 30; 
+    const int dir = 31;
+    if (pwr == 0) {                 // Turn blower off:
+        digitalWrite(pwr, LOW);}
+    elif (pwr == 1) {               // Turn blower on:
+        digitalWrite(pwr, HIGH);}
+    
+    if (dir == 0) {                 // Suck air:
+        digitalWrite(dir, LOW);
+        }
+    elif (dir == 1) {               // Blow air: 
+        digitalWrite(dir, HIGH);
     }
 }
 
