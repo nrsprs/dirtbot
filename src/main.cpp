@@ -188,15 +188,15 @@ long homeAxis(AccelStepper& stepper, Encoder& encoder, InputDebounce& switchObj,
     stepper.moveTo(-80*rotDir);
     delay(200);
     stepper.setSpeed(homeVel*rotDir/3);
-    if ((stepper.distanceToGo() != 0) && (debounce(switchObj) != 1)) {stepper.run();}
+    while ((stepper.distanceToGo() != 0) && (debounce(switchObj) != 1)) {stepper.run();}
     // Send back to home:
     stepper.moveTo(100*rotDir);
     delay(200);
-    if ((stepper.distanceToGo() != 0) && (debounce(switchObj) != 1)) {stepper.run();}
+    while ((stepper.distanceToGo() != 0) && (debounce(switchObj) != 1)) {stepper.run();}
     // Has hit home again, move off 60 steps and return encoder position:
     stepper.moveTo(60*rotDir);
     encoderPos = 0;
-    if (stepper.distanceToGo() != 0) {
+    while (stepper.distanceToGo() != 0) {
         stepper.run();
         encoderPos = encoderSteps(encoder, encoderPos);
     }    
@@ -254,10 +254,10 @@ float moveAxis(AccelStepper& stepper, Encoder& encoder, InputDebounce& switchObj
         rotDir = -1;}           // Set CCW
     else {rotDir = 1;}          // Set CW
 
-    // Set and call stepper:
+    // Call stepper and set params:
     const float vel = 500.0;
     stepper.setAcceleration(vel*rotDir/2);
-    stepper.setMaxSpeed(vel*1.2); 
+    stepper.setMaxSpeed(vel*1.2*rotDir); 
     stepper.setSpeed(vel);
     stepper.move(distance_pulses);
 
@@ -288,6 +288,37 @@ float moveAxis(AccelStepper& stepper, Encoder& encoder, InputDebounce& switchObj
     Serial.println("Error in mm: " + result_txt);
 
     return result;
+}
+
+
+/*
+Run the hopper once to the number of revolutions needed to dispense the whole volume of soil. 
+#### Params :: AccelStepper stepper, Encoder encoder
+
+#### Returns :: None
+*/
+void runHopper(AccelStepper& stepper, Encoder& encoder) {
+    const int encoder_ppr = 20*4;           // 20 ppr encoder, res of 4/ppr using encoder.h
+    const int driver_ppr = 400;           // set on stepper controller
+    const int num_revs = 1;
+    int steps = driver_ppr * num_revs;
+    long finalEncPos = encoder_ppr * num_revs;
+    long encPos = 0;
+    
+    // Call stepper and set params:
+    const float vel = 500.0;
+    stepper.setAcceleration(-vel/2);            // Hopper runs CCW
+    stepper.setMaxSpeed(-vel*1.2); 
+    stepper.setSpeed(vel);
+    stepper.setCurrentPosition(0);
+    stepper.moveTo(steps);
+
+    Serial.println("Moving hopper by: " + String(steps) + " steps.");
+
+    while ((stepper.distanceToGo() != 0) && (encPos < finalEncPos)) {
+        stepper.run();
+        encPos = encoderSteps(encoder, encPos);
+    }
 }
 
 
