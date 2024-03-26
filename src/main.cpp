@@ -57,7 +57,7 @@ AccelStepper initStepper(int indx) {
         } pinDictionary;
 
         pinDictionary PinDict[] = {
-        {22, 23},                    // Stepper 0 : X-Axis motor pins
+        {22, 23},                  // Stepper 0 : X-Axis motor pins
         {24, 25},                  // Stepper 1: Y-Axis motor pins
         {26, 27},                  // Stepper 2: Reservoir metering motor pins
         {28, 29}                   // Stepper 3: Auger motor pins
@@ -413,7 +413,7 @@ void loop() {                     // main
     const int rs = A3, en = A5, d4 = A9, d5 = A10, d6 = A11, d7 = A12;
     LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
     lcd.begin(16, 2);
-    lcd.print("DIRTBOT  STARTED");
+    // lcd.print("DIRTBOT  STARTED");
     
 
     // Demoing Encoders:
@@ -426,14 +426,32 @@ void loop() {                     // main
 
     /* Working stepper code: will run to +1600 steps then to -1600 steps continually.
     Run stepper +/- 1600 */
-    volatile int pos = 1600;
+    volatile int pos = 0;
+    stepper0.setSpeed(3500);
     stepper0.setMaxSpeed(4000);
-    stepper0.setAcceleration(1000);
+    stepper0.setAcceleration(4000);
 
     while (true) {
         // Get encoder status:
         encXPos = encoderSteps(encX, encXPos);
-        lcd.setCursor(0, 1);
+        lcd.setCursor(0,0);
+        lcd.print("ENC: " + String(encXPos));
+        pos = encXPos * 200;
+        lcd.setCursor(0,1);
+        lcd.print("STP: " + String(pos));
+        stepper0.moveTo(pos);
+        lcd.setCursor(8,0);
+        lcd.print("DTG: " + String(stepper0.distanceToGo()));
+        Serial.println(String(stepper0.distanceToGo()));
+        if (stepper0.distanceToGo() != 0) {
+            stepper0.run();
+        }
+    }
+
+    while (true) {
+        // Get encoder status:
+        encXPos = encoderSteps(encX, encXPos);
+        lcd.setCursor(0,0);
         lcd.println(String(encXPos) + " STP ");
         lcd.noCursor();
 
@@ -446,8 +464,8 @@ void loop() {                     // main
 
         volatile bool isrunning = stepper0.run();
         volatile bool ls1Status = debounce(limitSwitch1);
-        Serial.println("Limit Switch 1 Status: " + String(ls1Status));
-        lcd.print(" LS: " + String(ls1Status));
+        // Serial.println("Limit Switch 1 Status: " + String(ls1Status));
+        lcd.print(" Mtr: " + String(isrunning));
     }
 
 
