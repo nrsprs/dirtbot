@@ -424,35 +424,44 @@ void loop() {                     // main
     // }
 
 
+    // Direct encoder to motor position control test: 
+    // volatile int pos = 0;
+    // stepper0.setSpeed(2000);
+    // stepper0.setMaxSpeed(1000);
+    // stepper0.setAcceleration(4000);
+
+    // while (true) {
+    //     // Get encoder status:
+    //     encXPos = encoderSteps(encX, encXPos);
+    //     lcd.setCursor(0,0);
+    //     lcd.print("ENC: " + String(encXPos));
+    //     pos = encXPos * 200;
+    //     lcd.setCursor(0,1);
+    //     lcd.print("STP: " + String(pos));
+    //     stepper0.moveTo(pos);
+    //     lcd.setCursor(8,0);
+    //     lcd.print("DTG: " + String(stepper0.distanceToGo()));
+    //     Serial.println(String(stepper0.distanceToGo()));
+    //     if (stepper0.distanceToGo() != 0) {
+    //         stepper0.run();
+    //     }
+    // }
+
+
     /* Working stepper code: will run to +1600 steps then to -1600 steps continually.
-    Run stepper +/- 1600 */
-    volatile int pos = 0;
-    stepper0.setSpeed(3500);
-    stepper0.setMaxSpeed(4000);
+    Run stepper +/- 1600 
+    There are 400 steps per revolution when the switches are in the state: 000111 with the top speed of 1000. 
+    */
+    volatile int pos = 400;
+    stepper0.setSpeed(2000);
+    stepper0.setMaxSpeed(1000);
     stepper0.setAcceleration(4000);
 
     while (true) {
         // Get encoder status:
         encXPos = encoderSteps(encX, encXPos);
         lcd.setCursor(0,0);
-        lcd.print("ENC: " + String(encXPos));
-        pos = encXPos * 200;
-        lcd.setCursor(0,1);
-        lcd.print("STP: " + String(pos));
-        stepper0.moveTo(pos);
-        lcd.setCursor(8,0);
-        lcd.print("DTG: " + String(stepper0.distanceToGo()));
-        Serial.println(String(stepper0.distanceToGo()));
-        if (stepper0.distanceToGo() != 0) {
-            stepper0.run();
-        }
-    }
-
-    while (true) {
-        // Get encoder status:
-        encXPos = encoderSteps(encX, encXPos);
-        lcd.setCursor(0,0);
-        lcd.println(String(encXPos) + " STP ");
+        lcd.print(String(encXPos) + " STP ");
         lcd.noCursor();
 
         // Check stepper distance:
@@ -474,20 +483,20 @@ void loop() {                     // main
     long home_pos_enc = 0.5;
     // Control Loop Demo:
     lcd.setCursor(0,0);
-    lcd.println("HOMING X-AXIS...");
+    lcd.print("HOMING X-AXIS...");
     //          |0123456789ABCDEF|
 
     static_cast<int>(home_pos_stepper);
     static_cast<int>(home_pos_enc);
     lcd.setCursor(0,1);
-    lcd.println("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc) + "      ");
+    lcd.print("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc) + "      ");
 
     // Call homeAxis:
     home_pos_stepper, home_pos_enc = homeAxis(stepper0, encX, limitSwitch1, 1);      // Testing home on X-axis, move CW to get to home.
-    Serial.println("Finished Home Sequence for X Axis...");
+    Serial.print("Finished Home Sequence for X Axis...");
     static_cast<int>(home_pos_stepper);
     static_cast<int>(home_pos_enc);
-    lcd.println("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc) + "      ");
+    lcd.print("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc) + "      ");
 
     delay(5000);
     Serial.print("DONE");
