@@ -181,12 +181,13 @@ long homeAxis(AccelStepper& stepper, Encoder& encoder, InputDebounce& switchObj,
     stepper.setMaxSpeed(homeVel*rotDir*1.2);
     stepper.setSpeed(homeVel*rotDir);
     
+    // Serial.println("Running stepper...");
     // Move in direction of home:
     while (debounce(switchObj) != 1) {           // Testing:: check if switch is active high or low in circuit, result bit still is 1..
         stepper.runSpeed();
         encoderPos = encoderSteps(encoder, encoderPos);
     }
-
+    // Serial.println("Switch triggered");
     // Switch has been hit, reset positions:
     encoderPos = 0;
     stepper.setCurrentPosition(0);
@@ -206,7 +207,7 @@ long homeAxis(AccelStepper& stepper, Encoder& encoder, InputDebounce& switchObj,
         stepper.run();
         encoderPos = encoderSteps(encoder, encoderPos);
     }    
-
+    // Serial.println("Ending function, stepper pos: " + String(stepper.currentPosition()) + " encoder pos: " + encoderPos);
     return stepper.currentPosition(), encoderPos;
 }
 
@@ -426,8 +427,8 @@ void loop() {                     // main
 
     // Direct encoder to motor position control test: 
     // volatile int pos = 0;
-    // stepper0.setSpeed(2000);
-    // stepper0.setMaxSpeed(1000);
+    // stepper0.setSpeed(1000);
+    // stepper0.setMaxSpeed(2000);
     // stepper0.setAcceleration(4000);
 
     // while (true) {
@@ -435,7 +436,7 @@ void loop() {                     // main
     //     encXPos = encoderSteps(encX, encXPos);
     //     lcd.setCursor(0,0);
     //     lcd.print("ENC: " + String(encXPos));
-    //     pos = encXPos * 200;
+    //     pos = encXPos * 20;
     //     lcd.setCursor(0,1);
     //     lcd.print("STP: " + String(pos));
     //     stepper0.moveTo(pos);
@@ -452,30 +453,30 @@ void loop() {                     // main
     Run stepper +/- 1600 
     There are 400 steps per revolution when the switches are in the state: 000111 with the top speed of 1000. 
     */
-    volatile int pos = 400;
-    stepper0.setSpeed(2000);
-    stepper0.setMaxSpeed(1000);
-    stepper0.setAcceleration(4000);
+    // volatile int pos = 400;
+    // stepper0.setSpeed(1000);
+    // stepper0.setMaxSpeed(2000);
+    // stepper0.setAcceleration(4000);
 
-    while (true) {
-        // Get encoder status:
-        encXPos = encoderSteps(encX, encXPos);
-        lcd.setCursor(0,0);
-        lcd.print(String(encXPos) + " STP ");
-        lcd.noCursor();
+    // while (true) {
+    //     // Get encoder status:
+    //     encXPos = encoderSteps(encX, encXPos);
+    //     lcd.setCursor(0,0);
+    //     lcd.print(String(encXPos) + " STP ");
+    //     lcd.noCursor();
 
-        // Check stepper distance:
-        if (stepper0.distanceToGo() == 0) {
-            delay(500); // ms
-            pos = -pos;
-            stepper0.moveTo(pos);
-        }
+    //     // Check stepper distance:
+    //     if (stepper0.distanceToGo() == 0) {
+    //         delay(500); // ms
+    //         pos = -pos;
+    //         stepper0.moveTo(pos);
+    //     }
 
-        volatile bool isrunning = stepper0.run();
-        volatile bool ls1Status = debounce(limitSwitch1);
-        // Serial.println("Limit Switch 1 Status: " + String(ls1Status));
-        lcd.print(" Mtr: " + String(isrunning));
-    }
+    //     volatile bool isrunning = stepper0.run();
+    //     volatile bool ls1Status = debounce(limitSwitch1);
+    //     // Serial.println("Limit Switch 1 Status: " + String(ls1Status));
+    //     lcd.print(" Mtr: " + String(isrunning));
+    // }
 
 
     // Home Axis Test:
@@ -489,14 +490,14 @@ void loop() {                     // main
     static_cast<int>(home_pos_stepper);
     static_cast<int>(home_pos_enc);
     lcd.setCursor(0,1);
-    lcd.print("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc) + "      ");
+    lcd.print("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc));
 
     // Call homeAxis:
     home_pos_stepper, home_pos_enc = homeAxis(stepper0, encX, limitSwitch1, 1);      // Testing home on X-axis, move CW to get to home.
     Serial.print("Finished Home Sequence for X Axis...");
     static_cast<int>(home_pos_stepper);
     static_cast<int>(home_pos_enc);
-    lcd.print("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc) + "      ");
+    lcd.print("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc));
 
     delay(5000);
     Serial.print("DONE");
