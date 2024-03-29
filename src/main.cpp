@@ -12,7 +12,6 @@ Author: Nick Spears
 #include <AccelStepper.h>
 #include <LiquidCrystal.h> 
 #include <Wire.h>
-#include <Stepper.h>
 #include <elapsedMillis.h>
 #include <Encoder.h>
 #include <InputDebounce.h>
@@ -426,32 +425,32 @@ void loop() {                     // main
 
 
     // Direct encoder to motor position control test: 
-    volatile int pos = 0;
-    stepper0.setSpeed(1000);
-    stepper0.setMaxSpeed(2000);
-    stepper0.setAcceleration(4000);
+    // volatile int pos = 0;
+    // stepper0.setSpeed(1000);
+    // stepper0.setMaxSpeed(2000);
+    // stepper0.setAcceleration(4000);
 
-    while (true) {
-        // Get encoder status:
-        encXPos = encoderSteps(encX, encXPos);
-        lcd.setCursor(0,0);
-        lcd.print("ENC: " + String(encXPos));
-        pos = encXPos * 20;
-        // If encoder is in negative space, move backwards. 
-        if (pos < 0) {stepper0.moveTo(-pos);}
-        else {stepper0.moveTo(pos);}
+    // while (true) {
+    //     // Get encoder status:
+    //     encXPos = encoderSteps(encX, encXPos);
+    //     lcd.setCursor(0,0);
+    //     lcd.print("ENC: " + String(encXPos));
+    //     pos = encXPos * 20;
+    //     // If encoder is in negative space, move backwards. 
+    //     if (pos < 0) {stepper0.moveTo(-pos);}
+    //     else {stepper0.moveTo(pos);}
 
-        lcd.setCursor(0,1);
-        lcd.print("STP: " + String(pos));
-        lcd.setCursor(8,0);
-        lcd.print("DTG: " + String(stepper0.distanceToGo()));
-        Serial.println("STP Distance To Go: " + String(stepper0.distanceToGo()));
-        Serial.println("ENC Pos: " + String(pos));
-        Serial.println("Stepper Speed: " + String(stepper0.speed()));       // Returns most recent speed in steps/s
-        if (stepper0.distanceToGo() != 0) {
-            stepper0.run();
-        }
-    }
+    //     lcd.setCursor(0,1);
+    //     lcd.print("STP: " + String(pos));
+    //     lcd.setCursor(8,0);
+    //     lcd.print("DTG: " + String(stepper0.distanceToGo()));
+    //     Serial.println("STP Distance To Go: " + String(stepper0.distanceToGo()));
+    //     Serial.println("ENC Pos: " + String(pos));
+    //     Serial.println("Stepper Speed: " + String(stepper0.speed()));       // Returns most recent speed in steps/s
+    //     if (stepper0.distanceToGo() != 0) {
+    //         stepper0.run();
+    //     }
+    // }
 
 
     /* Working stepper code: will run to +1600 steps then to -1600 steps continually.
@@ -476,12 +475,20 @@ void loop() {                     // main
     //         pos = -pos;
     //         stepper0.moveTo(pos);
     //     }
-
+    //     lcd.setCursor(1,1);
+    //     lcd.print("Pos: " + String(pos));
     //     volatile bool isrunning = stepper0.run();
     //     volatile bool ls1Status = debounce(limitSwitch1);
     //     // Serial.println("Limit Switch 1 Status: " + String(ls1Status));
     //     lcd.print(" Mtr: " + String(isrunning));
     // }
+
+
+    stepper0.setAcceleration(1000);
+    stepper0.setMaxSpeed(1500);         // goes CCW when positive speed, inverted (0, 0)
+    stepper0.setSpeed(1000);
+    // stepper0.setPinsInverted(true, true);
+    while (true) {stepper0.runSpeed();}
 
 
     // Home Axis Test:
