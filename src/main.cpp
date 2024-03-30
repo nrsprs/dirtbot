@@ -41,10 +41,6 @@ void setup()                     // init
     digitalWrite(A0,LOW);
     digitalWrite(A2,LOW);
     digitalWrite(A1,HIGH);
-    // Micro Blower:
-    pinMode(30, OUTPUT);
-    pinMode(31, OUTPUT);
-
 }
 
 
@@ -94,24 +90,19 @@ bool debounce(InputDebounce& switch_object) {
             // Handle pressed state
             digitalWrite(LED_BUILTIN, HIGH);                 // Turn on built_in LED
             result = 1;
-            Serial.print("HIGH");
+            Serial.println("HIGH");
         }
         else {
             // Handle still pressed state
-            Serial.print("HIGH still pressed");
+            Serial.println("HIGH still pressed (" + String(buttonTest_OnTime) + "ms)");
         }
-        Serial.print(" (");
-        Serial.print(buttonTest_OnTime);
-        Serial.println("ms)");
     }
     else {
         if (LS1_OnTimeLast) {
             // Handle released state
             digitalWrite(LED_BUILTIN, LOW);                 // Turn off built_in LED
             result = 0;
-            Serial.print("LOW (last on-time: HIGH ");
-            Serial.print(LS1_OnTimeLast);
-            Serial.println("ms)");
+            Serial.print("LOW (last on-time: HIGH (" + String(LS1_OnTimeLast) + ")");
             LS1_OnTimeLast = 0;                             // Reset 
         }
     }
@@ -413,15 +404,37 @@ void loop() {                     // main
     const int rs = A3, en = A5, d4 = A9, d5 = A10, d6 = A11, d7 = A12;
     LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
     lcd.begin(16, 2);
-    // lcd.print("DIRTBOT  STARTED");
-    
+    lcd.setCursor(0,0);
+    lcd.print("DIRTBOT  BOOTING");
+    lcd.setCursor(0,1);
+    for (int _i = 0; _i <= 16; ++_i) {
+        lcd.print(".");
+        lcd.setCursor(_i,1);
+        digitalWrite(LED_BUILTIN, HIGH);
+        delay(200);
+        digitalWrite(LED_BUILTIN, LOW);
+        delay(50);
+    }
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("DIRTBOT  STARTED");
+    lcd.setCursor(0,1);
+    delay(2000);
 
-    // Demoing Encoders:
-    // while (true) {
-    //     encXPos = encoderSteps(encX, encXPos);
-    //     lcd.setCursor(0, 1);
-    //     lcd.println(String(encXPos) + " STEPS ");
-    // }
+
+    // Demoing Sensors:
+    lcd.clear();
+    while (true) {
+        encXPos = encoderSteps(encX, encXPos);
+        lcd.setCursor(0, 0);
+        lcd.print("ENC: " + String(encXPos));
+
+        // Check LS Status:
+        bool ls1Status = debounce(limitSwitch1);
+        lcd.setCursor(0,1);
+        lcd.print("LS: " + String(ls1Status));
+        if (ls1Status == 1) {Serial.println("LS STATUS: "+String(ls1Status)); delay(100);}
+    }
 
 
     // Direct encoder to motor position control test: 
@@ -475,7 +488,7 @@ void loop() {                     // main
     //         pos = -pos;
     //         stepper0.moveTo(pos);
     //     }
-    //     lcd.setCursor(1,1);
+    //     lcd.setCursor(1,0);
     //     lcd.print("Pos: " + String(pos));
     //     volatile bool isrunning = stepper0.run();
     //     volatile bool ls1Status = debounce(limitSwitch1);
@@ -483,12 +496,6 @@ void loop() {                     // main
     //     lcd.print(" Mtr: " + String(isrunning));
     // }
 
-
-    stepper0.setAcceleration(1000);
-    stepper0.setMaxSpeed(1500);         // goes CCW when positive speed, inverted (0, 0)
-    stepper0.setSpeed(1000);
-    // stepper0.setPinsInverted(true, true);
-    while (true) {stepper0.runSpeed();}
 
 
     // Home Axis Test:
