@@ -165,19 +165,19 @@ double homeXAxis(stepperX, encX, LSX) {
 } */
 long homeAxis(AccelStepper& stepper, Encoder& encoder, InputDebounce& switchObj, int rotDir) {
     // Determine rotation direction for home | CW is pos, CCW is neg
-    const float homeVel = 100.0;                                                    // TESTING: update speed
+    const float homeVel = 300.0;                                                    // TESTING: update speed
     volatile long encoderPos = 0;
     stepper.setAcceleration(homeVel*rotDir/2);
     stepper.setMaxSpeed(homeVel*rotDir*1.2);
     stepper.setSpeed(homeVel*rotDir);
     
-    // Serial.println("Running stepper...");
+    Serial.println("Running stepper...");
     // Move in direction of home:
     while (debounce(switchObj) != 1) {           // Testing:: check if switch is active high or low in circuit, result bit still is 1..
         stepper.runSpeed();
         encoderPos = encoderSteps(encoder, encoderPos);
     }
-    // Serial.println("Switch triggered");
+    Serial.println("Switch triggered");
     // Switch has been hit, reset positions:
     encoderPos = 0;
     stepper.setCurrentPosition(0);
@@ -197,7 +197,7 @@ long homeAxis(AccelStepper& stepper, Encoder& encoder, InputDebounce& switchObj,
         stepper.run();
         encoderPos = encoderSteps(encoder, encoderPos);
     }    
-    // Serial.println("Ending function, stepper pos: " + String(stepper.currentPosition()) + " encoder pos: " + encoderPos);
+    Serial.println("Ending function, stepper pos: " + String(stepper.currentPosition()) + " encoder pos: " + encoderPos);
     return stepper.currentPosition(), encoderPos;
 }
 
@@ -392,6 +392,66 @@ void sensorDemo(LiquidCrystal& lcd, Encoder& encX, InputDebounce& limitSwitch1) 
 }
 
 
+void userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushButton) {
+    // User Input & Start Screen:
+    lcd.clear();
+    int encPos = -99;
+    volatile bool start_cmd = 0;
+    volatile bool dirt_filled = 0;
+
+    
+    while (start_cmd == 0) {
+        // Q: Dirt filled state:
+        while (dirt_filled == 0) {
+            volatile bool chn;
+            volatile bool dirt_fill_yes = 1;
+            volatile int prevEncPos = 0;
+            encPos = 0;
+            chn = 0;
+            lcd.setCursor(0, 0);
+            lcd.print("IS DIRT FILLED?" + String(encPos));
+            encPos = encoderSteps(encoder, prevEncPos);
+            
+            if (encPos <= 0) {       // "NO" state
+                if (chn = 1) {lcd.clear();}
+                lcd.setCursor(2,1);
+                lcd.print("[] NO    YES");
+                chn = 1;
+            }
+            if (encPos > 0) {      // "YES" state
+                if (chn = 1) {lcd.clear();}
+                lcd.setCursor(3,1);
+                lcd.print("  NO [] YES");
+                chn = 1;
+                dirt_fill_yes = 1;
+                delay(200);
+            }
+
+            bool pbStatus = debounce(pushButton);
+            if ((pbStatus == 1) && (dirt_fill_yes == 1)) {        // ON Pressed state
+                lcd.clear();
+                lcd.setCursor(4,0);
+                lcd.print("RECEIVED:");
+                lcd.setCursor(7,1);
+                lcd.print("YES");
+                dirt_filled = 1;            // End prompt
+            }
+
+        }
+        
+
+
+
+
+        // // Check LS Status:
+        // bool ls1Status = debounce(pushButton);
+        // lcd.setCursor(0,1);
+        // lcd.print("LS: " + String(ls1Status));
+        // if (ls1Status == 1) {Serial.println("LS STATUS: "+String(ls1Status)); delay(100);}
+    }
+}
+
+
 void loop() {                     // main 
     // Initalize stepper motor objects:
     AccelStepper stepper0 = initStepper(0);                                                         // X-Axis motor, pins 22, 23
@@ -405,9 +465,11 @@ void loop() {                     // main
     // Create input DB object:
     static InputDebounce limitSwitch1;      // Pin 4
     static InputDebounce limitSwitch2;      // Pin 5
+    static InputDebounce userPushButton;    // Pin 11
     // Setup debounced pull-down pin:
     limitSwitch1.setup(4, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);          // Pin 4
     limitSwitch2.setup(5, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);          // Pin 5
+    userPushButton.setup(11, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);       // Pin 11
 
 
     // Initalize encoder objects:
@@ -415,6 +477,7 @@ void loop() {                     // main
     static Encoder encY(18, 19);           // Pins 18 & 19 are for Y-Axis encoder (intr 2 & 3)
     static Encoder enc3(2, 3);             // Pins 2 & 3 are for the hopper encoder (intr 4 & 5)
     static Encoder enc4(6, 7);             // Pins 6 & 7 are for the auger encoder (no intr)
+    static Encoder userEncKnob(12, 13);    // Pins 12 & 13 are for the user input encoder (no intr)
     volatile long encXPos = -99, encYPos = -99, enc3Pos = -99, enc4Pos = -99;
     
 
@@ -422,26 +485,31 @@ void loop() {                     // main
     const int rs = A3, en = A5, d4 = A9, d5 = A10, d6 = A11, d7 = A12;
     LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
     lcd.begin(16, 2);
-    lcd.setCursor(0,0);
-    lcd.print("DIRTBOT  BOOTING");
-    lcd.setCursor(0,1);
-    for (int _i = 0; _i <= 16; ++_i) {
-        lcd.print(".");
-        lcd.setCursor(_i,1);
-        digitalWrite(LED_BUILTIN, HIGH);
-        delay(200);
-        digitalWrite(LED_BUILTIN, LOW);
-        delay(50);
+
+    bool startup_animation = 0;
+    if (startup_animation == 1) {
+        lcd.setCursor(0,0);
+        lcd.print("DIRTBOT  BOOTING");
+        lcd.setCursor(0,1);
+        for (int _i = 0; _i <= 16; ++_i) {
+            lcd.print(".");
+            lcd.setCursor(_i,1);
+            digitalWrite(LED_BUILTIN, HIGH);
+            delay(200);
+            digitalWrite(LED_BUILTIN, LOW);
+            delay(50);
+        }
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print("DIRTBOT  READY");
+        lcd.setCursor(0,1);
+        delay(2000);
+        lcd.clear();
     }
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("DIRTBOT  STARTED");
-    lcd.setCursor(0,1);
-    delay(2000);
-    lcd.clear();
 
+    userInput(lcd, encX, limitSwitch1);
 
-    sensorDemo(lcd, encX, limitSwitch1);
+    // sensorDemo(lcd, encX, limitSwitch1);
 
 
     // Direct encoder to motor position control test: 
@@ -523,6 +591,10 @@ void loop() {                     // main
     Serial.print("Finished Home Sequence for X Axis...");
     static_cast<int>(home_pos_stepper);
     static_cast<int>(home_pos_enc);
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Homing Done...");
+    lcd.setCursor(0,1);
     lcd.print("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc));
 
     delay(5000);
