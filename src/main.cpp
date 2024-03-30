@@ -374,6 +374,24 @@ void microBlower(bool pwr, bool dir) {
 }
 
 
+void sensorDemo(LiquidCrystal& lcd, Encoder& encX, InputDebounce& limitSwitch1) {
+    // Demoing Sensors:
+    lcd.clear();
+    int encXPos = -99;
+    while (true) {
+        encXPos = encoderSteps(encX, encXPos);
+        lcd.setCursor(0, 0);
+        lcd.print("ENC: " + String(encXPos));
+
+        // Check LS Status:
+        bool ls1Status = debounce(limitSwitch1);
+        lcd.setCursor(0,1);
+        lcd.print("LS: " + String(ls1Status));
+        if (ls1Status == 1) {Serial.println("LS STATUS: "+String(ls1Status)); delay(100);}
+    }
+}
+
+
 void loop() {                     // main 
     // Initalize stepper motor objects:
     AccelStepper stepper0 = initStepper(0);                                                         // X-Axis motor, pins 22, 23
@@ -420,21 +438,10 @@ void loop() {                     // main
     lcd.print("DIRTBOT  STARTED");
     lcd.setCursor(0,1);
     delay(2000);
-
-
-    // Demoing Sensors:
     lcd.clear();
-    while (true) {
-        encXPos = encoderSteps(encX, encXPos);
-        lcd.setCursor(0, 0);
-        lcd.print("ENC: " + String(encXPos));
 
-        // Check LS Status:
-        bool ls1Status = debounce(limitSwitch1);
-        lcd.setCursor(0,1);
-        lcd.print("LS: " + String(ls1Status));
-        if (ls1Status == 1) {Serial.println("LS STATUS: "+String(ls1Status)); delay(100);}
-    }
+
+    sensorDemo(lcd, encX, limitSwitch1);
 
 
     // Direct encoder to motor position control test: 
