@@ -395,39 +395,38 @@ void sensorDemo(LiquidCrystal& lcd, Encoder& encX, InputDebounce& limitSwitch1) 
 void userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushButton) {
     // User Input & Start Screen:
     lcd.clear();
-    int encPos = -99;
+    volatile int encPos = -99;
     volatile bool start_cmd = 0;
     volatile bool dirt_filled = 0;
-
+    volatile bool tray_size_x = 0;
+    volatile int x_tray_cnt;
+    volatile bool tray_size_y = 0;
+    volatile int y_tray_cnt;
+    volatile bool start_confirmation = 0;
     
     while (start_cmd == 0) {
         // Q: Dirt filled state:
+        
+        volatile bool pbStatus;
+        volatile int prevEncPos = 0;
         while (dirt_filled == 0) {
-            volatile bool chn;
-            volatile bool dirt_fill_yes = 1;
-            volatile int prevEncPos = 0;
+            volatile bool dirt_fill_yes = 0;
             encPos = 0;
-            chn = 0;
             lcd.setCursor(0, 0);
-            lcd.print("IS DIRT FILLED?" + String(encPos));
+            lcd.print("IS DIRT FILLED? ");
             encPos = encoderSteps(encoder, prevEncPos);
             
             if (encPos <= 0) {       // "NO" state
-                if (chn = 1) {lcd.clear();}
-                lcd.setCursor(2,1);
-                lcd.print("[] NO    YES");
-                chn = 1;
+                lcd.setCursor(0,1);
+                lcd.print("  [] NO    YES  ");
             }
             if (encPos > 0) {      // "YES" state
-                if (chn = 1) {lcd.clear();}
-                lcd.setCursor(3,1);
-                lcd.print("  NO [] YES");
-                chn = 1;
+                lcd.setCursor(0,1);
+                lcd.print("     NO [] YES  ");
                 dirt_fill_yes = 1;
-                delay(200);
+                pbStatus = debounce(pushButton);
             }
 
-            bool pbStatus = debounce(pushButton);
             if ((pbStatus == 1) && (dirt_fill_yes == 1)) {        // ON Pressed state
                 lcd.clear();
                 lcd.setCursor(4,0);
@@ -435,19 +434,109 @@ void userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushButton) 
                 lcd.setCursor(7,1);
                 lcd.print("YES");
                 dirt_filled = 1;            // End prompt
+                delay (2000);
+                prevEncPos = 0;
+                lcd.clear();
             }
-
         }
+
+    while (tray_size_x == 0) {
+        // Q: TRAY X SIZE? 
+        lcd.setCursor(0, 0);
+        lcd.print("TRAY X SIZE:    ");
+        encPos = encoderSteps(encoder, encPos);
         
+        if (encPos <= 0) {       // Num trays is less than 0, just set to 0..
+            x_tray_cnt = 0;
+            encPos = 0;
+            prevEncPos = 0;
+            lcd.setCursor(0,1);
+            lcd.print("    [" + String(x_tray_cnt) + "] PLUGS");
+        }
+        if (encPos > 0) {      //  Increment counter for number of trays: 
+            x_tray_cnt = encPos/4;      // 1 Increment is 4 ticks 
+            lcd.setCursor(0,1);
+            lcd.print("    [" + String(x_tray_cnt) + "] PLUGS");
+            pbStatus = debounce(pushButton);
+        }
 
+        if ((pbStatus == 1) && (x_tray_cnt >= 0)) {        // ON Pressed state
+            lcd.clear();
+            lcd.setCursor(4,0);
+            lcd.print("RECEIVED:");
+            lcd.setCursor(7,1);
+            lcd.print("[" + String(x_tray_cnt) + "] PLUGS");
+            tray_size_x = 1;            // End prompt
+            delay (2000);
+            lcd.clear();
+        }
+    }
 
+    while (tray_size_y == 0) {
+        // Q: TRAY Y SIZE? 
+        lcd.setCursor(0, 0);
+        lcd.print("TRAY Y SIZE:    ");
+        encPos = encoderSteps(encoder, encPos);
+        
+        if (encPos <= 0) {       // Num trays is less than 0, just set to 0..
+            y_tray_cnt = 0;
+            encPos = 0;
+            prevEncPos = 0;
+            lcd.setCursor(0,1);
+            lcd.print("    [" + String(y_tray_cnt) + "] PLUGS");
+        }
+        if (encPos > 0) {      //  Increment counter for number of trays: 
+            y_tray_cnt = encPos/4;      // 1 Increment is 4 ticks 
+            lcd.setCursor(0,1);
+            lcd.print("    [" + String(y_tray_cnt) + "] PLUGS");
+            pbStatus = debounce(pushButton);
+        }
 
+        if ((pbStatus == 1) && (y_tray_cnt >= 0)) {        // ON Pressed state
+            lcd.clear();
+            lcd.setCursor(4,0);
+            lcd.print("RECEIVED:");
+            lcd.setCursor(7,1);
+            lcd.print("[" + String(y_tray_cnt) + "] PLUGS");
+            tray_size_y = 1;            // End prompt
+            delay (2000);
+            lcd.clear();
+        }
+    }
 
-        // // Check LS Status:
-        // bool ls1Status = debounce(pushButton);
-        // lcd.setCursor(0,1);
-        // lcd.print("LS: " + String(ls1Status));
-        // if (ls1Status == 1) {Serial.println("LS STATUS: "+String(ls1Status)); delay(100);}
+    while (start_confirmation == 0) {
+        volatile bool start_confirmed = 0;
+        encPos = 0;
+        lcd.setCursor(0, 0);
+        lcd.print("START DIRTBOT? ");
+        encPos = encoderSteps(encoder, prevEncPos);
+        
+        if (encPos <= 0) {       // "NO" state
+            lcd.setCursor(0,1);
+            lcd.print("  [] NO    YES  ");
+        }
+        if (encPos > 0) {      // "YES" state
+            lcd.setCursor(0,1);
+            lcd.print("     NO [] YES  ");
+            start_confirmed = 1;
+            pbStatus = debounce(pushButton);
+        }
+
+        if ((pbStatus == 1) && (start_confirmed == 1)) {        // ON Pressed state
+            lcd.clear();
+            lcd.setCursor(4,0);
+            lcd.print("RECEIVED:");
+            lcd.setCursor(7,1);
+            lcd.print("YES");
+            start_confirmation = 1;            // End prompt
+            start_cmd = 1;
+            delay (2000);
+            prevEncPos = 0;
+            lcd.clear();
+        }
+    } 
+
+    
     }
 }
 
@@ -507,9 +596,9 @@ void loop() {                     // main
         lcd.clear();
     }
 
-    userInput(lcd, encX, limitSwitch1);
+    userInput(lcd, userEncKnob, userPushButton);
 
-    // sensorDemo(lcd, encX, limitSwitch1);
+    // sensorDemo(lcd, userEncKnob, userPushButton);
 
 
     // Direct encoder to motor position control test: 
@@ -574,31 +663,31 @@ void loop() {                     // main
 
 
     // Home Axis Test:
-    long home_pos_stepper = 1.2;
-    long home_pos_enc = 0.5;
-    // Control Loop Demo:
-    lcd.setCursor(0,0);
-    lcd.print("HOMING X-AXIS...");
-    //          |0123456789ABCDEF|
+    // long home_pos_stepper = 1.2;
+    // long home_pos_enc = 0.5;
+    // // Control Loop Demo:
+    // lcd.setCursor(0,0);
+    // lcd.print("HOMING X-AXIS...");
+    // //          |0123456789ABCDEF|
 
-    static_cast<int>(home_pos_stepper);
-    static_cast<int>(home_pos_enc);
-    lcd.setCursor(0,1);
-    lcd.print("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc));
+    // static_cast<int>(home_pos_stepper);
+    // static_cast<int>(home_pos_enc);
+    // lcd.setCursor(0,1);
+    // lcd.print("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc));
 
-    // Call homeAxis:
-    home_pos_stepper, home_pos_enc = homeAxis(stepper0, encX, limitSwitch1, 1);      // Testing home on X-axis, move CW to get to home.
-    Serial.print("Finished Home Sequence for X Axis...");
-    static_cast<int>(home_pos_stepper);
-    static_cast<int>(home_pos_enc);
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("Homing Done...");
-    lcd.setCursor(0,1);
-    lcd.print("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc));
+    // // Call homeAxis:
+    // home_pos_stepper, home_pos_enc = homeAxis(stepper0, encX, limitSwitch1, 1);      // Testing home on X-axis, move CW to get to home.
+    // Serial.print("Finished Home Sequence for X Axis...");
+    // static_cast<int>(home_pos_stepper);
+    // static_cast<int>(home_pos_enc);
+    // lcd.clear();
+    // lcd.setCursor(0,0);
+    // lcd.print("Homing Done...");
+    // lcd.setCursor(0,1);
+    // lcd.print("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc));
 
-    delay(5000);
-    Serial.print("DONE");
-    while (1) {}
-    exit (0);
+    // delay(5000);
+    // Serial.print("DONE");
+    // while (1) {}
+    // exit (0);
 }
