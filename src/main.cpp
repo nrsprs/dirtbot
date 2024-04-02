@@ -393,28 +393,18 @@ void sensorDemo(LiquidCrystal& lcd, Encoder& encX, InputDebounce& limitSwitch1) 
 }
 
 
-class ProcessParams {
-    public:
-    int x_size;             // Number of plugs in the X-Axis
-    int y_size;             // Number of plugs in the Y-Axis
-
-    ProcessParams(int& x_size, int& y_size): 
-        x_size(x_size), y_size(y_size) {}
-};
-
-
-void userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushButton) {
+Vector<int> userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushButton) {
     // User Input & Start Screen:
     lcd.clear();
+    Vector<int> processParams;
     volatile int encPos = -99;
     volatile bool start_cmd = 0;
     volatile bool dirt_filled = 0;
     volatile bool tray_size_x = 0;
-    volatile int x_tray_cnt;
+    int x_tray_cnt;
     volatile bool tray_size_y = 0;
-    volatile int y_tray_cnt;
+    int y_tray_cnt;
     volatile bool start_confirmation = 0;
-    String processParams = ""
     
     while (start_cmd == 0) {
         // Q: Dirt filled state:
@@ -467,7 +457,7 @@ void userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushButton) 
         }
         if (encPos > 0) {                                   //  Increment counter for number of trays: 
             x_tray_cnt = encPos/4;                          // 1 Increment is 4 ticks 
-            if (x_tray_cnt >= 3) {x_tray_cnt = 3;}
+            if (x_tray_cnt >= 4) {x_tray_cnt = 4;}
             lcd.setCursor(0,1);
             lcd.print("    [" + String(x_tray_cnt) + "] PLUGS");
             pbStatus = debounce(pushButton);
@@ -480,6 +470,7 @@ void userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushButton) 
             lcd.setCursor(7,1);
             lcd.print("[" + String(x_tray_cnt) + "] PLUGS");
             tray_size_x = 1;                                // End prompt
+            processParams.push_back(x_tray_cnt);
             delay (2000);
             lcd.clear();
         }
@@ -500,7 +491,7 @@ void userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushButton) 
         }
         if (encPos > 0) {                                   //  Increment counter for number of trays: 
             y_tray_cnt = encPos/4;                          // 1 Increment is 4 ticks 
-            if (y_tray_cnt >= 4) {y_tray_cnt == 4;}         // Keep the tray count maxxed at 4
+            if (y_tray_cnt >= 3) {y_tray_cnt == 3;}         // Keep the tray count maxxed at 4
             lcd.setCursor(0,1);
             lcd.print("    [" + String(y_tray_cnt) + "] PLUGS");
             pbStatus = debounce(pushButton);
@@ -513,6 +504,7 @@ void userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushButton) 
             lcd.setCursor(7,1);
             lcd.print("[" + String(y_tray_cnt) + "] PLUGS");
             tray_size_y = 1;                                // End prompt
+            processParams.push_back(y_tray_cnt);            // Insert y count to return vector
             delay (2000);
             lcd.clear();
         }
@@ -551,7 +543,7 @@ void userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushButton) 
     } 
     
     }
-    return;
+    return processParams;
 }
 
 
