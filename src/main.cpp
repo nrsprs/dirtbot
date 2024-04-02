@@ -393,6 +393,11 @@ void sensorDemo(LiquidCrystal& lcd, Encoder& encX, InputDebounce& limitSwitch1) 
 }
 
 
+/*
+Interface for receiving the number of plugs in the X and Y directions & blocks until user is ready. 
+
+Returns :: <Vector> (int: number of x trays, number of y trays)
+*/
 Vector<int> userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushButton) {
     // User Input & Start Screen:
     lcd.clear();
@@ -602,7 +607,8 @@ void loop() {                     // main
         lcd.clear();
     }
 
-    userInput(lcd, userEncKnob, userPushButton);
+    // Get user input and number of plugs in the X and Y direction:
+    Vector<int> processParams = userInput(lcd, userEncKnob, userPushButton);
 
     // sensorDemo(lcd, userEncKnob, userPushButton);
 
