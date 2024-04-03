@@ -607,7 +607,7 @@ void loop() {                     // main
     lcd.begin(16, 2);
 
     // Start Animation: 
-    bool startup_animation = 0;
+    bool startup_animation = 1;
     if (startup_animation == 1) {
         lcd.setCursor(0,0);
         lcd.print("DIRTBOT  BOOTING");
