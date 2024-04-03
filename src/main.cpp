@@ -401,7 +401,9 @@ Returns :: <Vector> (int: number of x trays, number of y trays)
 Vector<int> userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushButton) {
     // User Input & Start Screen:
     lcd.clear();
-    Vector<int> processParams;
+    const int ELEMENT_COUNT_MAX = 2;
+    int storage_array[2];
+    Vector<int> processParams(storage_array);
     volatile int encPos = -99;
     volatile bool start_cmd = 0;
     volatile bool dirt_filled = 0;
@@ -410,11 +412,10 @@ Vector<int> userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushB
     volatile bool tray_size_y = 0;
     int y_tray_cnt;
     volatile bool start_confirmation = 0;
-    volatile int _testing = 0;
+    int _testing = 0;
     
     while (start_cmd == 0) {
         // Q: Dirt filled state:
-        
         volatile bool pbStatus;
         volatile int prevEncPos = 0;
         while (dirt_filled == 0) {
@@ -452,7 +453,6 @@ Vector<int> userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushB
                 encPos = 0;
             }
         }
-
     while (tray_size_x == 0) {
         // Q: TRAY X SIZE? 
         lcd.setCursor(0, 0);
@@ -491,7 +491,6 @@ Vector<int> userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushB
             encPos = 0;
         }
     }
-
     encPos = 0;
     while (tray_size_y == 0) {
         // Q: TRAY Y SIZE? 
@@ -532,7 +531,6 @@ Vector<int> userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushB
             prevEncPos = 0;
         }
     }
-
     while (start_confirmation == 0) {
         volatile bool start_confirmed = 0;
         encPos = 0;
@@ -569,7 +567,6 @@ Vector<int> userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushB
             encPos = 0;
         }
     } 
-    
     }
     return processParams;
 }
@@ -610,7 +607,7 @@ void loop() {                     // main
     lcd.begin(16, 2);
 
     // Start Animation: 
-    bool startup_animation = 1;
+    bool startup_animation = 0;
     if (startup_animation == 1) {
         lcd.setCursor(0,0);
         lcd.print("DIRTBOT  BOOTING");
@@ -633,12 +630,9 @@ void loop() {                     // main
 
     // Get user input and number of plugs in the X and Y direction:
     Vector<int> processParams = userInput(lcd, userEncKnob, userPushButton);
-    int x_tray_size = processParams[0];     // should be 2
-    int y_tray_size = processParams[1];     // should be 3
-    Serial.println("User Output X: " + String(x_tray_size));
-    Serial.println("User Output Y: " + String(y_tray_size));
+    Serial.println("User Output X: " + String(processParams[0]));
+    Serial.println("User Output Y: " + String(processParams[1]));
     delay(3000);
-    exit(0);
 
     // sensorDemo(lcd, userEncKnob, userPushButton);
 
