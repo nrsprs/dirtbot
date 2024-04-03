@@ -350,31 +350,6 @@ void runAuger(AccelStepper& stepper, Encoder& encoder) {
 }
 
 
-/*
-## microBlower
-Sets the digtial output pins of the microblower. 
-#### Params:
-pwr :: ublower power, 0 for off, 1 for on 
-dir :: ublower direction, 0 for in, 1 for out
-#### Return: None
-*/
-void microBlower(bool pwr, bool dir) {
-    const int pwr_pin = 30; 
-    const int dir_pin = 31;
-    if (pwr == 0) {                 // Turn blower off:
-        digitalWrite(pwr_pin, LOW);}
-    elif (pwr == 1) {               // Turn blower on:
-        digitalWrite(pwr_pin, HIGH);}
-    
-    if (dir == 0) {                 // Suck air:
-        digitalWrite(dir_pin, LOW);
-        }
-    elif (dir == 1) {               // Blow air: 
-        digitalWrite(dir_pin, HIGH);
-    }
-}
-
-
 void sensorDemo(LiquidCrystal& lcd, Encoder& encX, InputDebounce& limitSwitch1) {
     // Demoing Sensors:
     lcd.clear();
