@@ -434,6 +434,9 @@ Vector<int> userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushB
                 pbStatus = debounce(pushButton);
             }
 
+            // TESTING, REMOVE ME: 
+            pbStatus = 1;
+            dirt_fill_yes = 1;
             if ((pbStatus == 1) && (dirt_fill_yes == 1)) {        // ON Pressed state
                 lcd.clear();
                 lcd.setCursor(4,0);
@@ -468,6 +471,9 @@ Vector<int> userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushB
             pbStatus = debounce(pushButton);
         }
 
+        // TESTING, REMOVE ME: 
+        pbStatus = 1;
+        x_tray_cnt = 2;
         if ((pbStatus == 1) && (x_tray_cnt >= 0)) {        // ON Pressed state
             lcd.clear();
             lcd.setCursor(4,0);
@@ -502,6 +508,9 @@ Vector<int> userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushB
             pbStatus = debounce(pushButton);
         }
 
+        // TESTING, REMOVE ME: 
+        pbStatus = 1;
+        y_tray_cnt = 3;
         if ((pbStatus == 1) && (y_tray_cnt >= 0)) {         // ON Pressed state
             lcd.clear();
             lcd.setCursor(4,0);
@@ -533,6 +542,9 @@ Vector<int> userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushB
             pbStatus = debounce(pushButton);
         }
 
+        // TESTING, REMOVE ME: 
+        pbStatus = 1;
+        start_confirmed = 1;
         if ((pbStatus == 1) && (start_confirmed == 1)) {        // ON Pressed state
             lcd.clear();
             lcd.setCursor(4,0);
@@ -569,7 +581,7 @@ void loop() {                     // main
     // Setup debounced pull-down pin:
     limitSwitch1.setup(4, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);          // Pin 4
     limitSwitch2.setup(5, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);          // Pin 5
-    userPushButton.setup(11, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);       // Pin 11
+    userPushButton.setup(11, BUTTON_DB_DELAY, InputDebounce::PIM_INT_PULL_UP_RES);       // Pin 11
 
 
     // Initalize encoder objects:
@@ -609,6 +621,12 @@ void loop() {                     // main
 
     // Get user input and number of plugs in the X and Y direction:
     Vector<int> processParams = userInput(lcd, userEncKnob, userPushButton);
+    int x_tray_size = processParams[0];     // should be 2
+    int y_tray_size = processParams[1];     // should be 3
+    Serial.println("User Output X: " + String(x_tray_size));
+    Serial.println("User Output Y: " + String(y_tray_size));
+    delay(3000);
+    exit(0);
 
     // sensorDemo(lcd, userEncKnob, userPushButton);
 
