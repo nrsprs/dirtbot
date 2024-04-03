@@ -410,6 +410,7 @@ Vector<int> userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushB
     volatile bool tray_size_y = 0;
     int y_tray_cnt;
     volatile bool start_confirmation = 0;
+    volatile int _testing = 0;
     
     while (start_cmd == 0) {
         // Q: Dirt filled state:
@@ -434,9 +435,10 @@ Vector<int> userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushB
                 pbStatus = debounce(pushButton);
             }
 
-            // TESTING, REMOVE ME: 
+            if (_testing >= 1) {
             pbStatus = 1;
             dirt_fill_yes = 1;
+            }
             if ((pbStatus == 1) && (dirt_fill_yes == 1)) {        // ON Pressed state
                 lcd.clear();
                 lcd.setCursor(4,0);
@@ -447,13 +449,14 @@ Vector<int> userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushB
                 delay (2000);
                 prevEncPos = 0;
                 lcd.clear();
+                encPos = 0;
             }
         }
 
     while (tray_size_x == 0) {
         // Q: TRAY X SIZE? 
         lcd.setCursor(0, 0);
-        lcd.print("TRAY X SIZE:    ");
+        lcd.print("  TRAY X SIZE:    ");
         encPos = encoderSteps(encoder, encPos);
         
         if (encPos <= 0) {       // Num trays is less than 0, just set to 0..
@@ -461,36 +464,39 @@ Vector<int> userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushB
             encPos = 0;
             prevEncPos = 0;
             lcd.setCursor(0,1);
-            lcd.print("    [" + String(x_tray_cnt) + "] PLUGS");
+            lcd.print("    [" + String(x_tray_cnt) + "] PLUGS    ");
         }
         if (encPos > 0) {                                   //  Increment counter for number of trays: 
             x_tray_cnt = encPos/4;                          // 1 Increment is 4 ticks 
             if (x_tray_cnt >= 4) {x_tray_cnt = 4;}
             lcd.setCursor(0,1);
-            lcd.print("    [" + String(x_tray_cnt) + "] PLUGS");
+            lcd.print("    [" + String(x_tray_cnt) + "] PLUGS    ");
             pbStatus = debounce(pushButton);
         }
 
-        // TESTING, REMOVE ME: 
-        pbStatus = 1;
-        x_tray_cnt = 2;
+        if (_testing >= 2) {
+            pbStatus = 1;
+            x_tray_cnt = 2;
+        }
         if ((pbStatus == 1) && (x_tray_cnt >= 0)) {        // ON Pressed state
             lcd.clear();
             lcd.setCursor(4,0);
             lcd.print("RECEIVED:");
-            lcd.setCursor(7,1);
-            lcd.print("[" + String(x_tray_cnt) + "] PLUGS");
+            lcd.setCursor(4,1);
+            lcd.print("[" + String(x_tray_cnt) + "] PLUGS    ");
             tray_size_x = 1;                                // End prompt
             processParams.push_back(x_tray_cnt);
             delay (2000);
             lcd.clear();
+            encPos = 0;
         }
     }
 
+    encPos = 0;
     while (tray_size_y == 0) {
         // Q: TRAY Y SIZE? 
         lcd.setCursor(0, 0);
-        lcd.print("TRAY Y SIZE:    ");
+        lcd.print("  TRAY Y SIZE:    ");
         encPos = encoderSteps(encoder, encPos);
         
         if (encPos <= 0) {       // Num trays is less than 0, just set to 0..
@@ -498,29 +504,32 @@ Vector<int> userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushB
             encPos = 0;
             prevEncPos = 0;
             lcd.setCursor(0,1);
-            lcd.print("    [" + String(y_tray_cnt) + "] PLUGS");
+            lcd.print("    [" + String(y_tray_cnt) + "] PLUGS    ");
         }
         if (encPos > 0) {                                   //  Increment counter for number of trays: 
             y_tray_cnt = encPos/4;                          // 1 Increment is 4 ticks 
-            if (y_tray_cnt >= 3) {y_tray_cnt == 3;}         // Keep the tray count maxxed at 4
+            if (y_tray_cnt >= 3) {y_tray_cnt = 3;}         // Keep the tray count maxxed at 4
             lcd.setCursor(0,1);
-            lcd.print("    [" + String(y_tray_cnt) + "] PLUGS");
+            lcd.print("    [" + String(y_tray_cnt) + "] PLUGS    ");
             pbStatus = debounce(pushButton);
         }
 
-        // TESTING, REMOVE ME: 
-        pbStatus = 1;
-        y_tray_cnt = 3;
+        if (_testing >= 3) {
+            pbStatus = 1;
+            y_tray_cnt = 3;
+        }
         if ((pbStatus == 1) && (y_tray_cnt >= 0)) {         // ON Pressed state
             lcd.clear();
             lcd.setCursor(4,0);
             lcd.print("RECEIVED:");
-            lcd.setCursor(7,1);
-            lcd.print("[" + String(y_tray_cnt) + "] PLUGS");
+            lcd.setCursor(4,1);
+            lcd.print("[" + String(y_tray_cnt) + "] PLUGS    ");
             tray_size_y = 1;                                // End prompt
             processParams.push_back(y_tray_cnt);            // Insert y count to return vector
             delay (2000);
             lcd.clear();
+            encPos = 0;
+            prevEncPos = 0;
         }
     }
 
@@ -542,9 +551,10 @@ Vector<int> userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushB
             pbStatus = debounce(pushButton);
         }
 
-        // TESTING, REMOVE ME: 
-        pbStatus = 1;
-        start_confirmed = 1;
+        if (_testing >= 4) {
+            pbStatus = 1;
+            start_confirmed = 1;
+        }
         if ((pbStatus == 1) && (start_confirmed == 1)) {        // ON Pressed state
             lcd.clear();
             lcd.setCursor(4,0);
@@ -556,6 +566,7 @@ Vector<int> userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushB
             delay (2000);
             prevEncPos = 0;
             lcd.clear();
+            encPos = 0;
         }
     } 
     
@@ -598,7 +609,8 @@ void loop() {                     // main
     LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
     lcd.begin(16, 2);
 
-    bool startup_animation = 0;
+    // Start Animation: 
+    bool startup_animation = 1;
     if (startup_animation == 1) {
         lcd.setCursor(0,0);
         lcd.print("DIRTBOT  BOOTING");
@@ -613,7 +625,7 @@ void loop() {                     // main
         }
         lcd.clear();
         lcd.setCursor(0,0);
-        lcd.print("DIRTBOT  READY");
+        lcd.print(" DIRTBOT  READY");
         lcd.setCursor(0,1);
         delay(2000);
         lcd.clear();
