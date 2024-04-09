@@ -328,9 +328,9 @@ Run the auger once to half the number of revolutions needed to dispense the whol
 void runAuger(AccelStepper& stepper, Encoder& encoder) {
     const int encoder_ppr = 20*4;           // 20 ppr encoder, res of 4/ppr using encoder.h
     const int driver_ppr = 400;             // set on stepper controller
-    const int num_revs = 1;                                                                 //## Testing:: need to validate this nunmber.                       
-    int steps = driver_ppr * num_revs;
-    long finalEncPos = encoder_ppr * num_revs;
+    const float num_revs = 2.5;                                                //## Testing:: need to validate this nunmber.                       
+    float steps = driver_ppr * num_revs;
+    float finalEncPos = encoder_ppr * num_revs;
     long encPos = 0;
     
     // Call stepper and set params:
