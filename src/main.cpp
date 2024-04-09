@@ -24,7 +24,7 @@ Author: Nick Spears
 void setup()                     // init 
 {  
     // Begin serial:
-    Serial.begin(9600);
+    Serial.begin(250000);
     Serial.println("Serial Begun.");
 
     // Assign Pin Modes: 
@@ -334,7 +334,7 @@ void runAuger(AccelStepper& stepper, Encoder& encoder) {
     long encPos = 0;
     
     // Call stepper and set params:
-    const float vel = 500.0;
+    const float vel = 1000.0;
     stepper.setAcceleration(vel/2);        // Auger runs CW
     stepper.setMaxSpeed(vel*1.2); 
     stepper.setSpeed(vel);
@@ -368,6 +368,42 @@ void sensorDemo(LiquidCrystal& lcd, Encoder& encX, InputDebounce& limitSwitch1) 
 }
 
 
+
+void directControlDemo(AccelStepper& stepper, LiquidCrystal& lcd, Encoder& encX) {
+    // Set baud rate to 250000 for accurate stepping calls. 
+    // Direct encoder to motor position control test: 
+    volatile int pos = 0;
+    volatile int encXPos = -99;
+    stepper.setSpeed(1000);
+    stepper.setMaxSpeed(2000);
+    stepper.setAcceleration(800);
+
+    while (true) {
+        // Get encoder status:
+        encXPos = encoderSteps(encX, encXPos);
+        // If encoder is in negative space, move backwards. 
+        if (pos < 0) {stepper.moveTo(-pos);}
+        else {stepper.moveTo(pos);}
+        pos = encXPos * 20;
+
+        // Set and display LCD:
+        lcd.setCursor(0,0);
+        lcd.print("ENC: " + String(encXPos));
+        lcd.setCursor(0,1);
+        lcd.print("STP: " + String(pos));
+        lcd.setCursor(8,0);
+        lcd.print("DTG: " + String(stepper.distanceToGo()));
+        Serial.println("STP Distance To Go: " + String(stepper.distanceToGo()));
+        Serial.println("ENC Pos: " + String(pos));
+        Serial.println("Stepper Speed: " + String(stepper.speed()));       // Returns most recent speed in steps/s
+        if (stepper.distanceToGo() != 0) {
+            stepper.run();
+        }
+    }
+}
+
+
+
 /*
 Interface for receiving the number of plugs in the X and Y directions & blocks until user is ready. 
 
@@ -376,7 +412,6 @@ Returns :: <Vector> (int: number of x trays, number of y trays)
 Vector<int> userInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushButton) {
     // User Input & Start Screen:
     lcd.clear();
-    const int ELEMENT_COUNT_MAX = 2;
     int storage_array[2];
     Vector<int> processParams(storage_array);
     volatile int encPos = -99;
@@ -581,8 +616,23 @@ void loop() {                     // main
     LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
     lcd.begin(16, 2);
 
+
+    // Sensor demo to make sure that your sensors actually work:
+    // sensorDemo(lcd, userEncKnob, userPushButton);
+
+    // Direct encoder to motor position control test: 
+    // directControlDemo(stepper0, lcd, encX);
+
+    /*
+    Guidelines for calling stepper.run():
+     * * Minimize math, LCD, Serial, and encoder calls while in loop that calls stepper.run()
+     * * Maximize speed of stepper by maintaining at least as many calls as the pwm rate
+     * * Increase baud rate to 250000 to reduce lost steps
+    */
+
+
     // Start Animation: 
-    bool startup_animation = 1;
+    bool startup_animation = 0;
     if (startup_animation == 1) {
         lcd.setCursor(0,0);
         lcd.print("DIRTBOT  BOOTING");
@@ -601,76 +651,17 @@ void loop() {                     // main
         lcd.setCursor(0,1);
         delay(2000);
         lcd.clear();
+    
+        // Get user input and number of plugs in the X and Y direction:
+        Vector<int> processParams = userInput(lcd, userEncKnob, userPushButton);
+        Serial.println("User Output X: " + String(processParams[0]));
+        Serial.println("User Output Y: " + String(processParams[1]));
+        delay(3000);    
     }
 
-    // Get user input and number of plugs in the X and Y direction:
-    Vector<int> processParams = userInput(lcd, userEncKnob, userPushButton);
-    Serial.println("User Output X: " + String(processParams[0]));
-    Serial.println("User Output Y: " + String(processParams[1]));
-    delay(3000);
 
-    // sensorDemo(lcd, userEncKnob, userPushButton);
-
-
-    // Direct encoder to motor position control test: 
-    // volatile int pos = 0;
-    // stepper0.setSpeed(1000);
-    // stepper0.setMaxSpeed(2000);
-    // stepper0.setAcceleration(4000);
-
-    // while (true) {
-    //     // Get encoder status:
-    //     encXPos = encoderSteps(encX, encXPos);
-    //     lcd.setCursor(0,0);
-    //     lcd.print("ENC: " + String(encXPos));
-    //     pos = encXPos * 20;
-    //     // If encoder is in negative space, move backwards. 
-    //     if (pos < 0) {stepper0.moveTo(-pos);}
-    //     else {stepper0.moveTo(pos);}
-
-    //     lcd.setCursor(0,1);
-    //     lcd.print("STP: " + String(pos));
-    //     lcd.setCursor(8,0);
-    //     lcd.print("DTG: " + String(stepper0.distanceToGo()));
-    //     Serial.println("STP Distance To Go: " + String(stepper0.distanceToGo()));
-    //     Serial.println("ENC Pos: " + String(pos));
-    //     Serial.println("Stepper Speed: " + String(stepper0.speed()));       // Returns most recent speed in steps/s
-    //     if (stepper0.distanceToGo() != 0) {
-    //         stepper0.run();
-    //     }
-    // }
-
-
-    /* Working stepper code: will run to +1600 steps then to -1600 steps continually.
-    Run stepper +/- 1600 
-    There are 400 steps per revolution when the switches are in the state: 000111 with the top speed of 1000. 
-    */
-    // volatile int pos = 400;
-    // stepper0.setSpeed(1000);
-    // stepper0.setMaxSpeed(2000);
-    // stepper0.setAcceleration(4000);
-
-    // while (true) {
-    //     // Get encoder status:
-    //     encXPos = encoderSteps(encX, encXPos);
-    //     lcd.setCursor(0,0);
-    //     lcd.print(String(encXPos) + " STP ");
-    //     lcd.noCursor();
-
-    //     // Check stepper distance:
-    //     if (stepper0.distanceToGo() == 0) {
-    //         delay(500); // ms
-    //         pos = -pos;
-    //         stepper0.moveTo(pos);
-    //     }
-    //     lcd.setCursor(1,0);
-    //     lcd.print("Pos: " + String(pos));
-    //     volatile bool isrunning = stepper0.run();
-    //     volatile bool ls1Status = debounce(limitSwitch1);
-    //     // Serial.println("Limit Switch 1 Status: " + String(ls1Status));
-    //     lcd.print(" Mtr: " + String(isrunning));
-    // }
-
+    // runAuger() test:
+    runAuger(stepper0, encX);
 
 
     // Home Axis Test:
@@ -700,5 +691,5 @@ void loop() {                     // main
     // delay(5000);
     // Serial.print("DONE");
     // while (1) {}
-    // exit (0);
+    exit (0);
 }
