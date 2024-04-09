@@ -302,6 +302,11 @@ void runHopper(AccelStepper& stepper, Encoder& encoder) {
     long finalEncPos = encoder_ppr * num_revs;
     long encPos = 0;
     
+    // Set gpio for vibratory hopper: 
+    pinMode(15,OUTPUT);
+    digitalWrite(15,HIGH); 
+    delay(2000);                            // Delay for 2 seconds
+
     // Call stepper and set params:
     const float vel = 500.0;
     stepper.setAcceleration(-vel/2);        // Hopper runs CCW
@@ -316,6 +321,9 @@ void runHopper(AccelStepper& stepper, Encoder& encoder) {
         stepper.run();
         encPos = encoderSteps(encoder, encPos);
     }
+    
+    // Reset gpio for vibratory hopper: 
+    digitalWrite(15,LOW); 
 }
 
 
@@ -661,7 +669,11 @@ void loop() {                     // main
 
 
     // runAuger() test:
-    runAuger(stepper0, encX);
+    // runAuger(stepper0, encX);
+
+
+    // runHopper() test: 
+    runHopper(stepper2, enc3);
 
 
     // Home Axis Test:
