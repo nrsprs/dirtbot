@@ -297,7 +297,7 @@ Run the hopper once to the number of revolutions needed to dispense the whole vo
 void runHopper(AccelStepper& stepper, Encoder& encoder) {
     const int encoder_ppr = 20*4;           // 20 ppr encoder, res of 4/ppr using encoder.h
     const int driver_ppr = 400;             // set on stepper controller
-    const float num_revs = 1/5;
+    const float num_revs = 0.2;
     long steps = driver_ppr * num_revs;
     long finalEncPos = encoder_ppr * num_revs;
     long encPos = 0;
@@ -673,7 +673,7 @@ void loop() {                     // main
 
 
     // runHopper() test: 
-    runHopper(stepper2, enc3);
+    runHopper(stepper0, enc3);
 
 
     // Home Axis Test:
@@ -703,5 +703,7 @@ void loop() {                     // main
     // delay(5000);
     // Serial.print("DONE");
     // while (1) {}
+
+    Serial.println("Exit...");
     exit (0);
 }
