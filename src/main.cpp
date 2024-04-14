@@ -12,22 +12,23 @@ Version :: 1.0
 
 #include <Arduino.h>
 #include <AccelStepper.h>
-#include <LiquidCrystal.h> 
-#include <Wire.h>
+#include <Debounce.h>
+#include <Dictionary.h>
 #include <elapsedMillis.h>
 #include <Encoder.h>
-#include <InputDebounce.h>
-#include <Dictionary.h>
-#include <Vector.h>
 #include <EncoderSteps.h>
-#include <RunAuger.h>
-#include <InitUserInput.h>
-#include <RunHopper.h>
-#include <Debounce.h>
 #include <HomeAxis.h>
+#include <InitUserInput.h>
+#include <InputDebounce.h>
+#include <LiquidCrystal.h>
+#include <RunAuger.h>
+#include <RunHopper.h>
 #include <StartAnimation.h>
+#include <Wire.h>
+#include <Vector.h>
 
 #define elif else if
+#pragma clang diagnostic ignored "-Wunused-variable"
 
 
 void setup()                     // init 
@@ -225,7 +226,7 @@ void loop() {                     // main
     // Call homeAxis:
     home_pos_stepper, home_pos_enc = HomeAxis(stepper0, encX, limitSwitch1, 1);      // Testing home on X-axis, move CW to get to home.
     Serial.print("Finished Home Sequence for X Axis...");
-    static_cast<int>(home_pos_stepper);
+    static_cast<int>(home_pos_stepper); //type: ignore
     static_cast<int>(home_pos_enc);
     lcd.clear();
     lcd.setCursor(0,0);
