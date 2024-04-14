@@ -1,4 +1,12 @@
+3.1.24:
 1. Figure out how to calculate angular position from linear position. (DONE)
 2. Create wrapper to send a stepper axis to linear position given args, perform feedback. (DONE)
 3. Get debounce on digial inputs working. (DONE)
 4. Implement motor interrupt using LS / PB inputs.
+
+4.14.24: 
+5. Test HomeAxis.
+6. Test MoveAxis.
+7. Create methods for stopping the robot during routine.
+8. Create list for pin assignments. 
+9. Create state machine within main that handles the X/Y motion, homing, and dispensing.
