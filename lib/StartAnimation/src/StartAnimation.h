@@ -6,7 +6,7 @@
 /*
 Startup Animation for DirtBot that appears on the 2x16 char LCD.
 
-Params :: 
+Params :: LiquidCrystal lcd
 
 Returns :: Vector<int> processParams
 */

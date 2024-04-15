@@ -11,6 +11,7 @@
 /*
 Interface for receiving the number of plugs in the X and Y directions & blocks until user is ready. 
 
+Params :: LiquidCrystal lcd, Encoder encoder, InputDebounce push button
 Returns :: <Vector> (int: number of x trays, number of y trays)
 */
 Vector<int> InitUserInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushButton);

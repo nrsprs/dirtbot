@@ -9,6 +9,9 @@
 
 /*
 Closed loop single axis control scheme: 
+Params :: AccelStepper stepper, Encoder encoder, InputDebounce switchObj, int rotDir
+Returns :: long stepper currentPosition , long encoderPos
+
 
 call axis, set home:
 double homeXAxis(stepperX, encX, LSX) {

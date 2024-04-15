@@ -7,9 +7,9 @@
 
 /*
 Run the hopper once to the number of revolutions needed to dispense the whole volume of soil. 
-#### Params :: AccelStepper stepper, Encoder encoder
+Params :: AccelStepper stepper, Encoder encoder
 
-#### Returns :: None
+Returns :: None
 */
 void RunHopper(AccelStepper& stepper, Encoder& encoder);
 

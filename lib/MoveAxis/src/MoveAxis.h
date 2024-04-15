@@ -8,7 +8,12 @@
 #include <EncoderSteps.h>
 
 /*
-call axis, move a distance, direction and size should be calculated before calling:
+Call axis, move a distance, direction and size should be calculated before calling:
+
+Params :: AccelStepper stepper, Encoder encoder, InputDebounce switchObj, double linearDist
+Returns :: float result
+
+Function pesudo:
 bool moveXAxis(stepperX, encX, LSX, position) {
     ## Angular to linear: https://pressbooks.bccampus.ca/humanbiomechanics/chapter/6-1-rotation-angle-and-angular-velocity-2/
     ## wtf is a microstep: https://www.linearmotiontips.com/microstepping-basics/#:~:text=Microstepping%20control%20divides%20each%20full,or%2051%2C200%20microsteps%20per%20revolution.
