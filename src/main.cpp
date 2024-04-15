@@ -17,6 +17,7 @@ Version :: 1.0
 #include <elapsedMillis.h>
 #include <Encoder.h>
 #include <EncoderSteps.h>
+#include <eStopTrigger.h>
 #include <HomeAxis.h>
 #include <InitUserInput.h>
 #include <InputDebounce.h>
@@ -39,6 +40,7 @@ void setup()                     // init
 
     // Assign Pin Modes: 
     pinMode(LED_BUILTIN, OUTPUT);       // Built-in LED
+
     // Establish LCD:
     pinMode(A14,OUTPUT);
     pinMode(A13,OUTPUT);
@@ -144,21 +146,22 @@ void loop() {                     // main
 
     // Initalize limit switches:
     #define BUTTON_DB_DELAY 100     // ms
+    int userPBPin = 2;
     // Create input DB object:
     static InputDebounce limitSwitch1;      // Pin 4
     static InputDebounce limitSwitch2;      // Pin 5
-    static InputDebounce userPushButton;    // Pin 11
+    static InputDebounce userPushButton;    // Pin 2
     // Setup debounced pull-down pin:
     limitSwitch1.setup(4, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);          // Pin 4
     limitSwitch2.setup(5, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);          // Pin 5
-    userPushButton.setup(11, BUTTON_DB_DELAY, InputDebounce::PIM_INT_PULL_UP_RES);       // Pin 11
+    userPushButton.setup(userPBPin, BUTTON_DB_DELAY, InputDebounce::PIM_INT_PULL_UP_RES);          // Pin 2 (intr 4)
 
 
     // Initalize encoder objects:
     static Encoder encX(20, 21);           // Pins 20 & 21 are for X-Axis encoder (intr 1 & 0)
     static Encoder encY(18, 19);           // Pins 18 & 19 are for Y-Axis encoder (intr 2 & 3)
-    static Encoder enc3(2, 3);             // Pins 2 & 3 are for the hopper encoder (intr 4 & 5)
-    static Encoder enc4(6, 7);             // Pins 6 & 7 are for the auger encoder (no intr)
+    static Encoder enc3(16, 17);           // Pins 16 & 17 are for the hopper encoder (no intr)
+    static Encoder enc4(14, 15);           // Pins 14 & 15 are for the auger encoder (no intr)
     static Encoder userEncKnob(12, 13);    // Pins 12 & 13 are for the user input encoder (no intr)
     volatile long encXPos = -99, encYPos = -99, enc3Pos = -99, enc4Pos = -99;
     
@@ -167,6 +170,8 @@ void loop() {                     // main
     const int rs = A3, en = A5, d4 = A9, d5 = A10, d6 = A11, d7 = A12;
     LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
     lcd.begin(16, 2);
+
+    /*====  TESTING CONFIGURATIONS  ====/
 
 
     // Sensor demo to make sure that your sensors actually work:
@@ -199,6 +204,8 @@ void loop() {                     // main
     */
 
 
+   /*====  START OF ROUTINE  =====*/
+
     // Start Animation: 
     bool startup_animation = 0;
     if (startup_animation == 1) {StartAnimation(lcd);}
@@ -209,6 +216,10 @@ void loop() {                     // main
     Serial.println("User Output Y: " + String(processParams[1]));
     delay(3000);    
 
+    // Set the user push button as a stop-everything interrupt: 
+    // ! This has to be after any not eStop user inputs are made; meaning that the interrupt needs to be unattached after the routine
+    pinMode(userPBPin, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(userPBPin), eStopTrigger, CHANGE);
 
     // Home Axis Test:
     long home_pos_stepper = 1.2;

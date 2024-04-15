@@ -1,6 +1,11 @@
 #include "InitUserInput.h"
 
 Vector<int> InitUserInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& pushButton) {
+    // Get pin and reset pin config from interrupt config:
+    int pbPin = pushButton.getPinIn();
+    pushButton.setup(pbPin, 100, InputDebounce::PIM_INT_PULL_UP_RES);
+    Serial.println("Set pin location: " + String(pbPin));
+
     // User Input & Start Screen:
     lcd.clear();
     int storage_array[2];
