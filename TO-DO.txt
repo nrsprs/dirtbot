@@ -7,6 +7,10 @@
 4.14.24: 
 5. Test HomeAxis.
 6. Test MoveAxis.
-7. Create methods for stopping the robot during routine.
-8. Create list for pin assignments. 
+7. Create methods for stopping the robot during routine. (DONE) (NEEDS TESTING)
+8. Create list for pin assignments. (NAH)
 9. Create state machine within main that handles the X/Y motion, homing, and dispensing.
+
+
+4.17.24
+10. Caldwell suggests using +5 on opto and pulling the pul and dir pins to low to control the steppers 

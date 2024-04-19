@@ -136,7 +136,7 @@ void directControlDemo(AccelStepper& stepper, LiquidCrystal& lcd, Encoder& encX)
 
 
 
-void loop() {                     // main 
+void loop() {                     // main
     // Initalize stepper motor objects:
     AccelStepper stepper0 = initStepper(0);                                      // X-Axis motor, pins 22, 23
     AccelStepper stepper1 = initStepper(1);                                      // Y-Axis motor, pins 24, 25
@@ -151,6 +151,9 @@ void loop() {                     // main
     static InputDebounce limitSwitch1;      // Pin 4
     static InputDebounce limitSwitch2;      // Pin 5
     static InputDebounce userPushButton;    // Pin 2
+    // Set A15 to HI for an extra +5 VCC pin:
+    pinMode(A15,OUTPUT);
+    digitalWrite(A15, HIGH);
     // Setup debounced pull-down pin:
     limitSwitch1.setup(4, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);          // Pin 4
     limitSwitch2.setup(5, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);          // Pin 5
@@ -170,8 +173,8 @@ void loop() {                     // main
     const int rs = A3, en = A5, d4 = A9, d5 = A10, d6 = A11, d7 = A12;
     LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
     lcd.begin(16, 2);
-
-    /*====  TESTING CONFIGURATIONS  ====/
+    lcd.backlight();
+    /*====  TESTING CONFIGURATIONS  ====*/
 
 
     // Sensor demo to make sure that your sensors actually work:
@@ -179,11 +182,12 @@ void loop() {                     // main
 
 
     // Direct encoder to motor position control test: 
-    // directControlDemo(stepper0, lcd, encX);
+    // directControlDemo(stepper1, lcd, userEncKnob);
 
 
     // runAuger() test:
-    // RunAuger(stepper0, encX);
+    // RunAuger(stepper3, encX);
+    // exit(0);
 
 
     // RunHopper() test: 
@@ -207,7 +211,7 @@ void loop() {                     // main
    /*====  START OF ROUTINE  =====*/
 
     // Start Animation: 
-    bool startup_animation = 0;
+    bool startup_animation = 1;
     if (startup_animation == 1) {StartAnimation(lcd);}
 
     // Get user input and number of plugs in the X and Y direction:
@@ -225,6 +229,7 @@ void loop() {                     // main
     long home_pos_stepper = 1.2;
     long home_pos_enc = 0.5;
     // Control Loop Demo:
+    lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("HOMING X-AXIS...");
     //          |0123456789ABCDEF|
