@@ -146,7 +146,7 @@ void loop() {                     // main
 
     // Initalize limit switches:
     #define BUTTON_DB_DELAY 100     // ms
-    int userPBPin = 2;
+    int userPBPin = 2;                      // Pin 2
     // Create input DB object:
     static InputDebounce limitSwitch1;      // Pin 4
     static InputDebounce limitSwitch2;      // Pin 5
@@ -211,14 +211,14 @@ void loop() {                     // main
    /*====  START OF ROUTINE  =====*/
 
     // Start Animation: 
-    bool startup_animation = 1;
+    bool startup_animation = 0;
     if (startup_animation == 1) {StartAnimation(lcd);}
 
     // Get user input and number of plugs in the X and Y direction:
     Vector<int> processParams = InitUserInput(lcd, userEncKnob, userPushButton);
     Serial.println("User Output X: " + String(processParams[0]));
     Serial.println("User Output Y: " + String(processParams[1]));
-    delay(3000);    
+    delay(3000);
 
     // Set the user push button as a stop-everything interrupt: 
     // ! This has to be after any not eStop user inputs are made; meaning that the interrupt needs to be unattached after the routine
@@ -240,7 +240,7 @@ void loop() {                     // main
     lcd.print("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc));
 
     // Call homeAxis:
-    home_pos_stepper, home_pos_enc = HomeAxis(stepper0, encX, limitSwitch1, 1);      // Testing home on X-axis, move CW to get to home.
+    home_pos_stepper, home_pos_enc = HomeAxis(stepper1, encX, limitSwitch1, 1);      // Testing home on X-axis, move CW to get to home.
     Serial.print("Finished Home Sequence for X Axis...");
     static_cast<int>(home_pos_stepper); //type: ignore
     static_cast<int>(home_pos_enc);
