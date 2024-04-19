@@ -22,6 +22,7 @@ Version :: 1.0
 #include <InitUserInput.h>
 #include <InputDebounce.h>
 #include <LiquidCrystal.h>
+#include <MoveAxis.h>
 #include <RunAuger.h>
 #include <RunHopper.h>
 #include <StartAnimation.h>
@@ -261,10 +262,31 @@ void loop() {                     // main
 
     /*===  STATE MACHINE  ===*/
 
+    /* 
+        start
+        home y axis
+        home x axis
+        move auger under hopper 
+        call hopper
+        while (y=0; y++; y<=processParams[1]) {
+            while (x=0; x++; x<=processParams[0]) {
+                print(moving to x, y)
+                moveAxis (distance between home and plug 1,1)
+                runAuger()
+                moveAxis (-distance to home)
+            }
+        }
+    */
+
     bool routine_is_done = 0;
     while (routine_is_done == 0) {
-        
-        
+        // Home y axis, move in the CW dir:                     ! FIX DIR IN TESTING !
+        HomeAxis(stepper1, encY, limitSwitch2, -1);
+        // Home x axis, move in the CCW dir:                    ! FIX DIR IN TESTING !
+        HomeAxis(stepper0, encX, limitSwitch1, 1);
+
+        // Move the auger under the hopper: 
+        MoveAxis(stepper0, encX, limitSwitch2, 20);     //      ! DOUBLE CHECK THE LINEAR DISTANCE OUTPUT !
     } 
 
     exit (0);
