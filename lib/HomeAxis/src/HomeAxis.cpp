@@ -21,7 +21,7 @@ long HomeAxis(AccelStepper& stepper, Encoder& encoder, InputDebounce& switchObj,
     // Move off by 80 steps, return and wait for switch to be hit:
     stepper.moveTo(-80*rotDir);
     delay(200);
-    stepper.setSpeed(homeVel*rotDir/3);
+    stepper.setSpeed(homeVel*rotDir/1.5);
     while ((stepper.distanceToGo() != 0) && (Debounce(switchObj) != 1)) {stepper.run();}
     // Send back to home:
     stepper.moveTo(100*rotDir);

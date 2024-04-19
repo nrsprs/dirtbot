@@ -193,6 +193,40 @@ void loop() {                     // main
     // RunHopper() test: 
     // RunHopper(stepper0, encX);
 
+    // Home Axis Test:
+    if (1==0) {
+        long home_pos_stepper = 1.2;
+        long home_pos_enc = 0.5;
+        // Control Loop Demo:
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print("HOMING X-AXIS...");
+        //          |0123456789ABCDEF|
+
+        static_cast<int>(home_pos_stepper);
+        static_cast<int>(home_pos_enc);
+        lcd.setCursor(0,1);
+        lcd.print("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc));
+
+        // Call homeAxis:
+        home_pos_stepper, home_pos_enc = HomeAxis(stepper1, encX, limitSwitch1, 1);      // Testing home on X-axis, move CW to get to home.
+        Serial.print("Finished Home Sequence for X Axis...");
+        static_cast<int>(home_pos_stepper); //type: ignore
+        static_cast<int>(home_pos_enc);
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print("Homing Done...");
+        lcd.setCursor(0,1);
+        lcd.print("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc));
+
+        delay(5000);
+        Serial.print("DONE");
+        while (1) {}
+
+        Serial.println("Exit...");
+        exit(0);
+    }
+
 
     /*
     Guidelines for calling stepper.run():
@@ -225,35 +259,13 @@ void loop() {                     // main
     pinMode(userPBPin, INPUT_PULLUP);
     attachInterrupt(digitalPinToInterrupt(userPBPin), eStopTrigger, CHANGE);
 
-    // Home Axis Test:
-    long home_pos_stepper = 1.2;
-    long home_pos_enc = 0.5;
-    // Control Loop Demo:
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("HOMING X-AXIS...");
-    //          |0123456789ABCDEF|
+    /*===  STATE MACHINE  ===*/
 
-    static_cast<int>(home_pos_stepper);
-    static_cast<int>(home_pos_enc);
-    lcd.setCursor(0,1);
-    lcd.print("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc));
+    bool routine_is_done = 0;
+    while (routine_is_done == 0) {
+        
+        
+    } 
 
-    // Call homeAxis:
-    home_pos_stepper, home_pos_enc = HomeAxis(stepper1, encX, limitSwitch1, 1);      // Testing home on X-axis, move CW to get to home.
-    Serial.print("Finished Home Sequence for X Axis...");
-    static_cast<int>(home_pos_stepper); //type: ignore
-    static_cast<int>(home_pos_enc);
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("Homing Done...");
-    lcd.setCursor(0,1);
-    lcd.print("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc));
-
-    delay(5000);
-    Serial.print("DONE");
-    while (1) {}
-
-    Serial.println("Exit...");
     exit (0);
 }
