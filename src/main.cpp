@@ -80,6 +80,7 @@ AccelStepper initStepper(int indx) {
 
 
 // Roundup double d
+// Return rounded up double
 double round(double d)
 {return floor(d + 0.5);}
 
