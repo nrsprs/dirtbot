@@ -187,7 +187,7 @@ void loop() {                     // main
 
 
     // runAuger() test:
-    // RunAuger(stepper3, encX);
+    // RunAuger(stepper0, encX);
     // exit(0);
 
 
