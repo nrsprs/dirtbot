@@ -276,6 +276,7 @@ void loop() {                     // main
                 moveAxis (distance between home and plug 1,1)
                 runAuger()
                 moveAxis (-distance to home)
+                runHopper()
             }
         }
     */
@@ -289,6 +290,25 @@ void loop() {                     // main
 
         // Move the auger under the hopper: 
         MoveAxis(stepper0, encX, limitSwitch2, 20);     //      ! DOUBLE CHECK THE LINEAR DISTANCE OUTPUT !
+
+        // Fill hopper:
+        RunHopper(stepper2, enc3);
+        
+        // Y-axis Counter: 
+        int y = 0;
+        while (y <= processParams[1]) {
+            // X-axis Counter:
+            int x = 0;
+            while (x <= processParams[0]) {
+                // print 
+                // move axis
+                // run auger
+                // move axis 
+                // run hopper
+                x++;
+            }
+        y++;
+        }
     } 
 
     exit (0);
