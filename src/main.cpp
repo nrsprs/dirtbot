@@ -168,8 +168,7 @@ void loop() {                     // main
     static Encoder enc3(16, 17);           // Pins 16 & 17 are for the hopper encoder (no intr)
     static Encoder enc4(14, 15);           // Pins 14 & 15 are for the auger encoder (no intr)
     static Encoder userEncKnob(12, 13);    // Pins 12 & 13 are for the user input encoder (no intr)
-    volatile long encXPos = -99, encYPos = -99, enc3Pos = -99, enc4Pos = -99;
-    
+
 
     // Initalize LCD:
     const int rs = A3, en = A5, d4 = A9, d5 = A10, d6 = A11, d7 = A12;
