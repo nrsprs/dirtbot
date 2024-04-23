@@ -269,6 +269,7 @@ void loop() {                     // main
         move auger under hopper 
         call hopper
         while (y=0; y++; y<=processParams[1]) {
+            moveAxis (distance between home and plug 1,1)
             while (x=0; x++; x<=processParams[0]) {
                 print(moving to x, y)
                 moveAxis (distance between home and plug 1,1)
