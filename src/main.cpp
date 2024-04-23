@@ -299,14 +299,14 @@ void loop() {                     // main
         float y_axis_ofs = 32.0;         // Y-Axis Offset in cm
         float plug_width = 10.0;         // Distance between plugs cp in cm
         
-        int y = 0;                                  // Y-axis Counter:
-        while (y <= processParams[1]) {
+        // Y-axis Position Counter:
+        for (int y=0; y <= processParams[1]; y++) {
             float y_dist = (y * plug_width) + y_axis_ofs;
             Serial.println("Moving Y-Axis to: " + String(y_dist));
             MoveAxis(stepper1, encY, limitSwitch2, y_dist);
             
-            int x = 0;                              // X-axis Counter:
-            while (x <= processParams[0]) {
+            // X-axis Position Counter:
+            for (int x=0; x <= processParams[0]; x++) {
                 float x_dist = (x * plug_width) + x_axis_ofs;
                 Serial.println("Moving X-Axis to: " + String(x_dist));
                 MoveAxis(stepper0, encX, limitSwitch1, x_dist);
@@ -317,11 +317,9 @@ void loop() {                     // main
                 HomeAxis(stepper0, encX, limitSwitch1, -1);
                 // Run hopper and fill auger:
                 RunHopper(stepper2, enc3);
-                x++;
             }
-            y++;
         }
-    } 
+     }
 
     exit (0);
 }

@@ -5,11 +5,11 @@
 4. Implement motor interrupt using LS / PB inputs.
 
 4.14.24: 
-5. Test HomeAxis.
-6. Test MoveAxis.
+5. Test HomeAxis. (DONE)
+6. Test MoveAxis. (DONE)
 7. Create methods for stopping the robot during routine. (DONE) (NEEDS TESTING)
 8. Create list for pin assignments. (NAH)
-9. Create state machine within main that handles the X/Y motion, homing, and dispensing.
+9. Create state machine within main that handles the X/Y motion, homing, and dispensing. (DONE)
 
 
 4.17.24
