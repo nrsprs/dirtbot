@@ -14,3 +14,7 @@
 
 4.17.24
 10. Caldwell suggests using +5 on opto and pulling the pul and dir pins to low to control the steppers 
+
+4.23.24:
+UML Breakdown: 
+https://cppcodetips.wordpress.com/2013/12/23/uml-class-diagram-explained-with-c-samples/
