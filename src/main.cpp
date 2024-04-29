@@ -187,12 +187,13 @@ void loop() {                     // main
 
 
     // runAuger() test:
-    // RunAuger(stepper0, encX);
-    // exit(0);
+    RunAuger(stepper0, encX);
+    exit(0);
 
 
     // RunHopper() test: 
     // RunHopper(stepper0, encX);
+    exit(0);
 
     // Home Axis Test:
     if (1==0) {
@@ -246,7 +247,7 @@ void loop() {                     // main
    /*====  START OF ROUTINE  =====*/
 
     // Start Animation: 
-    bool startup_animation = 0;
+    bool startup_animation = 1;
     if (startup_animation == 1) {StartAnimation(lcd);}
 
     // Get user input and number of plugs in the X and Y direction:

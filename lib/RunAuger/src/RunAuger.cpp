@@ -8,6 +8,13 @@ void RunAuger(AccelStepper& stepper, Encoder& encoder) {
     float finalEncPos = encoder_ppr * num_revs;
     long encPos = 0;
     
+    // Set gpio for vibratory auger: 
+    int hopperPin = 37;                      // Pin 37
+    pinMode(hopperPin,OUTPUT);
+    digitalWrite(hopperPin,HIGH); 
+    delay(5000);                            // Delay for 2 seconds
+    digitalWrite(hopperPin,LOW);
+
     // Call stepper and set params:
     const float vel = 1000.0;
     stepper.setAcceleration(vel);        // Auger runs CW
