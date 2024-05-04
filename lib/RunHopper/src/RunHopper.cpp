@@ -16,9 +16,7 @@ void RunHopper(AccelStepper& stepper, Encoder& encoder) {
     pinMode(hopperPinB,OUTPUT);
     digitalWrite(hopperPinA,HIGH);
     digitalWrite(hopperPinB,HIGH);
-    delay(2000);                            // Delay for 2 seconds
-    digitalWrite(hopperPinA,LOW);
-    digitalWrite(hopperPinB, LOW);
+    delay(2000);                            // Delay for 5 seconds
 
     // Call stepper and set params:
     const float vel = 500.0;
@@ -34,7 +32,6 @@ void RunHopper(AccelStepper& stepper, Encoder& encoder) {
         stepper.run();
         encPos = EncoderSteps(encoder, encPos);
     }
-    
-    // Reset gpio for vibratory hopper: 
-    digitalWrite(15,LOW); 
+    digitalWrite(hopperPinA,LOW);
+    digitalWrite(hopperPinB, LOW);
 }

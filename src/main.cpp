@@ -188,13 +188,13 @@ void loop() {                     // main
 
 
     // runAuger() test:
-    // RunAuger(stepper0, encX);
+    // RunAuger(stepper3, encX);
     // exit(0);
 
 
     // RunHopper() test: 
     RunHopper(stepper1, encX);
-    // exit(0);
+    exit(0);
 
     
     // ValidateDistance test:
