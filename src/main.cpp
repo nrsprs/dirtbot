@@ -193,13 +193,13 @@ void loop() {                     // main
 
 
     // RunHopper() test: 
-    // RunHopper(stepper0, encX);
+    RunHopper(stepper1, encX);
     // exit(0);
 
     
     // ValidateDistance test:
-    ValidateDistance(stepper0, encX, limitSwitch1);
-    exit(0);
+    // ValidateDistance(stepper0, encX, limitSwitch1);
+    // exit(0);
 
     // Home Axis Test:
     if (1==0) {
