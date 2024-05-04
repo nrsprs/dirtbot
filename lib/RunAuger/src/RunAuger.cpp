@@ -9,7 +9,7 @@ void RunAuger(AccelStepper& stepper, Encoder& encoder) {
     long encPos = 0;
     
     // Set gpio for vibratory auger: 
-    int hopperPin = 37;                      // Pin 37
+    int hopperPin = 38;                      // Pin 37
     pinMode(hopperPin,OUTPUT);
     digitalWrite(hopperPin,HIGH); 
     delay(5000);                            // Delay for 2 seconds

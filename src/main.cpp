@@ -27,6 +27,7 @@ Version :: 1.0
 #include <RunHopper.h>
 #include <StartAnimation.h>
 #include <Wire.h>
+#include <ValidateDistance.h>
 #include <Vector.h>
 
 #define elif else if
@@ -141,8 +142,8 @@ void directControlDemo(AccelStepper& stepper, LiquidCrystal& lcd, Encoder& encX)
 void loop() {                     // main
     // Initalize stepper motor objects:
     AccelStepper stepper0 = initStepper(0);                                      // X-Axis motor, pins 22, 23
-    AccelStepper stepper1 = initStepper(1);                                      // Y-Axis motor, pins 24, 25
-    AccelStepper stepper2 = initStepper(2);                                      // Hopper motor, pins 26, 27
+    AccelStepper stepper1 = initStepper(1);                                      // Hopper motor, pins 24, 25
+    AccelStepper stepper2 = initStepper(2);                                      // Y-Axis motor, pins 26, 27
     AccelStepper stepper3 = initStepper(3);                                      // Auger motor, pins 28, 29
 
 
@@ -157,9 +158,9 @@ void loop() {                     // main
     pinMode(A15,OUTPUT);
     digitalWrite(A15, HIGH);
     // Setup debounced pull-down pin:
-    limitSwitch1.setup(4, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);          // Pin 4
-    limitSwitch2.setup(5, BUTTON_DB_DELAY, InputDebounce::PIM_EXT_PULL_DOWN_RES);          // Pin 5
-    userPushButton.setup(userPBPin, BUTTON_DB_DELAY, InputDebounce::PIM_INT_PULL_UP_RES);          // Pin 2 (intr 4)
+    limitSwitch1.setup(4, BUTTON_DB_DELAY, InputDebounce::PIM_INT_PULL_UP_RES);                 // X-Axis LS, Pin 4
+    limitSwitch2.setup(5, BUTTON_DB_DELAY, InputDebounce::PIM_INT_PULL_UP_RES);                 // Y-Axis LS, Pin 5
+    userPushButton.setup(userPBPin, BUTTON_DB_DELAY, InputDebounce::PIM_INT_PULL_UP_RES);       // Pin 2 (intr 4)
 
 
     // Initalize encoder objects:
@@ -187,12 +188,17 @@ void loop() {                     // main
 
 
     // runAuger() test:
-    RunAuger(stepper0, encX);
-    exit(0);
+    // RunAuger(stepper0, encX);
+    // exit(0);
 
 
     // RunHopper() test: 
     // RunHopper(stepper0, encX);
+    // exit(0);
+
+    
+    // ValidateDistance test:
+    ValidateDistance(stepper0, encX, limitSwitch1);
     exit(0);
 
     // Home Axis Test:
@@ -202,7 +208,7 @@ void loop() {                     // main
         // Control Loop Demo:
         lcd.clear();
         lcd.setCursor(0,0);
-        lcd.print("HOMING X-AXIS...");
+        lcd.print("HOMING Y-AXIS...");
         //          |0123456789ABCDEF|
 
         static_cast<int>(home_pos_stepper);
@@ -211,8 +217,8 @@ void loop() {                     // main
         lcd.print("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc));
 
         // Call homeAxis:
-        home_pos_stepper, home_pos_enc = HomeAxis(stepper1, encX, limitSwitch1, 1);      // Testing home on X-axis, move CW to get to home.
-        Serial.print("Finished Home Sequence for X Axis...");
+        home_pos_stepper, home_pos_enc = HomeAxis(stepper2, encY, limitSwitch2, 1);      // Testing home on X-axis, move CW to get to home.
+        Serial.print("Finished Home Sequence for Y Axis...");
         static_cast<int>(home_pos_stepper); //type: ignore
         static_cast<int>(home_pos_enc);
         lcd.clear();
@@ -284,15 +290,15 @@ void loop() {                     // main
     bool routine_is_done = 0;
     while (routine_is_done == 0) {
         // Home y axis, move in the CW dir:                     ! FIX DIR IN TESTING !
-        HomeAxis(stepper1, encY, limitSwitch2, -1);
+        HomeAxis(stepper2, encY, limitSwitch2, -1);
         // Home x axis, move in the CCW dir:                    ! FIX DIR IN TESTING !
         HomeAxis(stepper0, encX, limitSwitch1, 1);
 
         // Move the auger under the hopper: 
         MoveAxis(stepper0, encX, limitSwitch2, 20);     //      ! DOUBLE CHECK THE LINEAR DISTANCE OUTPUT !
 
-        // Fill hopper:
-        RunHopper(stepper2, enc3);
+        // Fill the auger:
+        RunHopper(stepper1, enc3);
         
         // Define axis offsets for position calcs:
         float x_axis_ofs = 32.0;
@@ -303,7 +309,7 @@ void loop() {                     // main
         for (int y=0; y <= processParams[1]; y++) {
             float y_dist = (y * plug_width) + y_axis_ofs;
             Serial.println("Moving Y-Axis to: " + String(y_dist));
-            MoveAxis(stepper1, encY, limitSwitch2, y_dist);
+            MoveAxis(stepper2, encY, limitSwitch2, y_dist);
             
             // X-axis Position Counter:
             for (int x=0; x <= processParams[0]; x++) {
@@ -316,7 +322,7 @@ void loop() {                     // main
                 // Return to home and refill:
                 HomeAxis(stepper0, encX, limitSwitch1, -1);
                 // Run hopper and fill auger:
-                RunHopper(stepper2, enc3);
+                RunHopper(stepper1, enc3);
             }
         }
      }

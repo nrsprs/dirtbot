@@ -9,11 +9,15 @@ void RunHopper(AccelStepper& stepper, Encoder& encoder) {
     long encPos = 0;
     
     // Set gpio for vibratory hopper: 
-    int augerPin = 36;                      // Pin 36
-    pinMode(augerPin,OUTPUT);
-    digitalWrite(augerPin,HIGH); 
+    int augerPinA = 36;  
+    int augerPinB = 37;     
+                   // Pin 36
+    pinMode(augerPinA,OUTPUT);
+    digitalWrite(augerPinA,HIGH); 
+    digitalWrite(augerPinB,HIGH); 
     delay(2000);                            // Delay for 2 seconds
-    digitalWrite(augerPin,LOW); 
+    digitalWrite(augerPinA,LOW); 
+    digitalWrite(augerPinB, LOW);
 
     // Call stepper and set params:
     const float vel = 500.0;
