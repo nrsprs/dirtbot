@@ -48,6 +48,9 @@ float MoveAxis(AccelStepper& stepper, Encoder& encoder, InputDebounce& switchObj
                 encoderPos = EncoderSteps(encoder, encoderPos);
             }
         }
+        if (stepper.distanceToGo() == 0) {
+            break;
+        }
     }
     // Moved to position, calculate error:
     int err_ppr = finalEncPos - encoderPos;

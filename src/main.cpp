@@ -195,10 +195,10 @@ void loop() {                     // main
 
 
     // RunHopper() test: 
-    DisableLCD();
-    RunHopper(stepper1, encX);
-    ReEnableLCD(lcd);
-    exit(0);
+    // DisableLCD();
+    // RunHopper(stepper1, encX);
+    // ReEnableLCD(lcd);
+    // exit(0);
 
     
     // Turn off hopper:
@@ -207,8 +207,6 @@ void loop() {                     // main
     
     // ValidateDistance test:
     // ValidateDistance(stepper0, encX, limitSwitch1);
-    // MoveAxis(stepper0, encX, limitSwitch1, 20);     // 20 mm
-    // exit(0);
 
     // Home Axis Test:
     if (0==1) {

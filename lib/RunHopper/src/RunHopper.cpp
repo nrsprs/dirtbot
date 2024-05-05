@@ -9,13 +9,10 @@ void RunHopper(AccelStepper& stepper, Encoder& encoder) {
     long encPos = 0;
     
     // Set gpio for vibratory hopper: 
-    int hopperPinA = 36;  
-    int hopperPinB = 37;     
+    int hopperPin = 37;     
                    // Pin 36
-    pinMode(hopperPinA,OUTPUT);
-    pinMode(hopperPinB,OUTPUT);
-    digitalWrite(hopperPinA,HIGH);
-    digitalWrite(hopperPinB,HIGH);
+    pinMode(hopperPin,OUTPUT);
+    digitalWrite(hopperPin,HIGH);
     delay(2000);                            // Delay for 5 seconds
 
     // Call stepper and set params:
@@ -32,6 +29,5 @@ void RunHopper(AccelStepper& stepper, Encoder& encoder) {
         stepper.run();
         encPos = EncoderSteps(encoder, encPos);
     }
-    digitalWrite(hopperPinA,LOW);
-    digitalWrite(hopperPinB, LOW);
+    digitalWrite(hopperPin,LOW);
 }
