@@ -4,7 +4,7 @@ long HomeAxis(AccelStepper& stepper, Encoder& encoder, InputDebounce& switchObj,
     // Determine rotation direction for home | CW is pos, CCW is neg
     const float homeVel = 300.0;                                                    // TESTING: update speed
     volatile long encoderPos = 0;
-    stepper.setAcceleration(homeVel*rotDir/2);
+    stepper.setAcceleration(400);
     stepper.setMaxSpeed(homeVel*rotDir*1.2);
     stepper.setSpeed(homeVel*rotDir);
     
@@ -23,16 +23,18 @@ long HomeAxis(AccelStepper& stepper, Encoder& encoder, InputDebounce& switchObj,
 
     // Move off by 80 steps, return and wait for switch to be hit:
     Serial.println("Moving -80 steps...");
-    stepper.moveTo(-80*rotDir);
-    stepper.setSpeed(homeVel*rotDir);
+    stepper.moveTo(-20*rotDir);
+    stepper.setAcceleration(100);
+    stepper.setSpeed(-300*rotDir);
     delay(200);
     while ((stepper.distanceToGo() != 0) && (Debounce(switchObj) != 1)) {stepper.run();}
     
 
     // Send back to home:
     Serial.println("Moving +100 steps, expecting to hit switch 2nd time...");
-    stepper.moveTo(100*rotDir);
-    stepper.setSpeed(homeVel*rotDir);
+    stepper.moveTo(40*rotDir);
+    stepper.setAcceleration(100);
+    stepper.setSpeed(150*rotDir);
     delay(200);
     while ((stepper.distanceToGo() != 0) && (Debounce(switchObj) != 1)) {stepper.run();}
 

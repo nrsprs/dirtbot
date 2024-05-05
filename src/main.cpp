@@ -184,14 +184,14 @@ void loop() {                     // main
 
 
     // Direct encoder to motor position control test: 
-    // directControlDemo(stepper1, lcd, userEncKnob);
+    // directControlDemo(stepper0, lcd, userEncKnob);
 
 
     // runAuger() test:
-    DisableLCD();
-    RunAuger(stepper3, encX);
-    ReEnableLCD(lcd);
-    exit(0);
+    // DisableLCD();
+    // RunAuger(stepper3, encX);
+    // ReEnableLCD(lcd);
+    // exit(0);
 
 
     // RunHopper() test: 
@@ -202,17 +202,17 @@ void loop() {                     // main
 
     
     // ValidateDistance test:
-    ValidateDistance(stepper0, encX, limitSwitch1);
-    exit(0);
+    // ValidateDistance(stepper0, encX, limitSwitch1);
+    // exit(0);
 
     // Home Axis Test:
-    if (1==0) {
+    if (1==1) {
         long home_pos_stepper = 1.2;
         long home_pos_enc = 0.5;
         // Control Loop Demo:
         lcd.clear();
         lcd.setCursor(0,0);
-        lcd.print("HOMING Y-AXIS...");
+        lcd.print("HOMING X-AXIS...");
         //          |0123456789ABCDEF|
 
         static_cast<int>(home_pos_stepper);
@@ -221,8 +221,8 @@ void loop() {                     // main
         lcd.print("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc));
 
         // Call homeAxis:
-        home_pos_stepper, home_pos_enc = HomeAxis(stepper2, encY, limitSwitch2, 1);      // Testing home on X-axis, move CW to get to home.
-        Serial.print("Finished Home Sequence for Y Axis...");
+        home_pos_stepper, home_pos_enc = HomeAxis(stepper0, encX, limitSwitch1, 1);      // Testing home on X-axis, move CW to get to home.
+        Serial.print("Finished Home Sequence for X Axis...");
         static_cast<int>(home_pos_stepper); //type: ignore
         static_cast<int>(home_pos_enc);
         lcd.clear();
