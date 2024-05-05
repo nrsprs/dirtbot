@@ -1,7 +1,7 @@
 #include <MoveAxis.h>
 
 float MoveAxis(AccelStepper& stepper, Encoder& encoder, InputDebounce& switchObj, double linearDist) {
-    // Convert linear distance to rotations:
+    // Convert linear distance (in mm) to rotations:
     const float wheel_radius = 13.97;    // mm
     const int driver_ppr = 400;           // set on stepper controller
     const float rev_rads = 6.283185307179586476925286766559;
@@ -27,22 +27,23 @@ float MoveAxis(AccelStepper& stepper, Encoder& encoder, InputDebounce& switchObj
     const float vel = 500.0;
     stepper.setAcceleration(vel*rotDir/2);
     stepper.setMaxSpeed(vel*1.2*rotDir); 
-    stepper.setSpeed(vel);
     stepper.move(distance_pulses);
 
     Serial.println("Moving axis to: " + String(distance_pulses));
 
     // Move to angular position:
-    while ((result == 0) && (Debounce(switchObj) != 1) ) {
+    while (Debounce(switchObj) != 1) {
         // Check encoder pos: 
         if (rotDir == 1) {       // Check if axis should be moving positively:
-            if ((stepper.distanceToGo() > 0) && (encoderPos < finalEncPos)) {
+            stepper.setSpeed(vel);
+            if (stepper.distanceToGo() != 0) {
                 stepper.run();
                 encoderPos = EncoderSteps(encoder, encoderPos);
             }
         }
         if (rotDir == -1) {     // Check if the axis should be moving negatively:
-            if ((stepper.distanceToGo() < 0) && (encoderPos > finalEncPos)) {
+            stepper.setSpeed(-vel);
+            if (stepper.distanceToGo() != 0) {
                 stepper.run();
                 encoderPos = EncoderSteps(encoder, encoderPos);
             }
@@ -53,8 +54,7 @@ float MoveAxis(AccelStepper& stepper, Encoder& encoder, InputDebounce& switchObj
     float err_revs = err_ppr / encoder_ppr;
     float err_rads = err_revs * rev_rads; 
     result = err_rads * wheel_radius;
-    String result_txt = String(result);
-    Serial.println("Error in mm: " + result_txt);
+    Serial.println("Error in mm: " + String(result));
 
     return result;
 }

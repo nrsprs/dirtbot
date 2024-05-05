@@ -195,18 +195,23 @@ void loop() {                     // main
 
 
     // RunHopper() test: 
-    // DisableLCD();
-    // RunHopper(stepper1, encX);
-    // ReEnableLCD(lcd);
-    // exit(0);
+    DisableLCD();
+    RunHopper(stepper1, encX);
+    ReEnableLCD(lcd);
+    exit(0);
+
+    
+    // Turn off hopper:
+    // stepper1.disableOutputs();
 
     
     // ValidateDistance test:
     // ValidateDistance(stepper0, encX, limitSwitch1);
+    // MoveAxis(stepper0, encX, limitSwitch1, 20);     // 20 mm
     // exit(0);
 
     // Home Axis Test:
-    if (1==1) {
+    if (0==1) {
         long home_pos_stepper = 1.2;
         long home_pos_enc = 0.5;
         // Control Loop Demo:
@@ -321,7 +326,7 @@ void loop() {                     // main
             RunAuger(stepper3, enc4);
 
             // Return to home and refill:
-            HomeAxis(stepper0, encX, limitSwitch1, -1);
+            HomeAxis(stepper0, encX, limitSwitch1, 1);
             // Run hopper and fill auger:
             RunHopper(stepper1, enc3);
         }
