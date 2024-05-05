@@ -14,6 +14,7 @@ Version :: 1.0
 #include <AccelStepper.h>
 #include <Debounce.h>
 #include <Dictionary.h>
+#include <DisableLCD.h>
 #include <elapsedMillis.h>
 #include <Encoder.h>
 #include <EncoderSteps.h>
@@ -23,6 +24,7 @@ Version :: 1.0
 #include <InputDebounce.h>
 #include <LiquidCrystal.h>
 #include <MoveAxis.h>
+#include <ReEnableLCD.h>
 #include <RunAuger.h>
 #include <RunHopper.h>
 #include <StartAnimation.h>
@@ -154,9 +156,7 @@ void loop() {                     // main
     static InputDebounce limitSwitch1;      // Pin 4
     static InputDebounce limitSwitch2;      // Pin 5
     static InputDebounce userPushButton;    // Pin 2
-    // Set A15 to HI for an extra +5 VCC pin:
-    pinMode(A15,OUTPUT);
-    digitalWrite(A15, HIGH);
+
     // Setup debounced pull-down pin:
     limitSwitch1.setup(4, BUTTON_DB_DELAY, InputDebounce::PIM_INT_PULL_UP_RES);                 // X-Axis LS, Pin 4
     limitSwitch2.setup(5, BUTTON_DB_DELAY, InputDebounce::PIM_INT_PULL_UP_RES);                 // Y-Axis LS, Pin 5
@@ -188,12 +188,16 @@ void loop() {                     // main
 
 
     // runAuger() test:
-    // RunAuger(stepper3, encX);
-    // exit(0);
+    DisableLCD();
+    RunAuger(stepper3, encX);
+    ReEnableLCD(lcd);
+    exit(0);
 
 
     // RunHopper() test: 
+    // DisableLCD();
     // RunHopper(stepper1, encX);
+    // ReEnableLCD(lcd);
     // exit(0);
 
     
