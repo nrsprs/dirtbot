@@ -2,9 +2,9 @@
 
 long HomeAxis(AccelStepper& stepper, Encoder& encoder, InputDebounce& switchObj, int rotDir) {
     // Determine rotation direction for home | CW is pos, CCW is neg
-    const float homeVel = 300.0;                                                    // TESTING: update speed
+    const float homeVel = 150.0;                                                    // TESTING: update speed
     volatile long encoderPos = 0;
-    stepper.setAcceleration(400);
+    stepper.setAcceleration(200);
     stepper.setMaxSpeed(homeVel*rotDir*1.2);
     stepper.setSpeed(homeVel*rotDir);
     
