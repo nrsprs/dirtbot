@@ -193,13 +193,13 @@ void loop() {                     // main
 
 
     // RunHopper() test: 
-    RunHopper(stepper1, encX);
-    exit(0);
+    // RunHopper(stepper1, encX);
+    // exit(0);
 
     
     // ValidateDistance test:
-    // ValidateDistance(stepper0, encX, limitSwitch1);
-    // exit(0);
+    ValidateDistance(stepper0, encX, limitSwitch1);
+    exit(0);
 
     // Home Axis Test:
     if (1==0) {
@@ -253,8 +253,7 @@ void loop() {                     // main
    /*====  START OF ROUTINE  =====*/
 
     // Start Animation: 
-    bool startup_animation = 1;
-    if (startup_animation == 1) {StartAnimation(lcd);}
+    StartAnimation(lcd);
 
     // Get user input and number of plugs in the X and Y direction:
     Vector<int> processParams = InitUserInput(lcd, userEncKnob, userPushButton);
@@ -287,45 +286,42 @@ void loop() {                     // main
         }
     */
 
-    bool routine_is_done = 0;
-    while (routine_is_done == 0) {
-        // Home y axis, move in the CW dir:                     ! FIX DIR IN TESTING !
-        HomeAxis(stepper2, encY, limitSwitch2, -1);
-        // Home x axis, move in the CCW dir:                    ! FIX DIR IN TESTING !
-        HomeAxis(stepper0, encX, limitSwitch1, 1);
+    // Home y axis, move in the CW dir:                     ! FIX DIR IN TESTING !
+    HomeAxis(stepper2, encY, limitSwitch2, -1);
+    // Home x axis, move in the CCW dir:                    ! FIX DIR IN TESTING !
+    HomeAxis(stepper0, encX, limitSwitch1, 1);
 
-        // Move the auger under the hopper: 
-        MoveAxis(stepper0, encX, limitSwitch2, 20);     //      ! DOUBLE CHECK THE LINEAR DISTANCE OUTPUT !
+    // Move the auger under the hopper: 
+    MoveAxis(stepper0, encX, limitSwitch2, 20);     //      ! DOUBLE CHECK THE LINEAR DISTANCE OUTPUT !
 
-        // Fill the auger:
-        RunHopper(stepper1, enc3);
+    // Fill the auger:
+    RunHopper(stepper1, enc3);
+    
+    // Define axis offsets for position calcs:
+    float x_axis_ofs = 32.0;
+    float y_axis_ofs = 32.0;         // Y-Axis Offset in cm
+    float plug_width = 10.0;         // Distance between plugs cp in cm
+    
+    // Y-axis Position Counter:
+    for (int y=0; y <= processParams[1]; y++) {
+        float y_dist = (y * plug_width) + y_axis_ofs;
+        Serial.println("Moving Y-Axis to: " + String(y_dist));
+        MoveAxis(stepper2, encY, limitSwitch2, y_dist);
         
-        // Define axis offsets for position calcs:
-        float x_axis_ofs = 32.0;
-        float y_axis_ofs = 32.0;         // Y-Axis Offset in cm
-        float plug_width = 10.0;         // Distance between plugs cp in cm
-        
-        // Y-axis Position Counter:
-        for (int y=0; y <= processParams[1]; y++) {
-            float y_dist = (y * plug_width) + y_axis_ofs;
-            Serial.println("Moving Y-Axis to: " + String(y_dist));
-            MoveAxis(stepper2, encY, limitSwitch2, y_dist);
-            
-            // X-axis Position Counter:
-            for (int x=0; x <= processParams[0]; x++) {
-                float x_dist = (x * plug_width) + x_axis_ofs;
-                Serial.println("Moving X-Axis to: " + String(x_dist));
-                MoveAxis(stepper0, encX, limitSwitch1, x_dist);
-                delay(500);
-                RunAuger(stepper3, enc4);
+        // X-axis Position Counter:
+        for (int x=0; x <= processParams[0]; x++) {
+            float x_dist = (x * plug_width) + x_axis_ofs;
+            Serial.println("Moving X-Axis to: " + String(x_dist));
+            MoveAxis(stepper0, encX, limitSwitch1, x_dist);
+            delay(500);
+            RunAuger(stepper3, enc4);
 
-                // Return to home and refill:
-                HomeAxis(stepper0, encX, limitSwitch1, -1);
-                // Run hopper and fill auger:
-                RunHopper(stepper1, enc3);
-            }
+            // Return to home and refill:
+            HomeAxis(stepper0, encX, limitSwitch1, -1);
+            // Run hopper and fill auger:
+            RunHopper(stepper1, enc3);
         }
-     }
+    }
 
     exit (0);
 }
