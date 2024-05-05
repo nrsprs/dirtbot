@@ -20,11 +20,11 @@ bool Debounce(InputDebounce& switch_object) {
             // Handle pressed state
             digitalWrite(LED_BUILTIN, HIGH);                 // Turn on built_in LED
             result = 1;
-            Serial.println("HIGH");
+            // Serial.println("HIGH");
         }
         else {
             // Handle still pressed state
-            Serial.println("HIGH still pressed (" + String(buttonTest_OnTime) + "ms)");
+            // Serial.println("HIGH still pressed (" + String(buttonTest_OnTime) + "ms)");
         }
     }
     else {
@@ -32,7 +32,7 @@ bool Debounce(InputDebounce& switch_object) {
             // Handle released state
             digitalWrite(LED_BUILTIN, LOW);                 // Turn off built_in LED
             result = 0;
-            Serial.print("LOW (last on-time: HIGH (" + String(LS1_OnTimeLast) + ")");
+            // Serial.print("LOW (last on-time: HIGH (" + String(LS1_OnTimeLast) + ")");
             LS1_OnTimeLast = 0;                             // Reset 
         }
     }
