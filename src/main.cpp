@@ -180,7 +180,7 @@ void loop() {                     // main
 
 
     // Sensor demo to make sure that your sensors actually work:
-    // sensorDemo(lcd, userEncKnob, userPushButton);
+    // sensorDemo(lcd, userEncKnob, limitSwitch2);
 
 
     // Direct encoder to motor position control test: 
@@ -224,7 +224,7 @@ void loop() {                     // main
         lcd.print("STP: " + String(home_pos_stepper) + " ENC: " + String(home_pos_enc));
 
         // Call homeAxis:
-        home_pos_stepper, home_pos_enc = HomeAxis(stepper0, encX, limitSwitch1, 1);      // Testing home on X-axis, move CW to get to home.
+        home_pos_stepper, home_pos_enc = HomeAxis(stepper2, encY, limitSwitch2, 1);      // Testing home on X-axis, move CW to get to home.
         Serial.print("Finished Home Sequence for X Axis...");
         static_cast<int>(home_pos_stepper); //type: ignore
         static_cast<int>(home_pos_enc);
@@ -260,7 +260,7 @@ void loop() {                     // main
    /*====  START OF ROUTINE  =====*/
 
     // Start Animation: 
-    StartAnimation(lcd);
+    // StartAnimation(lcd);         // ! TURN THIS BACK ON FOR DEMO !
 
     // Get user input and number of plugs in the X and Y direction:
     Vector<int> processParams = InitUserInput(lcd, userEncKnob, userPushButton);
@@ -274,6 +274,17 @@ void loop() {                     // main
     attachInterrupt(digitalPinToInterrupt(userPBPin), eStopTrigger, CHANGE);
 
     /*===  STATE MACHINE  ===*/
+
+    /*
+    Definitions:
+    * Distance between the first column of plugs & x-axis stepper: 55 mm 
+    * Distance between plugs: 50 mm
+    * Distance between the first row of plugs and the y-axis stepper: 0 mm 
+      (simply home and leave the y-axis at the current position)
+
+    * X-Axis Positivity: + moves carrier to stepper, - moves carrier away from stepper.
+    * Y-Axis Positivity: + moves carrier to limit switch, - moves carrier away from switch.
+    */
 
     /* 
         start
@@ -293,40 +304,39 @@ void loop() {                     // main
         }
     */
 
-    // Home y axis, move in the CW dir:                     ! FIX DIR IN TESTING !
-    HomeAxis(stepper2, encY, limitSwitch2, -1);
-    // Home x axis, move in the CCW dir:                    ! FIX DIR IN TESTING !
+    // Home y axis, move in the CW dir:
+    HomeAxis(stepper2, encY, limitSwitch2, 1);
+    // Home x axis, move in the CCW dir:
     HomeAxis(stepper0, encX, limitSwitch1, 1);
 
-    // Move the auger under the hopper: 
-    MoveAxis(stepper0, encX, limitSwitch2, 20);     //      ! DOUBLE CHECK THE LINEAR DISTANCE OUTPUT !
-
     // Fill the auger:
-    RunHopper(stepper1, enc3);
+    // RunHopper(stepper1, enc3);
     
     // Define axis offsets for position calcs:
-    float x_axis_ofs = 32.0;
-    float y_axis_ofs = 32.0;         // Y-Axis Offset in cm
-    float plug_width = 10.0;         // Distance between plugs cp in cm
+    float x_axis_ofs = -55.0;         // X-Axis offset in mm
+    float y_axis_ofs = 0.0;
+    float plug_width = 50.0;         // Distance between plugs cp in mm
     
     // Y-axis Position Counter:
     for (int y=0; y <= processParams[1]; y++) {
         float y_dist = (y * plug_width) + y_axis_ofs;
-        Serial.println("Moving Y-Axis to: " + String(y_dist));
+        Serial.println("Moving Y-Axis to: " + String(y_dist) + " mm");
         MoveAxis(stepper2, encY, limitSwitch2, y_dist);
         
         // X-axis Position Counter:
         for (int x=0; x <= processParams[0]; x++) {
             float x_dist = (x * plug_width) + x_axis_ofs;
-            Serial.println("Moving X-Axis to: " + String(x_dist));
+            Serial.println("Moving X-Axis to: " + String(x_dist) + " mm");
+            
+
             MoveAxis(stepper0, encX, limitSwitch1, x_dist);
-            delay(500);
+            delay(200);
             RunAuger(stepper3, enc4);
 
             // Return to home and refill:
             HomeAxis(stepper0, encX, limitSwitch1, 1);
             // Run hopper and fill auger:
-            RunHopper(stepper1, enc3);
+            // RunHopper(stepper1, enc3);
         }
     }
 

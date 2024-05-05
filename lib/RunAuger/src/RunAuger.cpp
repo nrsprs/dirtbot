@@ -22,7 +22,7 @@ void RunAuger(AccelStepper& stepper, Encoder& encoder) {
     stepper.setCurrentPosition(0);
     stepper.moveTo(steps);
 
-    Serial.println("Moving hopper by: " + String(steps) + " steps.");
+    Serial.println("Moving auger by: " + String(steps) + " steps.");
 
     while ((stepper.distanceToGo() != 0) && (encPos < finalEncPos)) {
         stepper.run();

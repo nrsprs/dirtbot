@@ -29,7 +29,7 @@ Vector<int> InitUserInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& p
             encPos = 0;
             lcd.setCursor(0, 0);
             lcd.print("IS DIRT FILLED? ");
-            encPos = EncoderSteps(encoder, prevEncPos);
+            encPos = -EncoderSteps(encoder, prevEncPos);
             
             if (encPos <= 0) {       // "NO" state
                 lcd.setCursor(0,1);
@@ -63,7 +63,7 @@ Vector<int> InitUserInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& p
         // Q: TRAY X SIZE? 
         lcd.setCursor(0, 0);
         lcd.print("  TRAY X SIZE:    ");
-        encPos = EncoderSteps(encoder, encPos);
+        encPos = -EncoderSteps(encoder, encPos);
         
         if (encPos <= 0) {       // Num trays is less than 0, just set to 0..
             x_tray_cnt = 0;
@@ -102,7 +102,7 @@ Vector<int> InitUserInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& p
         // Q: TRAY Y SIZE? 
         lcd.setCursor(0, 0);
         lcd.print("  TRAY Y SIZE:    ");
-        encPos = EncoderSteps(encoder, encPos);
+        encPos = -EncoderSteps(encoder, encPos);
         
         if (encPos <= 0) {       // Num trays is less than 0, just set to 0..
             y_tray_cnt = 0;
@@ -142,7 +142,7 @@ Vector<int> InitUserInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& p
         encPos = 0;
         lcd.setCursor(0, 0);
         lcd.print("START DIRTBOT? ");
-        encPos = EncoderSteps(encoder, prevEncPos);
+        encPos = -EncoderSteps(encoder, prevEncPos);
         
         if (encPos <= 0) {       // "NO" state
             lcd.setCursor(0,1);

@@ -12,6 +12,9 @@ void eStopTrigger() {
     // Assume user input button is on pin 2:
     static InputDebounce userPushButton;    // Pin 2
 
+    userPushButton.setup(digitalPinToInterrupt(2), 100, InputDebounce::PIM_INT_PULL_UP_RES);       // Pin 2 (intr 4)
+
+    noInterrupts();
     lcd.clear();
     volatile int encPos = -99;
     volatile int prevEncPos = 0;
@@ -32,7 +35,7 @@ void eStopTrigger() {
         lcd.print("[DIRTBOT PAUSED]");
         lcd.setCursor(0,1);
         
-        encPos = EncoderSteps(userEncKnob, prevEncPos);
+        encPos = -EncoderSteps(userEncKnob, prevEncPos);
         if (encPos <= 0) {       // "NO" state
             lcd.setCursor(0,1);
             lcd.print(" RESUME? [] NO  ");
@@ -41,6 +44,8 @@ void eStopTrigger() {
             lcd.setCursor(0,1);
             lcd.print(" RESUME? [] YES ");
             buttonPress = Debounce(userPushButton);
+            delay(500);
+            buttonPress = 1;
         }
 
         if (buttonPress == 1) {        // ON Pressed state
@@ -54,6 +59,7 @@ void eStopTrigger() {
             lcd.clear();
             encPos = 0;
             restart_confirmation = 1;       // Allow an exit to while loop
+            interrupts();
         }
     }
 }

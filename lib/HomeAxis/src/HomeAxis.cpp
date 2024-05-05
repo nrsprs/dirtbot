@@ -23,7 +23,7 @@ long HomeAxis(AccelStepper& stepper, Encoder& encoder, InputDebounce& switchObj,
 
     // Move off by 80 steps, return and wait for switch to be hit:
     Serial.println("Moving -80 steps...");
-    stepper.moveTo(-20*rotDir);
+    stepper.moveTo(-30*rotDir);
     stepper.setAcceleration(100);
     stepper.setSpeed(-300*rotDir);
     delay(200);
@@ -32,7 +32,7 @@ long HomeAxis(AccelStepper& stepper, Encoder& encoder, InputDebounce& switchObj,
 
     // Send back to home:
     Serial.println("Moving +100 steps, expecting to hit switch 2nd time...");
-    stepper.moveTo(40*rotDir);
+    stepper.moveTo(50*rotDir);
     stepper.setAcceleration(100);
     stepper.setSpeed(150*rotDir);
     delay(200);
