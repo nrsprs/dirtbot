@@ -32,10 +32,12 @@ Vector<int> InitUserInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& p
             encPos = -EncoderSteps(encoder, prevEncPos);
             
             if (encPos <= 0) {       // "NO" state
+                encPos = 0;
                 lcd.setCursor(0,1);
                 lcd.print("  [] NO    YES  ");
             }
             if (encPos > 0) {      // "YES" state
+                encPos = 1;
                 lcd.setCursor(0,1);
                 lcd.print("     NO [] YES  ");
                 dirt_fill_yes = 1;
@@ -59,6 +61,7 @@ Vector<int> InitUserInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& p
                 encPos = 0;
             }
         }
+    encPos = 4;
     while (tray_size_x == 0) {
         // Q: TRAY X SIZE? 
         lcd.setCursor(0, 0);
@@ -66,15 +69,15 @@ Vector<int> InitUserInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& p
         encPos = -EncoderSteps(encoder, encPos);
         
         if (encPos <= 0) {       // Num trays is less than 0, just set to 0..
-            x_tray_cnt = 0;
-            encPos = 0;
-            prevEncPos = 0;
+            x_tray_cnt = 1;
+            encPos = 4;
+            prevEncPos = 4;
             lcd.setCursor(0,1);
             lcd.print("    [" + String(x_tray_cnt) + "] PLUGS    ");
         }
         if (encPos > 0) {                                   //  Increment counter for number of trays: 
             x_tray_cnt = encPos/4;                          // 1 Increment is 4 ticks 
-            if (x_tray_cnt >= 4) {x_tray_cnt = 4;}
+            if (x_tray_cnt >= 4) {x_tray_cnt = 4; encPos = 4*4;}
             lcd.setCursor(0,1);
             lcd.print("    [" + String(x_tray_cnt) + "] PLUGS    ");
             pbStatus = Debounce(pushButton);
@@ -97,7 +100,7 @@ Vector<int> InitUserInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& p
             encPos = 0;
         }
     }
-    encPos = 0;
+    encPos = 4;
     while (tray_size_y == 0) {
         // Q: TRAY Y SIZE? 
         lcd.setCursor(0, 0);
@@ -105,15 +108,15 @@ Vector<int> InitUserInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& p
         encPos = -EncoderSteps(encoder, encPos);
         
         if (encPos <= 0) {       // Num trays is less than 0, just set to 0..
-            y_tray_cnt = 0;
-            encPos = 0;
-            prevEncPos = 0;
+            y_tray_cnt = 1;
+            encPos = 4;
+            prevEncPos = 4;
             lcd.setCursor(0,1);
             lcd.print("    [" + String(y_tray_cnt) + "] PLUGS    ");
         }
         if (encPos > 0) {                                   //  Increment counter for number of trays: 
             y_tray_cnt = encPos/4;                          // 1 Increment is 4 ticks 
-            if (y_tray_cnt >= 3) {y_tray_cnt = 3;}         // Keep the tray count maxxed at 4
+            if (y_tray_cnt >= 3) {y_tray_cnt = 3; encPos = 3*4;}         // Keep the tray count maxed at 4
             lcd.setCursor(0,1);
             lcd.print("    [" + String(y_tray_cnt) + "] PLUGS    ");
             pbStatus = Debounce(pushButton);
@@ -145,10 +148,12 @@ Vector<int> InitUserInput(LiquidCrystal& lcd, Encoder& encoder, InputDebounce& p
         encPos = -EncoderSteps(encoder, prevEncPos);
         
         if (encPos <= 0) {       // "NO" state
+            encPos = 0;
             lcd.setCursor(0,1);
             lcd.print("  [] NO    YES  ");
         }
         if (encPos > 0) {      // "YES" state
+            encPos = 1;
             lcd.setCursor(0,1);
             lcd.print("     NO [] YES  ");
             start_confirmed = 1;

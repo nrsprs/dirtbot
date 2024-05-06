@@ -29,7 +29,7 @@ float MoveAxis(AccelStepper& stepper, Encoder& encoder, InputDebounce& switchObj
     stepper.setMaxSpeed(vel*1.2*rotDir); 
     stepper.move(distance_pulses);
 
-    Serial.println("Moving axis to: " + String(distance_pulses));
+    Serial.println("Moving axis by: " + String(distance_pulses) + " pulses");
 
     // Move to angular position:
     while (Debounce(switchObj) != 1) {

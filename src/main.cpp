@@ -260,13 +260,15 @@ void loop() {                     // main
    /*====  START OF ROUTINE  =====*/
 
     // Start Animation: 
-    // StartAnimation(lcd);         // ! TURN THIS BACK ON FOR DEMO !
+    StartAnimation(lcd);         // ! TURN THIS BACK ON FOR DEMO !
 
     // Get user input and number of plugs in the X and Y direction:
+    noInterrupts();
     Vector<int> processParams = InitUserInput(lcd, userEncKnob, userPushButton);
-    Serial.println("User Output X: " + String(processParams[0]));
-    Serial.println("User Output Y: " + String(processParams[1]));
+    Serial.println("User Input X: " + String(processParams[0]));
+    Serial.println("User Input Y: " + String(processParams[1]));
     delay(3000);
+    interrupts();
 
     // Set the user push button as a stop-everything interrupt: 
     // ! This has to be after any not eStop user inputs are made; meaning that the interrupt needs to be unattached after the routine
@@ -304,41 +306,78 @@ void loop() {                     // main
         }
     */
 
+    // Define axis offsets for position calcs:
+    float x_axis_ofs = -55.0;         // X-Axis offset in mm
+    float y_axis_ofs = 0.0;
+    float x_plug_width = 40.0;         // Distance between plugs cp in mm
+    float y_plug_width = 30.0;
+
     // Home y axis, move in the CW dir:
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("HOMING Y-AXIS...");
     HomeAxis(stepper2, encY, limitSwitch2, 1);
+
     // Home x axis, move in the CCW dir:
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("HOMING X-AXIS...");
     HomeAxis(stepper0, encX, limitSwitch1, 1);
+
+    Serial.println("Homed X and Y axis...");
 
     // Fill the auger:
     // RunHopper(stepper1, enc3);
     
-    // Define axis offsets for position calcs:
-    float x_axis_ofs = -55.0;         // X-Axis offset in mm
-    float y_axis_ofs = 0.0;
-    float plug_width = 50.0;         // Distance between plugs cp in mm
-    
+    // Count numer of filled plugs:
+    int plug_count = 1;
+
+    float x_dist;
+    float y_dist;
+
     // Y-axis Position Counter:
-    for (int y=0; y <= processParams[1]; y++) {
-        float y_dist = (y * plug_width) + y_axis_ofs;
+    for (int y=0; y <= (processParams[1]-1); y++) {
+        y_dist = (y * -y_plug_width) + y_axis_ofs;
         Serial.println("Moving Y-Axis to: " + String(y_dist) + " mm");
         MoveAxis(stepper2, encY, limitSwitch2, y_dist);
         
         // X-axis Position Counter:
-        for (int x=0; x <= processParams[0]; x++) {
-            float x_dist = (x * plug_width) + x_axis_ofs;
+        for (int x=0; x <= (processParams[0]-1); x++) {
+            lcd.clear();
+            lcd.setCursor(0,0);
+            lcd.print("FILLING PLUG " + String(plug_count));
+            x_dist = (x * -x_plug_width) + x_axis_ofs;
             Serial.println("Moving X-Axis to: " + String(x_dist) + " mm");
-            
-
             MoveAxis(stepper0, encX, limitSwitch1, x_dist);
-            delay(200);
-            RunAuger(stepper3, enc4);
+            delay(1200);
+            
+            // RunAuger(stepper3, enc4);
+            Serial.println("Plug " + String(plug_count) + " filled.");
+            plug_count+=1;
 
             // Return to home and refill:
-            HomeAxis(stepper0, encX, limitSwitch1, 1);
+            lcd.clear();
+            lcd.setCursor(0,0);
+            lcd.print("RELOADING AUGER");
+
+            // HomeAxis(stepper0, encX, limitSwitch1, 1);
+            MoveAxis(stepper0, encX, limitSwitch1, -x_dist);
             // Run hopper and fill auger:
             // RunHopper(stepper1, enc3);
         }
     }
 
-    exit (0);
+    // Check if the y-axis has reached the 'return' position, move if it hasn't:
+    if (y_dist < y_plug_width*2) {
+        MoveAxis(stepper2, encY, limitSwitch2, -(y_plug_width-y_dist));
+    }
+
+    MoveAxis(stepper0, encX, limitSwitch1, -60);
+    
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("OPERATION DONE");
+    Serial.println("Finished operation...");
+    delay(5000);
+    detachInterrupt(digitalPinToInterrupt(userPBPin));
 }
