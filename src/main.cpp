@@ -327,7 +327,7 @@ void loop() {                     // main
     Serial.println("Homed X and Y axis...");
 
     // Fill the auger:
-    // RunHopper(stepper1, enc3);
+    RunHopper(stepper1, enc3);
     
     // Count numer of filled plugs:
     int plug_count = 1;
@@ -351,7 +351,7 @@ void loop() {                     // main
             MoveAxis(stepper0, encX, limitSwitch1, x_dist);
             delay(1200);
             
-            // RunAuger(stepper3, enc4);
+            RunAuger(stepper3, enc4);
             Serial.println("Plug " + String(plug_count) + " filled.");
             plug_count+=1;
 
@@ -363,13 +363,13 @@ void loop() {                     // main
             // HomeAxis(stepper0, encX, limitSwitch1, 1);
             MoveAxis(stepper0, encX, limitSwitch1, -x_dist);
             // Run hopper and fill auger:
-            // RunHopper(stepper1, enc3);
+            RunHopper(stepper1, enc3);
         }
     }
 
     // Check if the y-axis has reached the 'return' position, move if it hasn't:
     if (y_dist < y_plug_width*2) {
-        MoveAxis(stepper2, encY, limitSwitch2, -(y_plug_width-y_dist));
+        MoveAxis(stepper2, encY, limitSwitch2, -(y_plug_width-y_dist-10));
     }
 
     MoveAxis(stepper0, encX, limitSwitch1, -60);
