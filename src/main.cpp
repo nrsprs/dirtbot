@@ -176,8 +176,9 @@ void loop() {                     // main
     LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
     lcd.begin(16, 2);
     lcd.backlight();
-    /*====  TESTING CONFIGURATIONS  ====*/
 
+    
+    /*====  TESTING CONFIGURATIONS  ====*/
 
     // Sensor demo to make sure that your sensors actually work:
     // sensorDemo(lcd, userEncKnob, limitSwitch2);
@@ -207,6 +208,7 @@ void loop() {                     // main
     
     // ValidateDistance test:
     // ValidateDistance(stepper0, encX, limitSwitch1);
+
 
     // Home Axis Test:
     if (0==1) {
@@ -260,7 +262,7 @@ void loop() {                     // main
    /*====  START OF ROUTINE  =====*/
 
     // Start Animation: 
-    StartAnimation(lcd);         // ! TURN THIS BACK ON FOR DEMO !
+    StartAnimation(lcd);
 
     // Get user input and number of plugs in the X and Y direction:
     noInterrupts();
