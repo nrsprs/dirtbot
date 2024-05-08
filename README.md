@@ -5,7 +5,7 @@
 
 DirtBot is a robot that fills seed plug trays. 
 
-[DirtBot Poster Drawing Iso No-Border.pdf](https://github.com/nrsprs/dirtbot/files/15249161/DirtBot.Poster.Drawing.Iso.No-Border.pdf)
+![DirtBot Poster Drawing Iso No-Border](https://github.com/nrsprs/dirtbot/assets/145242141/1a8acac9-297e-4033-91ca-d33170d6a2e9)
 
 
 ## Installation Instructions:
